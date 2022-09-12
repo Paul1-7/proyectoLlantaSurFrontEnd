@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useAxios = (callback = null) => {
   const [response, setResponse] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [controller, setController] = useState();
 
@@ -17,7 +17,6 @@ const useAxios = (callback = null) => {
         ...requestConfig,
         signal: ctrl.signal
       });
-
       res = callback ? callback(res) : res;
       setResponse(res.data);
     } catch (err) {
@@ -35,7 +34,7 @@ const useAxios = (callback = null) => {
     [controller]
   );
 
-  return [response, error, loading, axiosFetch];
+  return { response, setResponse, error, loading, axiosFetch };
 };
 
 export default useAxios;

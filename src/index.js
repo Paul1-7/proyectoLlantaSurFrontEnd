@@ -6,6 +6,7 @@ import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 // contexts
+import { SnackbarProvider } from 'notistack';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 //
@@ -21,7 +22,9 @@ ReactDOM.render(
       <SettingsProvider>
         <CollapseDrawerProvider>
           <BrowserRouter>
-            <App />
+            <SnackbarProvider maxSnack={3}>
+              <App />
+            </SnackbarProvider>
           </BrowserRouter>
         </CollapseDrawerProvider>
       </SettingsProvider>

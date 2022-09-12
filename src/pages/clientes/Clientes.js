@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Alert, AlertTitle, Button, Container, Grid, Typography } from '@material-ui/core';
+import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
-import DataTable from '../../components/DataTable';
-import useSettings from '../../hooks/useSettings';
-import Page from '../../components/Page';
-import useAxios from '../../hooks/useAxios';
-import axios from '../../apis/apis';
-import { createDataTableColumns } from '../../utils/handleDataTable';
-import BreadcrumbsCustom from '../../components/BreadcrumbsCustom';
-import { PATH_MODULES } from '../../routes/paths';
-import DialogConfirmation from '../../components/DialogConfirmation';
-import TEXT_MODAL from '../../utils/modalText';
-import COLUMNS from '../../utils/dataTablesColumns';
+import { useSnackbar } from 'notistack';
+import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
+import useSettings from 'hooks/useSettings';
+import Page from 'components/Page';
+import useAxios from 'hooks/useAxios';
+import axios from 'apis/apis';
 
-const callback = ({ data }) => {
-  const newData = data.map((item, index) => {
+import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
+import { PATH_MODULES } from 'routes/paths';
+import DialogConfirmation from 'components/DialogConfirmation';
+import TEXT_MODAL from 'utils/modalText';
+import DataTable from 'components/dataTable/DataTable';
+import { useSSR } from 'react-i18next';
+
+const customData = ({ data }) => {
+  const newData = data.map((item) => {
     const newValue = {
-      numeracion: index + 1,
       id: item.idUsuario,
       nombre: item.nombre,
       apellido: item.apellido,
@@ -27,31 +28,49 @@ const callback = ({ data }) => {
     };
     return newValue;
   });
-
   return { data: newData };
 };
 
-const buttonsValues = { edit: true, remove: true, detail: false };
-
+const buttonsActions = { edit: true, remove: true, detail: false };
 export default function Clientes() {
   const { themeStretch } = useSettings();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(callback);
-  const [resDelete, errorDelete, loadingDelete, axiosFetchDelete] = useAxios();
-  const [isOpen, setIsOpen] = useState(false);
-  const newColumns = createDataTableColumns(COLUMNS.clientes, buttonsValues, setIsOpen);
+  const { enqueueSnackbar } = useSnackbar();
+  const { response: resGet, error: errorGet, loading: loadingGet, axiosFetch: axiosFetchGet } = useAxios(customData);
+  const { response: resDelete, error: errorDelete, loading: loadingDelete, axiosFetch: axiosFetchDelete } = useAxios();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [dataDialog, setDataDialog] = useState('');
 
-  const handleClickOpen = () => {
-    setIsOpen(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
-  const handleDelete = () => {
-    axiosFetchDelete({
-      axiosInstance: axios,
-      method: 'DELETE',
-      url: '/api/v1/clientes'
-    });
-    setIsOpen(false);
+  const handleOpenDialog = (id) => {
+    setOpenDialog(true);
+    if (confirmDialog) {
+      setDataDialog(id);
+    }
   };
+
+  // useEffect(() => {
+  //  axiosFetchDelete({
+  //    axiosInstance: axios,
+  //    method: 'DELETE',
+  //    url: `/api/v1/clientes/${dataDialog}`
+  //  });
+  //  const variant = 'success';
+
+  //  console.log('handle delete');
+  //  if (resDelete.length > 0) {
+  //    setOpenDialog(false);
+  //    enqueueSnackbar('This is a success message!', {
+  //      variant,
+  //      anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+  //      autoHideDuration: 3000
+  //    });
+  //  }
+
+  // }, []);
 
   const getData = () => {
     axiosFetchGet({
@@ -68,16 +87,10 @@ export default function Clientes() {
 
   return (
     <Page title="Clientes" sx={{ position: 'relative' }}>
-      {resDelete && (
-        <Alert variant="outlined" severity="success" sx={{ position: 'absolute', bottom: 0, right: 0, zIndex: 9999 }}>
-          <AlertTitle>Se realizó con exito</AlertTitle>
-          {resDelete}
-        </Alert>
-      )}
       <DialogConfirmation
-        isOpen={isOpen}
-        handleClickOpen={handleClickOpen}
-        handleDelete={handleDelete}
+        open={openDialog}
+        handleClickClose={handleCloseDialog}
+        setResponse={setConfirmDialog}
         loading={loadingDelete}
         textContent={TEXT_MODAL.clientes}
       />
@@ -100,7 +113,17 @@ export default function Clientes() {
             </Button>
           </Grid>
         </Grid>
-        <DataTable data={resGet} columns={newColumns} loading={loadingGet} error={errorGet} />
+        <DataTable
+          columns={COLUMNS.clientes}
+          rows={resGet}
+          error={errorGet}
+          loading={loadingGet}
+          numeration
+          btnActions={buttonsActions}
+          orderByDefault="nombre"
+          states={TABLE_STATES.active}
+          handleDelete={handleOpenDialog}
+        />
       </Container>
     </Page>
   );

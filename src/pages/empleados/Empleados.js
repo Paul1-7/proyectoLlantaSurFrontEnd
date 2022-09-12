@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
-import DataTable from '../../components/DataTable';
+import DataTable from '../../components/DataTable1';
 import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import useAxios from '../../hooks/useAxios';

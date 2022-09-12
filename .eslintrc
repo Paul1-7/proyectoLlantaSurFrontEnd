@@ -4,17 +4,15 @@
     "browser": true,
     "node": true
   },
-  "extends": [
-    "airbnb",
-    "prettier",
-    "plugin:jsx-a11y/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "plugins": [
-    "prettier",
-    "react",
-    "react-hooks"
-  ],
+  "extends": ["airbnb", "prettier", "plugin:jsx-a11y/recommended", "plugin:react-hooks/recommended"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "plugins": ["prettier", "react", "react-hooks"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 8,

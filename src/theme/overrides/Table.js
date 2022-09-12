@@ -25,14 +25,12 @@ export default function Table(theme) {
           '&:first-of-type': {
             paddingLeft: theme.spacing(3),
             borderTopLeftRadius: theme.shape.borderRadius,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            boxShadow: `inset 8px 0 0 ${theme.palette.background.paper}`
+            borderBottomLeftRadius: theme.shape.borderRadius
           },
           '&:last-of-type': {
             paddingRight: theme.spacing(3),
             borderTopRightRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            boxShadow: `inset -8px 0 0 ${theme.palette.background.paper}`
+            borderBottomRightRadius: theme.shape.borderRadius
           }
         },
         stickyHeader: {

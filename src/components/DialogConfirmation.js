@@ -2,10 +2,11 @@ import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import React from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import PropTypes from 'prop-types';
+import { LoadingButton } from '@material-ui/lab';
 import { DialogAnimate } from './animate';
 
-const DialogConfirmation = ({ isOpen, handleClickOpen, handleDelete, loading, textContent }) => (
-  <DialogAnimate open={isOpen} maxWidth="sm" onClose={handleClickOpen}>
+const DialogConfirmation = ({ open, handleClickClose, setResponse, loading, textContent }) => (
+  <DialogAnimate open={open} maxWidth="sm" onClose={handleClickClose}>
     <DialogTitle sx={{ textAlign: 'center' }}>Ventana de confimación</DialogTitle>
     <DialogContent sx={{ display: 'flex', alignItems: 'center' }}>
       <DialogContentText
@@ -23,11 +24,11 @@ const DialogConfirmation = ({ isOpen, handleClickOpen, handleDelete, loading, te
       </DialogContentText>
     </DialogContent>
     <DialogActions sx={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
-      <Button onClick={handleClickOpen} color="error" variant="outlined">
+      <Button onClick={handleClickClose} color="error" variant="outlined">
         no, quiero cancelar
       </Button>
-      <Button
-        onClick={handleDelete}
+      <LoadingButton
+        onClick={() => setResponse(true)}
         loading={loading}
         autoFocus
         color="success"
@@ -35,7 +36,7 @@ const DialogConfirmation = ({ isOpen, handleClickOpen, handleDelete, loading, te
         loadingIndicator="Borrando..."
       >
         si, estoy de acuerdo
-      </Button>
+      </LoadingButton>
     </DialogActions>
   </DialogAnimate>
 );
@@ -43,9 +44,9 @@ const DialogConfirmation = ({ isOpen, handleClickOpen, handleDelete, loading, te
 export default DialogConfirmation;
 
 DialogConfirmation.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleClickOpen: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  handleClickClose: PropTypes.func.isRequired,
+  setResponse: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   textContent: PropTypes.string.isRequired
 };
