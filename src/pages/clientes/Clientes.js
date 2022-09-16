@@ -14,7 +14,6 @@ import { PATH_MODULES } from 'routes/paths';
 import DialogConfirmation from 'components/DialogConfirmation';
 import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
-import { useSSR } from 'react-i18next';
 
 const customData = ({ data }) => {
   const newData = data.map((item) => {
@@ -38,7 +37,6 @@ export default function Clientes() {
   const { response: resGet, error: errorGet, loading: loadingGet, axiosFetch: axiosFetchGet } = useAxios(customData);
   const { response: resDelete, error: errorDelete, loading: loadingDelete, axiosFetch: axiosFetchDelete } = useAxios();
   const [openDialog, setOpenDialog] = useState(false);
-  const [confirmDialog, setConfirmDialog] = useState(false);
   const [dataDialog, setDataDialog] = useState('');
 
   const handleCloseDialog = () => {
@@ -46,31 +44,33 @@ export default function Clientes() {
   };
 
   const handleOpenDialog = (id) => {
-    setOpenDialog(true);
-    if (confirmDialog) {
-      setDataDialog(id);
-    }
+    setDataDialog(id);
   };
 
   // useEffect(() => {
-  //  axiosFetchDelete({
-  //    axiosInstance: axios,
-  //    method: 'DELETE',
-  //    url: `/api/v1/clientes/${dataDialog}`
-  //  });
-  //  const variant = 'success';
+  //   console.log('enter');
+  //   if (dataDialog.length === 0) return;
 
-  //  console.log('handle delete');
-  //  if (resDelete.length > 0) {
-  //    setOpenDialog(false);
-  //    enqueueSnackbar('This is a success message!', {
-  //      variant,
-  //      anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-  //      autoHideDuration: 3000
-  //    });
-  //  }
+  // }, [dataDialog]);
 
-  // }, []);
+  const handleDelete = (id) => {
+    axiosFetchDelete({
+      axiosInstance: axios,
+      method: 'DELETE',
+      url: `/api/v1/clientes/${id}`
+    });
+    const variant = 'success';
+
+    console.log('handle delete');
+    if (resDelete.length > 0) {
+      setOpenDialog(false);
+      enqueueSnackbar('This is a success message!', {
+        variant,
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        autoHideDuration: 3000
+      });
+    }
+  };
 
   const getData = () => {
     axiosFetchGet({
@@ -90,9 +90,10 @@ export default function Clientes() {
       <DialogConfirmation
         open={openDialog}
         handleClickClose={handleCloseDialog}
-        setResponse={setConfirmDialog}
+        handleDelete={handleDelete}
         loading={loadingDelete}
         textContent={TEXT_MODAL.clientes}
+        id={dataDialog}
       />
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
@@ -123,6 +124,7 @@ export default function Clientes() {
           orderByDefault="nombre"
           states={TABLE_STATES.active}
           handleDelete={handleOpenDialog}
+          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

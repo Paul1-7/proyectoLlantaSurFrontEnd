@@ -1,31 +1,37 @@
 import React from 'react';
-import { IconButton } from '@material-ui/core';
 import { Article, Delete, Edit } from '@material-ui/icons';
 
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { MIconButton } from './@material-extend';
 
-const DataTablesButtons = ({ id, buttons, handleDelete }) => {
+const DataTablesButtons = ({ id, buttons, handleDelete, setOpenDialog }) => {
   const { remove, edit, detail } = buttons || {};
   const location = window.location.pathname;
 
   return (
     <>
       {detail && (
-        <IconButton aria-label="detalle" LinkComponent={Link} to={`${location}/detalle/${id}`}>
+        <MIconButton aria-label="detalle" LinkComponent={Link} to={`${location}/detalle/${id}`}>
           <Article color="primary" />
-        </IconButton>
+        </MIconButton>
       )}
       {edit && (
-        <IconButton aria-label="modificar" LinkComponent={Link} to={`${location}/modificar/${id}`}>
+        <MIconButton aria-label="modificar" LinkComponent={Link} to={`${location}/modificar/${id}`}>
           <Edit color="warning" />
-        </IconButton>
+        </MIconButton>
       )}
       {/* () => setIsOpen(true) */}
       {remove && (
-        <IconButton aria-label="eliminar" onClick={() => handleDelete(id)}>
+        <MIconButton
+          aria-label="eliminar"
+          onClick={() => {
+            setOpenDialog(true);
+            handleDelete(id);
+          }}
+        >
           <Delete color="error" />
-        </IconButton>
+        </MIconButton>
       )}
     </>
   );
@@ -36,5 +42,6 @@ export default DataTablesButtons;
 DataTablesButtons.propTypes = {
   buttons: PropTypes.shape({ remove: PropTypes.bool, edit: PropTypes.bool, detail: PropTypes.bool }),
   id: PropTypes.string,
-  handleDelete: PropTypes.func
+  handleDelete: PropTypes.func,
+  setOpenDialog: PropTypes.func
 };

@@ -1,18 +1,31 @@
-// ----------------------------------------------------------------------
-
+// --------------------------------------------------------------------
 export default function Input(theme) {
   return {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.secondary
+        }
+      }
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.secondary
+        }
+      }
+    },
     MuiInputBase: {
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            '& svg': { color: theme.palette.text.disabled }
+            '& svg': { color: theme.palette.text.secondary }
           }
         },
         input: {
           '&::placeholder': {
             opacity: 1,
-            color: theme.palette.text.disabled
+            color: theme.palette.text.secondary
           }
         }
       }

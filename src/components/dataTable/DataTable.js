@@ -60,7 +60,8 @@ const DataTable = ({
   states = [],
   handleDelete = null,
   error,
-  loading
+  loading,
+  setOpenDialog
 }) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(orderByDefault);
@@ -151,7 +152,12 @@ const DataTable = ({
                   })}
                   {btnActions && (
                     <TableCell key={index} align={align}>
-                      <DataTablesButtons id={row.id} buttons={btnActions} handleDelete={handleDelete} />
+                      <DataTablesButtons
+                        id={row.id}
+                        buttons={btnActions}
+                        handleDelete={handleDelete}
+                        setOpenDialog={setOpenDialog}
+                      />
                     </TableCell>
                   )}
                 </TableRow>
@@ -189,6 +195,7 @@ DataTable.propTypes = {
   align: PropTypes.string,
   states: PropTypes.array,
   handleDelete: PropTypes.func,
+  setOpenDialog: PropTypes.func,
   error: PropTypes.string,
   loading: PropTypes.bool
 };

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { LoadingButton } from '@material-ui/lab';
 import { DialogAnimate } from './animate';
 
-const DialogConfirmation = ({ open, handleClickClose, setResponse, loading, textContent }) => (
+const DialogConfirmation = ({ open, handleClickClose, handleDelete, loading, textContent, id }) => (
   <DialogAnimate open={open} maxWidth="sm" onClose={handleClickClose}>
     <DialogTitle sx={{ textAlign: 'center' }}>Ventana de confimación</DialogTitle>
     <DialogContent sx={{ display: 'flex', alignItems: 'center' }}>
@@ -28,7 +28,7 @@ const DialogConfirmation = ({ open, handleClickClose, setResponse, loading, text
         no, quiero cancelar
       </Button>
       <LoadingButton
-        onClick={() => setResponse(true)}
+        onClick={() => handleDelete(id)}
         loading={loading}
         autoFocus
         color="success"
@@ -46,7 +46,8 @@ export default DialogConfirmation;
 DialogConfirmation.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClickClose: PropTypes.func.isRequired,
-  setResponse: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  textContent: PropTypes.string.isRequired
+  textContent: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired
 };
