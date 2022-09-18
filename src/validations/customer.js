@@ -2,16 +2,16 @@ import { msg, regex } from 'constants/validations';
 import * as yup from 'yup';
 
 const customer = yup.object().shape({
-  usuario: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  usuario: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   email: yup.string().email(),
-  password: yup.string().matches(regex.password, msg.password).required(),
+  password: yup.string().matches(regex.password, msg.password),
   passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Las constraseñas no coinciden'),
-  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  apellido: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  estado: yup.string().matches(regex.number, msg.number).required(),
-  direccion: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  celular: yup.string().matches(regex.number, msg.number).required(),
-  ciNit: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  nombre: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
+  apellido: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
+  estado: yup.string().required().matches(regex.number, msg.number),
+  direccion: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
+  celular: yup.string().required().matches(regex.number, msg.number),
+  ciNit: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
   idSuc: yup.string().required()
 });
 

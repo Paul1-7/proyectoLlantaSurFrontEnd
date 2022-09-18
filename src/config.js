@@ -5,7 +5,8 @@ const config = {
   // defaultPath: '/dashboard/default',
   // fontFamily: `'Roboto', sans-serif`,
   // borderRadius: 12,
-  BASE_URL: 'https://llanta-sur.herokuapp.com/'
+  BASE_URL: 'http://localhost:3000'
+  // BASE_URL: 'https://llanta-sur.herokuapp.com/'
 };
 
 export default config;

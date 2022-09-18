@@ -45,9 +45,9 @@ export default function Router() {
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <App /> },
         // clientes
-        { path: 'clientes', element: <Clientes /> },
-        { path: 'clientes/modificar/:id', element: <FormularioCliente title="Modificar cliente" /> },
-        { path: 'clientes/nuevo', element: <FormularioCliente title="Nuevo cliente" /> },
+        { path: 'clientes', element: <Customers /> },
+        { path: 'clientes/modificar/:id', element: <AddCustomerForm title="Modificar cliente" /> },
+        { path: 'clientes/nuevo', element: <AddCustomerForm title="Nuevo cliente" /> },
         { path: 'empleados', element: <Empleados /> },
         {
           path: 'reportes',
@@ -85,8 +85,8 @@ export default function Router() {
 // IMPORT COMPONENTS
 
 // Dashboard
-const Clientes = Loadable(lazy(() => import('../pages/clientes/Clientes')));
-const FormularioCliente = Loadable(lazy(() => import('../pages/clientes/FormularioClientes.js')));
+const Customers = Loadable(lazy(() => import('../pages/customers/Customers')));
+const AddCustomerForm = Loadable(lazy(() => import('../pages/customers/AddcustomerForm.js')));
 const App = Loadable(lazy(() => import('../pages/App')));
 const Empleados = Loadable(lazy(() => import('../pages/empleados/Empleados')));
 const PageFour = Loadable(lazy(() => import('../pages/PageFour')));

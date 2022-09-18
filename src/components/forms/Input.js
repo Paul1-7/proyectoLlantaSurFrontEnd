@@ -9,7 +9,7 @@ const InputMemo = memo(
         variant="outlined"
         label={label}
         error={!!methods.formState.errors[name]}
-        helperText={methods.formState.errors[name]?.message ?? ''}
+        helperText={methods.formState.errors[name]?.message ?? ' '}
         fullWidth
         size="small"
         {...others}

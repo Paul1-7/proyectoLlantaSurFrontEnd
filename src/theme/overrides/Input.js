@@ -8,6 +8,13 @@ export default function Input(theme) {
         }
       }
     },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginTop: 0
+        }
+      }
+    },
     MuiFormLabel: {
       styleOverrides: {
         root: {

@@ -33,11 +33,10 @@ const RadioGroupMemo = memo(
                 {items.map((item) => (
                   <FormControlLabel key={item.id} value={item.id} control={<Radio />} label={item.title} />
                 ))}
-                {/* <FormControlLabel value="0" control={<Radio />} label="habi" />
-                <FormControlLabel value="1" control={<Radio />} label="deshabi" /> */}
               </MuiRadioGroup>
-
-              {error && <FormHelperText>{error?.message}</FormHelperText>}
+              <FormHelperText error={error} color="error">
+                {error?.message}
+              </FormHelperText>
             </FormControl>
           )}
         />

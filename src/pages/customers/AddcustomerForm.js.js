@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Container, Grid, Paper, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
 import axios from 'apis/apis';
@@ -11,9 +10,11 @@ import Controls from 'components/forms/Control';
 import Fieldset from 'components/forms/Fieldset';
 import { LoadingButton } from '@material-ui/lab';
 import { Save } from '@material-ui/icons';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'validations';
+import { Navigate } from 'react-router';
+import { PATH_MODULES } from 'routes/paths';
 
 const initialForm = {
   usuario: '',
@@ -40,20 +41,24 @@ const itemsRadioGroup = [
   }
 ];
 
-export default function FormularioCliente({ title }) {
+export default function AddCustomerForm({ title }) {
   const { themeStretch } = useSettings();
-  // const { values, setValues, handleInputChange } = useForm(initialForm);
+  const { response: resPost, error: errorPost, loading: loadingPost, axiosFetch: axiosFetchPost } = useAxios();
   const methods = useForm({
     resolver: yupResolver(schema.customer),
     defaultValues: initialForm
   });
-  console.log('TCL: FormularioCliente -> methods', methods.watch());
 
   const onSubmit = (data) => {
     console.log(data);
-    // if (validate()) {
-    //   resetForm();
-    // }
+    axiosFetchPost({
+      axiosInstance: axios,
+      method: 'POST',
+      url: `/api/v1/clientes`,
+      requestConfig: {
+        ...data
+      }
+    });
   };
 
   return (
@@ -73,32 +78,40 @@ export default function FormularioCliente({ title }) {
             autoComplete="off"
           >
             <Fieldset title="Datos del cliente *">
-              <Grid container wrap="wrap" spacing={2}>
-                <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="apellido" label="Apellido" />
-                <Controls.Input name="direccion" label="Direccion" />
-                <Controls.Input name="celular" label="Celular" />
-                <Controls.Input name="ciNit" label="CI / NIT" />
-                <Controls.Input name="idSuc" label="Sucursal" />
+              <Grid container wrap="wrap" spacing={1}>
+                <Controls.Input required name="nombre" label="Nombre" />
+                <Controls.Input required name="apellido" label="Apellido" />
+                <Controls.Input required name="direccion" label="Direccion" />
+                <Controls.Input required type="number" name="celular" label="Celular" />
+                <Controls.Input required name="ciNit" label="CI / NIT" />
+                <Controls.Input required name="idSuc" label="Sucursal" />
 
                 <Controls.RadioGroup name="estado" label="Estado" items={itemsRadioGroup} />
               </Grid>
             </Fieldset>
             <Fieldset title="Datos del usuario">
-              <Grid container wrap="wrap" spacing={2}>
+              <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
-                <Controls.Input name="email" label="Email" />
-                <Controls.Input name="password" label="Contraseña" placeholder="Por defecto es el numero de celular" />
+                <Controls.Input name="email" type="email" label="Email" />
+                <Controls.Input
+                  type="password"
+                  name="password"
+                  label="Contraseña"
+                  autoComplete="on"
+                  placeholder="Por defecto es el numero de celular"
+                />
                 <Controls.Input
                   name="passwordConfirmation"
+                  type="password"
                   label="Repetir contraseña"
+                  autoComplete="on"
                   placeholder="Por defecto es el numero de celular"
                 />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <LoadingButton
-                loading={false}
+                loading={loadingPost}
                 type="submit"
                 loadingPosition="start"
                 startIcon={<Save />}
@@ -109,11 +122,15 @@ export default function FormularioCliente({ title }) {
             </Box>
           </form>
         </FormProvider>
+        {!loadingPost && !errorPost && !Array.isArray(resPost) && (
+          <Navigate to={PATH_MODULES.modulos.clientes.root} replace state={resPost} />
+        )}
+        {!loadingPost && errorPost && <p>{errorPost}</p>}
       </Container>
     </Page>
   );
 }
 
-FormularioCliente.propTypes = {
+AddCustomerForm.propTypes = {
   title: PropTypes.string
 };

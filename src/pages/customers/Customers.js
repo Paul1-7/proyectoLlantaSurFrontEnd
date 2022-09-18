@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Link } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
+import { Link, useLocation } from 'react-router-dom';
+
 import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
 import useSettings from 'hooks/useSettings';
 import Page from 'components/Page';
@@ -14,6 +14,9 @@ import { PATH_MODULES } from 'routes/paths';
 import DialogConfirmation from 'components/DialogConfirmation';
 import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
+
+import { useSnackbar } from 'notistack';
+import SnackBar from 'components/SnackBar';
 
 const customData = ({ data }) => {
   const newData = data.map((item) => {
@@ -31,11 +34,13 @@ const customData = ({ data }) => {
 };
 
 const buttonsActions = { edit: true, remove: true, detail: false };
-export default function Clientes() {
+
+export default function Customers() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const { response: resGet, error: errorGet, loading: loadingGet, axiosFetch: axiosFetchGet } = useAxios(customData);
   const { response: resDelete, error: errorDelete, loading: loadingDelete, axiosFetch: axiosFetchDelete } = useAxios();
+  const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
   const [dataDialog, setDataDialog] = useState('');
 
@@ -47,11 +52,16 @@ export default function Clientes() {
     setDataDialog(id);
   };
 
-  // useEffect(() => {
-  //   console.log('enter');
-  //   if (dataDialog.length === 0) return;
-
-  // }, [dataDialog]);
+  useEffect(() => {
+    if (location.state) {
+      console.log('TCL: Customers -> location.state', location.state);
+      console.log('entro');
+      enqueueSnackbar(location.state.message, {
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        content: (key, message) => <SnackBar key={key} message={message} severity="success" />
+      });
+    }
+  }, [location, enqueueSnackbar]);
 
   const handleDelete = (id) => {
     axiosFetchDelete({
