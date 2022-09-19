@@ -18,9 +18,10 @@ const useAxios = (callback = null) => {
         signal: ctrl.signal
       });
       res = callback ? callback(res) : res;
+
       setResponse(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data);
     } finally {
       setLoading(false);
     }

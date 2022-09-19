@@ -16,7 +16,6 @@ import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
-import SnackBar from 'components/SnackBar';
 
 const customData = ({ data }) => {
   const newData = data.map((item) => {
@@ -38,7 +37,13 @@ const buttonsActions = { edit: true, remove: true, detail: false };
 export default function Customers() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
-  const { response: resGet, error: errorGet, loading: loadingGet, axiosFetch: axiosFetchGet } = useAxios(customData);
+  const {
+    response: resGet,
+    setResponse: setResGet,
+    error: errorGet,
+    loading: loadingGet,
+    axiosFetch: axiosFetchGet
+  } = useAxios(customData);
   const { response: resDelete, error: errorDelete, loading: loadingDelete, axiosFetch: axiosFetchDelete } = useAxios();
   const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
@@ -52,53 +57,57 @@ export default function Customers() {
     setDataDialog(id);
   };
 
-  useEffect(() => {
-    if (location.state) {
-      console.log('TCL: Customers -> location.state', location.state);
-      console.log('entro');
-      enqueueSnackbar(location.state.message, {
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-        content: (key, message) => <SnackBar key={key} message={message} severity="success" />
-      });
-    }
-  }, [location, enqueueSnackbar]);
-
   const handleDelete = (id) => {
     axiosFetchDelete({
       axiosInstance: axios,
       method: 'DELETE',
       url: `/api/v1/clientes/${id}`
     });
-    const variant = 'success';
-
-    console.log('handle delete');
-    if (resDelete.length > 0) {
-      setOpenDialog(false);
-      enqueueSnackbar('This is a success message!', {
-        variant,
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-        autoHideDuration: 3000
-      });
-    }
   };
 
-  const getData = () => {
+  useEffect(() => {
+    let message = null;
+    let severity = 'success';
+
+    if (location.state?.message) {
+      message = location.state.message;
+    }
+    if (!Array.isArray(resDelete) && !errorDelete) {
+      message = resDelete?.message;
+      setResGet(resGet.filter(({ id }) => id !== dataDialog));
+    }
+
+    if (Array.isArray(resDelete) && errorDelete) {
+      message = errorDelete;
+      severity = 'error';
+    }
+
+    if (message) {
+      enqueueSnackbar(message, {
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        autoHideDuration: 4000,
+        variant: severity
+      });
+    }
+
+    setOpenDialog(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, resDelete, errorDelete]);
+
+  useEffect(() => {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
       url: '/api/v1/clientes'
     });
-  };
-
-  useEffect(() => {
-    getData();
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Page title="Clientes" sx={{ position: 'relative' }}>
       <DialogConfirmation
         open={openDialog}
+        setOpen={setOpenDialog}
         handleClickClose={handleCloseDialog}
         handleDelete={handleDelete}
         loading={loadingDelete}

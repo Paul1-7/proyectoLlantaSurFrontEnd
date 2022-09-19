@@ -15,6 +15,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'validations';
 import { Navigate } from 'react-router';
 import { PATH_MODULES } from 'routes/paths';
+import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
+import SnackBar from 'components/SnackBar';
 
 const initialForm = {
   usuario: '',
@@ -43,14 +46,16 @@ const itemsRadioGroup = [
 
 export default function AddCustomerForm({ title }) {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const { response: resPost, error: errorPost, loading: loadingPost, axiosFetch: axiosFetchPost } = useAxios();
   const methods = useForm({
     resolver: yupResolver(schema.customer),
-    defaultValues: initialForm
+    defaultValues: initialForm,
+    mode: 'all',
+    criteriaMode: 'all'
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     axiosFetchPost({
       axiosInstance: axios,
       method: 'POST',
@@ -60,6 +65,20 @@ export default function AddCustomerForm({ title }) {
       }
     });
   };
+
+  useEffect(() => {
+    if (Array.isArray(resPost) && errorPost) {
+      const severity = 'error';
+
+      enqueueSnackbar(errorPost?.message, {
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        autoHideDuration: 5000,
+        content: (key, message) => <SnackBar id={key} message={message} severity={severity} />
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorPost]);
 
   return (
     <Page title={title}>
@@ -79,12 +98,12 @@ export default function AddCustomerForm({ title }) {
           >
             <Fieldset title="Datos del cliente *">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input required name="nombre" label="Nombre" />
-                <Controls.Input required name="apellido" label="Apellido" />
-                <Controls.Input required name="direccion" label="Direccion" />
-                <Controls.Input required type="number" name="celular" label="Celular" />
-                <Controls.Input required name="ciNit" label="CI / NIT" />
-                <Controls.Input required name="idSuc" label="Sucursal" />
+                <Controls.Input name="nombre" label="Nombre" />
+                <Controls.Input name="apellido" label="Apellido" />
+                <Controls.Input name="direccion" label="Direccion" />
+                <Controls.Input type="number" name="celular" label="Celular" />
+                <Controls.Input name="ciNit" label="CI / NIT" />
+                <Controls.Input name="idSuc" label="Sucursal" />
 
                 <Controls.RadioGroup name="estado" label="Estado" items={itemsRadioGroup} />
               </Grid>
@@ -97,14 +116,12 @@ export default function AddCustomerForm({ title }) {
                   type="password"
                   name="password"
                   label="Contraseña"
-                  autoComplete="on"
                   placeholder="Por defecto es el numero de celular"
                 />
                 <Controls.Input
                   name="passwordConfirmation"
                   type="password"
                   label="Repetir contraseña"
-                  autoComplete="on"
                   placeholder="Por defecto es el numero de celular"
                 />
               </Grid>
@@ -125,7 +142,7 @@ export default function AddCustomerForm({ title }) {
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
           <Navigate to={PATH_MODULES.modulos.clientes.root} replace state={resPost} />
         )}
-        {!loadingPost && errorPost && <p>{errorPost}</p>}
+        {/* {!loadingPost && errorPost && <p>{errorPost}</p>} */}
       </Container>
     </Page>
   );
