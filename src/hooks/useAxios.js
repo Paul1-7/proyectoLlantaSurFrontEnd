@@ -20,8 +20,9 @@ const useAxios = (callback = null) => {
       res = callback ? callback(res) : res;
 
       setResponse(res.data);
+      setError(null);
     } catch (err) {
-      setError(err.response.data);
+      setError(err?.response?.data);
     } finally {
       setLoading(false);
     }
@@ -35,7 +36,7 @@ const useAxios = (callback = null) => {
     [controller]
   );
 
-  return { response, setResponse, error, loading, axiosFetch };
+  return [response, error, loading, axiosFetch];
 };
 
 export default useAxios;

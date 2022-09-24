@@ -3,7 +3,8 @@ import RadioGroup from './container/RadioGroupContainer';
 
 const Controls = {
   Input,
-  RadioGroup
+  RadioGroup,
+  
 };
 
 export default Controls;

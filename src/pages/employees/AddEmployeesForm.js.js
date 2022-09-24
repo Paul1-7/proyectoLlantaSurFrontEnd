@@ -44,10 +44,21 @@ const itemsRadioGroup = [
   }
 ];
 
-export default function AddCustomerForm({ title }) {
+const itemsSelects = [
+  {
+    idRol: '1',
+    nombreRol: 'Admin'
+  },
+  {
+    idRol: '0',
+    nombreRol: 'Vendendor'
+  }
+];
+
+export default function AddEmployeesForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
-  const { response: resPost, error: errorPost, loading: loadingPost, axiosFetch: axiosFetchPost } = useAxios();
+  const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
     resolver: yupResolver(schema.customer),
     defaultValues: initialForm,
@@ -81,14 +92,14 @@ export default function AddCustomerForm({ title }) {
   }, [errorPost]);
 
   return (
-    <Page title={title}>
+    <Page title="nuevo empleado">
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          {title}
+          Nuevo empleado
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Agrega un nuevo cliente
+          Agrega un nuevo empleado
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -96,14 +107,14 @@ export default function AddCustomerForm({ title }) {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos del cliente *">
+            <Fieldset title="Datos del empleado *">
               <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
                 <Controls.Input name="apellido" label="Apellido" />
                 <Controls.Input name="direccion" label="Direccion" />
                 <Controls.Input type="number" name="celular" label="Celular" />
                 <Controls.Input name="ciNit" label="CI / NIT" />
-                <Controls.Input name="idSuc" label="Sucursal" />
+                <Controls.Input name="idSuc" label="Sucursal" disabled />
 
                 <Controls.RadioGroup name="estado" label="Estado" items={itemsRadioGroup} />
               </Grid>
@@ -140,14 +151,13 @@ export default function AddCustomerForm({ title }) {
           </form>
         </FormProvider>
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.modulos.clientes.root} replace state={resPost} />
+          <Navigate to={PATH_MODULES.clientes.root} replace state={resPost} />
         )}
-        {/* {!loadingPost && errorPost && <p>{errorPost}</p>} */}
       </Container>
     </Page>
   );
 }
 
-AddCustomerForm.propTypes = {
+AddEmployeesForm.propTypes = {
   title: PropTypes.string
 };

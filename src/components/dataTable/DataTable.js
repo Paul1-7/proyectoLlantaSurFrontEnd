@@ -85,7 +85,8 @@ const DataTable = ({
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page >= 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page >= 0 ? Math.max(0, (1 + page) * rowsPerPage - dataFiltered.length) : 0;
+
   const arrayEmpty = [];
 
   const message = 'No hay datos';
@@ -144,6 +145,19 @@ const DataTable = ({
                         </TableCell>
                       );
                     }
+                    if (Array.isArray(value)) {
+                      return (
+                        <TableCell key={index} align={align}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {value.map((item, index) => (
+                              <div key={index}>
+                                <Label color="info">{item}</Label>
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                      );
+                    }
                     return (
                       <TableCell key={index} align={align}>
                         {value}
@@ -163,6 +177,9 @@ const DataTable = ({
                 </TableRow>
               ))}
             {emptyRows > 0 &&
+              !loading &&
+              !error &&
+              rows.length !== 0 &&
               arrayEmpty.map((item) => (
                 <TableRow key={item} sx={{ height: 55 }}>
                   <TableCell colSpan={6} />

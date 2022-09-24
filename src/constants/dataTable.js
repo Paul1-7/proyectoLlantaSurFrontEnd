@@ -1,5 +1,6 @@
 const COLUMNS = {
-  clientes: ['nombre', 'apellido', 'CI/Nit', 'estado', 'celular']
+  clientes: ['nombre', 'apellido', 'CI/Nit', 'celular', 'estado'],
+  empleados: ['nombre', 'apellido', 'CI/Nit', 'celular', 'roles', 'estado']
 };
 
 const TABLE_STATES = {

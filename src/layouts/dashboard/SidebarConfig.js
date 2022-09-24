@@ -21,9 +21,9 @@ const sidebarConfig = [
   {
     subheader: 'modulos',
     items: [
-      { title: 'App', path: PATH_MODULES.modulos.app, icon: ICONS.dashboard },
-      { title: 'Clientes', path: PATH_MODULES.modulos.clientes.root, icon: ICONS.user },
-      { title: 'Empleados', path: PATH_MODULES.modulos.empleados, icon: ICONS.employee }
+      { title: 'App', path: PATH_MODULES.app, icon: ICONS.dashboard },
+      { title: 'Clientes', path: PATH_MODULES.clientes.root, icon: ICONS.user },
+      { title: 'Empleados', path: PATH_MODULES.empleados.root, icon: ICONS.employee }
     ]
   }
 ];

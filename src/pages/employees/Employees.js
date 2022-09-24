@@ -25,8 +25,10 @@ const customData = ({ data }) => {
       apellido: item.apellido,
       'CI/Nit': item.ciNit,
       celular: item.celular,
-      estado: item.estado
+      estado: item.estado,
+      roles: item.roles.map((rol) => rol.nombreRol)
     };
+
     return newValue;
   });
   return { data: newData };
@@ -34,7 +36,7 @@ const customData = ({ data }) => {
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
-export default function Customers() {
+export default function Employees() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
@@ -55,7 +57,7 @@ export default function Customers() {
     axiosFetchDelete({
       axiosInstance: axios,
       method: 'DELETE',
-      url: `/api/v1/clientes/${id}`
+      url: `/api/v1/empleados/${id}`
     });
   };
 
@@ -91,43 +93,43 @@ export default function Customers() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: '/api/v1/clientes'
+      url: '/api/v1/empleados'
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Page title="Clientes" sx={{ position: 'relative' }}>
+    <Page title="Empleados" sx={{ position: 'relative' }}>
       <DialogConfirmation
         open={openDialog}
         setOpen={setOpenDialog}
         handleClickClose={handleCloseDialog}
         handleDelete={handleDelete}
         loading={loadingDelete}
-        textContent={TEXT_MODAL.clientes}
+        textContent={TEXT_MODAL.empleados}
         id={dataDialog}
       />
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
-          Clientes
+          Empleados
         </Typography>
-        <Typography gutterBottom>Administra la informacion de los clientes</Typography>
+        <Typography gutterBottom>Administra la informacion de los empleados</Typography>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Button
               size="medium"
               variant="outlined"
               LinkComponent={Link}
-              to={PATH_MODULES.clientes.nuevo}
+              to={PATH_MODULES.empleados.nuevo}
               startIcon={<PersonAddIcon />}
             >
-              Nuevo cliente
+              Nuevo empleado
             </Button>
           </Grid>
         </Grid>
         <DataTable
-          columns={COLUMNS.clientes}
+          columns={COLUMNS.empleados}
           rows={resGet}
           error={errorGet}
           loading={loadingGet}

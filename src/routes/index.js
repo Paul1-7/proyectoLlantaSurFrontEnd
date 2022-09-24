@@ -44,11 +44,14 @@ export default function Router() {
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <App /> },
-        // clientes
+        // customers
         { path: 'clientes', element: <Customers /> },
-        { path: 'clientes/modificar/:id', element: <AddCustomerForm title="Modificar cliente" /> },
-        { path: 'clientes/nuevo', element: <AddCustomerForm title="Nuevo cliente" /> },
-        { path: 'empleados', element: <Empleados /> },
+        { path: 'clientes/nuevo', element: <AddCustomerForm /> },
+        { path: 'clientes/modificar/:id', element: <ModifyCustomerForm /> },
+        // employees
+        { path: 'empleados', element: <Employees /> },
+        { path: 'empleados/nuevo', element: <AddEmployeesForm /> },
+        { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> },
         {
           path: 'reportes',
           children: [
@@ -86,9 +89,13 @@ export default function Router() {
 
 // Dashboard
 const Customers = Loadable(lazy(() => import('../pages/customers/Customers')));
-const AddCustomerForm = Loadable(lazy(() => import('../pages/customers/AddcustomerForm.js')));
+const AddCustomerForm = Loadable(lazy(() => import('../pages/customers/AddCustomerForm.js')));
+const ModifyCustomerForm = Loadable(lazy(() => import('../pages/customers/ModifyCustomerForm')));
 const App = Loadable(lazy(() => import('../pages/App')));
-const Empleados = Loadable(lazy(() => import('../pages/empleados/Empleados')));
+const Employees = Loadable(lazy(() => import('../pages/employees/Employees')));
+const AddEmployeesForm = Loadable(lazy(() => import('../pages/employees/AddEmployeesForm.js')));
+const ModifyEmployeesForm = Loadable(lazy(() => import('../pages/employees/ModifyEmployeesForm')));
+
 const PageFour = Loadable(lazy(() => import('../pages/PageFour')));
 const PageFive = Loadable(lazy(() => import('../pages/PageFive')));
 const PageSix = Loadable(lazy(() => import('../pages/PageSix')));
