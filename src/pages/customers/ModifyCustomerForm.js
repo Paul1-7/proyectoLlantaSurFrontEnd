@@ -18,6 +18,7 @@ import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
+import { ITEMS_RADIO_GROUP } from 'constants/items';
 
 const initialForm = {
   usuario: '',
@@ -32,17 +33,6 @@ const initialForm = {
   ciNit: '',
   idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b'
 };
-
-const itemsRadioGroup = [
-  {
-    id: '1',
-    title: 'Habilitado'
-  },
-  {
-    id: '0',
-    title: 'Deshabilitado'
-  }
-];
 
 export default function ModifyCustomerForm() {
   const { themeStretch } = useSettings();
@@ -146,7 +136,7 @@ export default function ModifyCustomerForm() {
                 <Controls.Input name="ciNit" label="CI / NIT" />
                 <Controls.Input name="idSuc" label="Sucursal" disabled />
 
-                <Controls.RadioGroup name="estado" label="Estado" items={itemsRadioGroup} />
+                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
               </Grid>
             </Fieldset>
             <Fieldset title="Datos del usuario">

@@ -18,6 +18,7 @@ import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
+import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from 'constants/items';
 
 const initialForm = {
   usuario: '',
@@ -30,47 +31,28 @@ const initialForm = {
   direccion: '',
   celular: '',
   ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b'
+  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
+  roles: [ITEMS_SELECTS[1].idRol]
 };
-
-const itemsRadioGroup = [
-  {
-    id: '1',
-    title: 'Habilitado'
-  },
-  {
-    id: '0',
-    title: 'Deshabilitado'
-  }
-];
-
-const itemsSelects = [
-  {
-    idRol: '1',
-    nombreRol: 'Admin'
-  },
-  {
-    idRol: '0',
-    nombreRol: 'Vendendor'
-  }
-];
 
 export default function AddEmployeesForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
-    resolver: yupResolver(schema.customer),
+    resolver: yupResolver(schema.employees),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
 
   const onSubmit = (data) => {
+    console.log('TCL: onSubmit -> data', data);
+
     axiosFetchPost({
       axiosInstance: axios,
       method: 'POST',
-      url: `/api/v1/clientes`,
+      url: `/api/v1/empleados`,
       requestConfig: {
         ...data
       }
@@ -116,7 +98,8 @@ export default function AddEmployeesForm() {
                 <Controls.Input name="ciNit" label="CI / NIT" />
                 <Controls.Input name="idSuc" label="Sucursal" disabled />
 
-                <Controls.RadioGroup name="estado" label="Estado" items={itemsRadioGroup} />
+                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <Controls.SelectChip name="roles" label="Roles" items={ITEMS_SELECTS} />
               </Grid>
             </Fieldset>
             <Fieldset title="Datos del usuario">
@@ -151,7 +134,7 @@ export default function AddEmployeesForm() {
           </form>
         </FormProvider>
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.clientes.root} replace state={resPost} />
+          <Navigate to={PATH_MODULES.empleados.root} replace state={resPost} />
         )}
       </Container>
     </Page>

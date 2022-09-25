@@ -2,23 +2,33 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import {
   FormControl,
-  FormLabel,
-  RadioGroup as MuiRadioGroup,
-  FormControlLabel,
-  Radio,
   Grid,
   FormHelperText,
   InputLabel,
   Select,
   Box,
   Chip,
-  MenuItem
+  MenuItem,
+  OutlinedInput
 } from '@material-ui/core';
 import { Controller } from 'react-hook-form';
 
-const RadioGroupMemo = memo(
+const SelectChipMemo = memo(
   ({ name, label, methods, items, ...others }) => {
     const error = methods.formState.errors[name];
+
+    const handleChange = (event, field) => {
+      const {
+        target: { value }
+      } = event;
+
+      field.onChange(value);
+    };
+
+    const itemName = (value) => {
+      const found = items.find((item) => item.idRol === value);
+      return found.nombreRol;
+    };
 
     return (
       <Grid item xs={12} md={6}>
@@ -26,19 +36,20 @@ const RadioGroupMemo = memo(
           name={name}
           control={methods.control}
           render={({ field }) => (
-            <FormControl>
+            <FormControl sx={{ width: '100%' }} size="small">
               <InputLabel id={name}>{label}</InputLabel>
               <Select
                 multiple
-                aria-labelledby={name}
+                labelId={name}
                 {...field}
-                onChange={(event, value) => field.onChange(value)}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                onChange={(event) => handleChange(event, field)}
                 value={field.value}
                 {...others}
                 renderValue={(selected) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                     {selected.map((value) => (
-                      <Chip key={value} label={value} />
+                      <Chip key={value} label={itemName(value)} />
                     ))}
                   </Box>
                 )}
@@ -63,9 +74,9 @@ const RadioGroupMemo = memo(
     prevProps.methods.formState.errors !== nextProps.methods.formState.errors
 );
 
-export default RadioGroupMemo;
+export default SelectChipMemo;
 
-RadioGroupMemo.propTypes = {
+SelectChipMemo.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
