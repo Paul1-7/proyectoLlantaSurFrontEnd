@@ -112,21 +112,21 @@ const DataTable = ({
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={6} align="center">
+                <TableCell colSpan={columns.length + 2} align="center">
                   <CircularProgress />
                 </TableCell>
               </TableRow>
             )}
             {!loading && !error && rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} align="center">
+                <TableCell colSpan={columns.length + 2} align="center">
                   {message}
                 </TableCell>
               </TableRow>
             )}
             {!loading && rows.length === 0 && error && (
               <TableRow>
-                <TableCell colSpan={6} align="center">
+                <TableCell colSpan={columns.length + 2} align="center">
                   {error}
                 </TableCell>
               </TableRow>

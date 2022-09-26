@@ -42,7 +42,7 @@ export default function Router() {
       path: 'dashboard',
       element: <DashboardLayout />,
       children: [
-        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+        { path: '', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <App /> },
         // customers
         { path: 'clientes', element: <Customers /> },
@@ -51,19 +51,19 @@ export default function Router() {
         // employees
         { path: 'empleados', element: <Employees /> },
         { path: 'empleados/nuevo', element: <AddEmployeesForm /> },
-        { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> },
-        {
-          path: 'reportes',
-          children: [
-            {
-              path: '/',
-              element: <Navigate to="/dashboard/reportes/ventas" replace />
-            },
-            { path: 'ventas', element: <PageFour /> },
-            { path: 'five', element: <PageFive /> },
-            { path: 'six', element: <PageSix /> }
-          ]
-        }
+        { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> }
+        // {
+        //   path: 'reportes',
+        //   children: [
+        //     {
+        //       path: '/',
+        //       element: <Navigate to="/dashboard/reportes/ventas" replace />
+        //     },
+        //     { path: 'ventas', element: <PageFour /> },
+        //     { path: 'five', element: <PageFive /> },
+        //     { path: 'six', element: <PageSix /> }
+        //   ]
+        // }
       ]
     },
 

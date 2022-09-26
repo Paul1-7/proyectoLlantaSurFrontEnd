@@ -18,11 +18,14 @@ const useAxios = (callback = null) => {
         signal: ctrl.signal
       });
       res = callback ? callback(res) : res;
+      console.log('TCL: axiosFetch -> res', res);
 
       setResponse(res.data);
       setError(null);
     } catch (err) {
-      setError(err?.response?.data);
+      const value = err?.response?.data;
+      setError(typeof value === 'string' ? value : err.message);
+      setResponse([]);
     } finally {
       setLoading(false);
     }
@@ -36,7 +39,7 @@ const useAxios = (callback = null) => {
     [controller]
   );
 
-  return [response, error, loading, axiosFetch];
+  return [response, error, loading, axiosFetch, setResponse];
 };
 
 export default useAxios;

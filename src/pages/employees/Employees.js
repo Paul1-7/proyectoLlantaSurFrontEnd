@@ -39,7 +39,7 @@ const buttonsActions = { edit: true, remove: true, detail: false };
 export default function Employees() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
+  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete] = useAxios();
   const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
@@ -70,6 +70,11 @@ export default function Employees() {
     }
     if (!Array.isArray(resDelete) && !errorDelete) {
       message = resDelete?.message;
+      const newData = resGet.map((item) => {
+        if (item.id === resDelete.id) return { ...item, estado: 0 };
+        return item;
+      });
+      setResGet(newData);
     }
 
     if (Array.isArray(resDelete) && errorDelete) {
@@ -135,7 +140,7 @@ export default function Employees() {
           loading={loadingGet}
           numeration
           btnActions={buttonsActions}
-          orderByDefault="nombre"
+          orderByDefault="roles"
           states={TABLE_STATES.active}
           handleDelete={handleOpenDialog}
           setOpenDialog={setOpenDialog}

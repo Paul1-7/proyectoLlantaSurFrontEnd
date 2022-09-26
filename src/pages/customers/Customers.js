@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link, useLocation } from 'react-router-dom';
@@ -11,8 +11,6 @@ import axios from 'apis/apis';
 
 import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
 import { PATH_MODULES } from 'routes/paths';
-import DialogConfirmation from 'components/DialogConfirmation';
-import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
@@ -32,47 +30,20 @@ const customData = ({ data }) => {
   return { data: newData };
 };
 
-const buttonsActions = { edit: true, remove: true, detail: false };
+const buttonsActions = { edit: true, remove: false, detail: false };
 
 export default function Customers() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
-  const [resDelete, errorDelete, loadingDelete, axiosFetchDelete] = useAxios();
   const location = useLocation();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState('');
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDialog = (id) => {
-    setDataDialog(id);
-  };
-
-  const handleDelete = (id) => {
-    axiosFetchDelete({
-      axiosInstance: axios,
-      method: 'DELETE',
-      url: `/api/v1/clientes/${id}`
-    });
-  };
 
   useEffect(() => {
     let message = null;
-    let severity = 'success';
+    const severity = 'success';
 
     if (location.state?.message) {
       message = location.state.message;
-    }
-    if (!Array.isArray(resDelete) && !errorDelete) {
-      message = resDelete?.message;
-    }
-
-    if (Array.isArray(resDelete) && errorDelete) {
-      message = errorDelete;
-      severity = 'error';
     }
 
     if (message) {
@@ -83,9 +54,8 @@ export default function Customers() {
       });
     }
 
-    setOpenDialog(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, resDelete, errorDelete]);
+  }, [location]);
 
   useEffect(() => {
     axiosFetchGet({
@@ -98,15 +68,6 @@ export default function Customers() {
 
   return (
     <Page title="Clientes" sx={{ position: 'relative' }}>
-      <DialogConfirmation
-        open={openDialog}
-        setOpen={setOpenDialog}
-        handleClickClose={handleCloseDialog}
-        handleDelete={handleDelete}
-        loading={loadingDelete}
-        textContent={TEXT_MODAL.clientes}
-        id={dataDialog}
-      />
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
@@ -135,8 +96,6 @@ export default function Customers() {
           btnActions={buttonsActions}
           orderByDefault="nombre"
           states={TABLE_STATES.active}
-          handleDelete={handleOpenDialog}
-          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

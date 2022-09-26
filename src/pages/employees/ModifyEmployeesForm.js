@@ -5,7 +5,6 @@ import Page from 'components/Page';
 import axios from 'apis/apis';
 import useSettings from 'hooks/useSettings';
 import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
-// import { useForm } from 'hooks/useForm';
 import Controls from 'components/forms/Control';
 import Fieldset from 'components/forms/Fieldset';
 import { LoadingButton } from '@material-ui/lab';
@@ -18,6 +17,7 @@ import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
+import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from 'constants/items';
 
 const initialForm = {
   usuario: '',
@@ -30,26 +30,24 @@ const initialForm = {
   direccion: '',
   celular: '',
   ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b'
+  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
+  roles: [ITEMS_SELECTS[1].idRol]
 };
 
-const itemsRadioGroup = [
-  {
-    id: '1',
-    title: 'Habilitado'
-  },
-  {
-    id: '0',
-    title: 'Deshabilitado'
-  }
-];
+const customData = ({ data }) => {
+  const ROLES = ITEMS_SELECTS.map((rol) => rol.idRol);
+
+  const roles = data.roles.map((rol) => rol.idRol).filter((item) => ROLES.includes(item));
+
+  return { data: { ...data, roles } };
+};
 
 export default function ModifyEmployeesForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut] = useAxios();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
+  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
 
   const id = location.pathname.split('/').pop();
 
@@ -61,12 +59,10 @@ export default function ModifyEmployeesForm() {
   });
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-
     axiosFetchPut({
       axiosInstance: axios,
       method: 'PUT',
-      url: `/api/v1/clientes/${id}`,
+      url: `/api/v1/empleados/${id}`,
       requestConfig: {
         ...data
       }
@@ -77,7 +73,7 @@ export default function ModifyEmployeesForm() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: `/api/v1/clientes/${id}`
+      url: `/api/v1/empleados/${id}`
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -89,7 +85,7 @@ export default function ModifyEmployeesForm() {
 
       for (const [key, value] of objectArray) {
         if (keys.includes(key)) {
-          methods.setValue(key, String(value), { shouldValidate: true });
+          methods.setValue(key, key !== 'roles' ? String(value ?? '') : value, { shouldValidate: true });
         }
       }
     }
@@ -119,17 +115,17 @@ export default function ModifyEmployeesForm() {
   }, [errorPut, errorGet]);
 
   return (
-    <Page title="modificar cliente">
+    <Page title="modificar empleado">
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Modificar cliente
+          Modificar empleado
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Modifica un cliente existente
+          Modifica un empleado existente
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -146,7 +142,8 @@ export default function ModifyEmployeesForm() {
                 <Controls.Input name="ciNit" label="CI / NIT" />
                 <Controls.Input name="idSuc" label="Sucursal" disabled />
 
-                <Controls.RadioGroup name="estado" label="Estado" items={itemsRadioGroup} />
+                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <Controls.SelectChip name="roles" label="Roles" items={ITEMS_SELECTS} />
               </Grid>
             </Fieldset>
             <Fieldset title="Datos del usuario">
@@ -182,7 +179,7 @@ export default function ModifyEmployeesForm() {
           </form>
         </FormProvider>
         {!loadingPut && !errorPut && !Array.isArray(resPut) && (
-          <Navigate to={PATH_MODULES.clientes.root} replace state={resPut} />
+          <Navigate to={PATH_MODULES.empleados.root} replace state={resPut} />
         )}
       </Container>
     </Page>
