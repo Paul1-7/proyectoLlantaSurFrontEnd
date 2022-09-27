@@ -25,7 +25,7 @@ const initialForm = {
   estado: '1'
 };
 
-export default function ModifyCategoriesForm() {
+export default function ModifyBrandForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
@@ -35,7 +35,7 @@ export default function ModifyCategoriesForm() {
   const id = location.pathname.split('/').pop();
 
   const methods = useForm({
-    resolver: yupResolver(schema.categories),
+    resolver: yupResolver(schema.brands),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
@@ -45,7 +45,7 @@ export default function ModifyCategoriesForm() {
     axiosFetchPut({
       axiosInstance: axios,
       method: 'PUT',
-      url: `/api/v1/categorias/${id}`,
+      url: `/api/v1/marcas/${id}`,
       requestConfig: {
         ...data
       }
@@ -56,7 +56,7 @@ export default function ModifyCategoriesForm() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: `/api/v1/categorias/${id}`
+      url: `/api/v1/marcas/${id}`
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -99,17 +99,17 @@ export default function ModifyCategoriesForm() {
   }, [errorPut, errorGet]);
 
   return (
-    <Page title="Modificar categoria">
+    <Page title="Modificar marca">
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Modificar categoria
+          Modificar marca
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Modifica una categoria existente
+          Modifica una marca existente
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -117,11 +117,9 @@ export default function ModifyCategoriesForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos de la categoria *">
+            <Fieldset title="Datos de la marca *">
               <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="descripcion" multiline label="Descripcion" />
-
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
               </Grid>
             </Fieldset>
@@ -140,13 +138,13 @@ export default function ModifyCategoriesForm() {
           </form>
         </FormProvider>
         {!loadingPut && !errorPut && !Array.isArray(resPut) && (
-          <Navigate to={PATH_MODULES.categories.root} replace state={resPut} />
+          <Navigate to={PATH_MODULES.brands.root} replace state={resPut} />
         )}
       </Container>
     </Page>
   );
 }
 
-ModifyCategoriesForm.propTypes = {
+ModifyBrandForm.propTypes = {
   title: PropTypes.string
 };

@@ -26,10 +26,18 @@ export const PATH_MODULES = {
     new: `${ROOTS_DASHBOARD}/categorias/nuevo`,
     modify: `${ROOTS_DASHBOARD}/categorias/modificar`
   },
-  productos: path(ROOTS_DASHBOARD, '/productos'),
+  brands: {
+    root: path(ROOTS_DASHBOARD, '/marcas'),
+    new: `${ROOTS_DASHBOARD}/marcas/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/marcas/modificar`
+  },
+  products: {
+    root: path(ROOTS_DASHBOARD, '/productos'),
+    new: `${ROOTS_DASHBOARD}/productos/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/productos/modificar`
+  },
   compras: path(ROOTS_DASHBOARD, '/compras'),
   proveedores: path(ROOTS_DASHBOARD, '/proveedores'),
-  marcas: path(ROOTS_DASHBOARD, '/marcas'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
   ventas: path(ROOTS_DASHBOARD, '/ventas'),
   reseñas: path(ROOTS_DASHBOARD, '/reseñas'),

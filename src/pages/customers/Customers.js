@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { PATH_MODULES } from 'routes/paths';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
+import DialogConfirmation from 'components/DialogConfirmation';
+import TEXT_MODAL from 'utils/modalText';
 
 const customData = ({ data }) => {
   const newData = data.map((item) => {
@@ -30,22 +32,52 @@ const customData = ({ data }) => {
   return { data: newData };
 };
 
-const buttonsActions = { edit: true, remove: false, detail: false };
+const buttonsActions = { edit: true, remove: true, detail: false };
 
 export default function Customers() {
   const { themeStretch } = useSettings();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
+  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
+  const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dataDialog, setDataDialog] = useState('');
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleOpenDialog = (id) => {
+    setDataDialog(id);
+  };
+
+  const handleDelete = (id) => {
+    axiosFetchDelete({
+      axiosInstance: axios,
+      method: 'DELETE',
+      url: `/api/v1/clientes/${id}`
+    });
+  };
 
   useEffect(() => {
     let message = null;
-    const severity = 'success';
+    let severity = 'success';
 
     if (location.state?.message) {
       message = location.state.message;
       navigate(location.pathname, { replace: true });
+    }
+
+    if (!Array.isArray(resDelete) && !errorDelete) {
+      message = resDelete?.message;
+      setResGet(resGet.filter((item) => item.id !== resDelete.id));
+    }
+
+    if (Array.isArray(resDelete) && errorDelete) {
+      message = errorDelete?.message;
+      severity = 'error';
+      setErrorDelete(null);
     }
 
     if (message) {
@@ -54,9 +86,12 @@ export default function Customers() {
         autoHideDuration: 4000,
         variant: severity
       });
+      message = null;
     }
+    setOpenDialog(false);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location, resDelete, errorDelete]);
 
   useEffect(() => {
     axiosFetchGet({
@@ -69,6 +104,15 @@ export default function Customers() {
 
   return (
     <Page title="Clientes" sx={{ position: 'relative' }}>
+      <DialogConfirmation
+        open={openDialog}
+        setOpen={setOpenDialog}
+        handleClickClose={handleCloseDialog}
+        handleDelete={handleDelete}
+        loading={loadingDelete}
+        textContent={TEXT_MODAL.delete}
+        id={dataDialog}
+      />
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
@@ -97,6 +141,8 @@ export default function Customers() {
           btnActions={buttonsActions}
           orderByDefault="nombre"
           states={TABLE_STATES.active}
+          handleDelete={handleOpenDialog}
+          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

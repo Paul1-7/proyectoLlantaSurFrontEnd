@@ -55,7 +55,15 @@ export default function Router() {
         // categories
         { path: 'categorias', element: <Categories /> },
         { path: 'categorias/nuevo', element: <AddCategoriesForm /> },
-        { path: 'categorias/modificar/:id', element: <ModifyCategoriesForm /> }
+        { path: 'categorias/modificar/:id', element: <ModifyCategoriesForm /> },
+        // Brands
+        { path: 'marcas', element: <Brands /> },
+        { path: 'marcas/nuevo', element: <AddBrandForm /> },
+        { path: 'marcas/modificar/:id', element: <ModifyBrandForm /> },
+        // Products
+        { path: 'productos', element: <Products /> },
+        { path: 'productos/nuevo', element: <AddProductsForm /> },
+        { path: 'productos/modificar/:id', element: <ModifyProductsForm /> }
         // {
         //   path: 'reportes',
         //   children: [
@@ -91,17 +99,27 @@ export default function Router() {
 
 // IMPORT COMPONENTS
 
-// Dashboard
+// customers
 const Customers = Loadable(lazy(() => import('../pages/customers/Customers')));
 const AddCustomerForm = Loadable(lazy(() => import('../pages/customers/AddCustomerForm.js')));
 const ModifyCustomerForm = Loadable(lazy(() => import('../pages/customers/ModifyCustomerForm')));
 const App = Loadable(lazy(() => import('../pages/App')));
+// employees
 const Employees = Loadable(lazy(() => import('../pages/employees/Employees')));
 const AddEmployeesForm = Loadable(lazy(() => import('../pages/employees/AddEmployeesForm.js')));
 const ModifyEmployeesForm = Loadable(lazy(() => import('../pages/employees/ModifyEmployeesForm')));
+// categories
 const Categories = Loadable(lazy(() => import('../pages/categories/Categories')));
 const AddCategoriesForm = Loadable(lazy(() => import('../pages/categories/AddCategoriesForm.js')));
 const ModifyCategoriesForm = Loadable(lazy(() => import('../pages/categories/ModifyCategoriesForm')));
+// brands
+const Brands = Loadable(lazy(() => import('../pages/brands/Brands')));
+const AddBrandForm = Loadable(lazy(() => import('../pages/brands/AddBrandForm.js')));
+const ModifyBrandForm = Loadable(lazy(() => import('../pages/brands/ModifyBrandForm')));
+// products
+const Products = Loadable(lazy(() => import('../pages/products/Products')));
+const AddProductsForm = Loadable(lazy(() => import('../pages/products/AddProductsForm.js')));
+const ModifyProductsForm = Loadable(lazy(() => import('../pages/products/ModifyProductsForm')));
 
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Main

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
 import axios from 'apis/apis';
@@ -12,7 +12,7 @@ import { Save } from '@material-ui/icons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
-import { Navigate, useLocation } from 'react-router';
+import { Navigate } from 'react-router';
 import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
@@ -25,27 +25,22 @@ const initialForm = {
   estado: '1'
 };
 
-export default function ModifyCategoriesForm() {
+export default function AddBrandForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
-  const location = useLocation();
-  const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
-
-  const id = location.pathname.split('/').pop();
-
+  const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
-    resolver: yupResolver(schema.categories),
+    resolver: yupResolver(schema.brands),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
 
   const onSubmit = (data) => {
-    axiosFetchPut({
+    axiosFetchPost({
       axiosInstance: axios,
-      method: 'PUT',
-      url: `/api/v1/categorias/${id}`,
+      method: 'POST',
+      url: `/api/v1/marcas`,
       requestConfig: {
         ...data
       }
@@ -53,63 +48,28 @@ export default function ModifyCategoriesForm() {
   };
 
   useEffect(() => {
-    axiosFetchGet({
-      axiosInstance: axios,
-      method: 'GET',
-      url: `/api/v1/categorias/${id}`
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (Array.isArray(resPost) && errorPost) {
+      const severity = 'error';
 
-  useEffect(() => {
-    if (!Array.isArray(resGet) && !errorGet) {
-      const keys = Object.keys(initialForm);
-      const objectArray = Object.entries(resGet);
-
-      for (const [key, value] of objectArray) {
-        if (keys.includes(key)) {
-          methods.setValue(key, String(value), { shouldValidate: true });
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resGet]);
-
-  useEffect(() => {
-    const severity = 'error';
-    let message = null;
-
-    if (Array.isArray(resPut) && errorPut) {
-      message = errorPut?.message;
-      setErrorPut(null);
-    }
-
-    if (Array.isArray(resGet) && errorGet) {
-      message = errorGet?.message;
-    }
-
-    if (message) {
-      enqueueSnackbar(message, {
+      enqueueSnackbar(errorPost?.message, {
         anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
         autoHideDuration: 5000,
         content: (key, message) => <SnackBar id={key} message={message} severity={severity} />
       });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errorPut, errorGet]);
+  }, [errorPost]);
 
   return (
-    <Page title="Modificar categoria">
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+    <Page title="Nueva marca">
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Modificar categoria
+          Nueva marca
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Modifica una categoria existente
+          Agrega una nueva marca
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -117,36 +77,33 @@ export default function ModifyCategoriesForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos de la categoria *">
-              <Grid container wrap="wrap" spacing={1}>
+            <Fieldset title="Datos de la marca *">
+              <Grid container wrap="wrap" spacing={2}>
                 <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="descripcion" multiline label="Descripcion" />
-
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <LoadingButton
-                loading={loadingPut}
+                loading={loadingPost}
                 type="submit"
                 loadingPosition="start"
                 startIcon={<Save />}
                 variant="outlined"
-                disabled={Array.isArray(resGet) && errorGet}
               >
                 Guardar
               </LoadingButton>
             </Box>
           </form>
         </FormProvider>
-        {!loadingPut && !errorPut && !Array.isArray(resPut) && (
-          <Navigate to={PATH_MODULES.categories.root} replace state={resPut} />
+        {!loadingPost && !errorPost && !Array.isArray(resPost) && (
+          <Navigate to={PATH_MODULES.brands.root} replace state={resPost} />
         )}
       </Container>
     </Page>
   );
 }
 
-ModifyCategoriesForm.propTypes = {
+AddBrandForm.propTypes = {
   title: PropTypes.string
 };

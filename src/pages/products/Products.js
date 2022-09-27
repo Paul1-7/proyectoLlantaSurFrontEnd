@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
@@ -16,31 +15,15 @@ import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
-
-const customData = ({ data }) => {
-  const newData = data.map((item) => {
-    const newValue = {
-      id: item.idUsuario,
-      nombre: item.nombre,
-      apellido: item.apellido,
-      'CI/Nit': item.ciNit,
-      celular: item.celular,
-      estado: item.estado,
-      roles: item.roles.map((rol) => rol.nombreRol)
-    };
-
-    return newValue;
-  });
-  return { data: newData };
-};
+import { Inventory2, LibraryAdd } from '@material-ui/icons';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
-export default function Employees() {
+export default function Products() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
+  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios();
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
@@ -58,7 +41,7 @@ export default function Employees() {
     axiosFetchDelete({
       axiosInstance: axios,
       method: 'DELETE',
-      url: `/api/v1/empleados/${id}`
+      url: `/api/v1/productos/${id}`
     });
   };
 
@@ -75,7 +58,7 @@ export default function Employees() {
     }
 
     if (Array.isArray(resDelete) && errorDelete) {
-      message = errorDelete.message;
+      message = errorDelete?.message;
       severity = 'error';
       setErrorDelete(null);
     }
@@ -86,6 +69,7 @@ export default function Employees() {
         autoHideDuration: 4000,
         variant: severity
       });
+      message = null;
     }
     setOpenDialog(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,13 +79,13 @@ export default function Employees() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: '/api/v1/empleados'
+      url: '/api/v1/productos'
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Page title="Empleados" sx={{ position: 'relative' }}>
+    <Page title="Productos" sx={{ position: 'relative' }}>
       <DialogConfirmation
         open={openDialog}
         setOpen={setOpenDialog}
@@ -114,30 +98,30 @@ export default function Employees() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
-          Empleados
+          Productos
         </Typography>
-        <Typography gutterBottom>Administra la informacion de los empleados</Typography>
+        <Typography gutterBottom>Administra la informacion de los productos</Typography>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Button
               size="medium"
               variant="outlined"
               LinkComponent={Link}
-              to={PATH_MODULES.employees.new}
-              startIcon={<PersonAddIcon />}
+              to={PATH_MODULES.products.new}
+              startIcon={<Inventory2 />}
             >
-              Nuevo empleado
+              Nuevo producto
             </Button>
           </Grid>
         </Grid>
         <DataTable
-          columns={COLUMNS.employees}
+          columns={COLUMNS.products}
           rows={resGet}
           error={errorGet}
           loading={loadingGet}
           numeration
           btnActions={buttonsActions}
-          orderByDefault="roles"
+          orderByDefault="nombre"
           states={TABLE_STATES.active}
           handleDelete={handleOpenDialog}
           setOpenDialog={setOpenDialog}
