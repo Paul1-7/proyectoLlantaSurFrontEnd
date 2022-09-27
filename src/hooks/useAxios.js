@@ -23,8 +23,9 @@ const useAxios = (callback = null) => {
       setResponse(res.data);
       setError(null);
     } catch (err) {
-      const value = err?.response?.data;
-      setError(typeof value === 'string' ? value : err.message);
+      const value = err.response?.data;
+      console.log(value);
+      setError(value ?? err);
       setResponse([]);
     } finally {
       setLoading(false);
@@ -39,7 +40,7 @@ const useAxios = (callback = null) => {
     [controller]
   );
 
-  return [response, error, loading, axiosFetch, setResponse];
+  return [response, error, loading, axiosFetch, setResponse, setError];
 };
 
 export default useAxios;

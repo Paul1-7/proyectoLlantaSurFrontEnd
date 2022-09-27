@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
 import useSettings from 'hooks/useSettings';
@@ -34,6 +34,7 @@ const buttonsActions = { edit: true, remove: false, detail: false };
 
 export default function Customers() {
   const { themeStretch } = useSettings();
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
   const location = useLocation();
@@ -44,6 +45,7 @@ export default function Customers() {
 
     if (location.state?.message) {
       message = location.state.message;
+      navigate(location.pathname, { replace: true });
     }
 
     if (message) {
@@ -53,7 +55,6 @@ export default function Customers() {
         variant: severity
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
@@ -80,7 +81,7 @@ export default function Customers() {
               size="medium"
               variant="outlined"
               LinkComponent={Link}
-              to={PATH_MODULES.clientes.nuevo}
+              to={PATH_MODULES.customers.new}
               startIcon={<PersonAddIcon />}
             >
               Nuevo cliente
@@ -88,7 +89,7 @@ export default function Customers() {
           </Grid>
         </Grid>
         <DataTable
-          columns={COLUMNS.clientes}
+          columns={COLUMNS.customers}
           rows={resGet}
           error={errorGet}
           loading={loadingGet}

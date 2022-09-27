@@ -50,6 +50,10 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+function standarizedWord(word) {
+  return word.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z/-])/g, '');
+}
+
 const DataTable = ({
   rows,
   columns,
@@ -127,7 +131,7 @@ const DataTable = ({
             {!loading && rows.length === 0 && error && (
               <TableRow>
                 <TableCell colSpan={columns.length + 2} align="center">
-                  {error}
+                  {error?.message}
                 </TableCell>
               </TableRow>
             )}
@@ -137,7 +141,8 @@ const DataTable = ({
                 <TableRow key={index} hover sx={{ height: 55 }}>
                   {numeration && <TableCell align={align}>{page * rowsPerPage + index + 1}</TableCell>}
                   {columns.map((column, index) => {
-                    const value = row[column];
+                    const columnParsed = standarizedWord(column);
+                    const value = row[columnParsed];
                     if (column.toLowerCase() === 'estado') {
                       return (
                         <TableCell key={index} align={align}>

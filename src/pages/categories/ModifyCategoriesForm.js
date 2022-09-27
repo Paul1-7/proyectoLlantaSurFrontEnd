@@ -17,42 +17,25 @@ import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
-import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from 'constants/items';
+import { ITEMS_RADIO_GROUP } from 'constants/items';
 
 const initialForm = {
-  usuario: '',
-  email: '',
-  password: '',
   nombre: '',
-  foto: '',
-  apellido: '',
-  estado: '1',
-  direccion: '',
-  celular: '',
-  ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
-  roles: [ITEMS_SELECTS[1].idRol]
+  descripcion: '',
+  estado: '1'
 };
 
-const customData = ({ data }) => {
-  const ROLES = ITEMS_SELECTS.map((rol) => rol.idRol);
-
-  const roles = data.roles.map((rol) => rol.idRol).filter((item) => ROLES.includes(item));
-
-  return { data: { ...data, roles } };
-};
-
-export default function ModifyEmployeesForm() {
+export default function ModifyCategoriesForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
-  const [resPut, errorPut, loadingPut, axiosFetchPut] = useAxios();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
+  const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
+  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
 
   const id = location.pathname.split('/').pop();
 
   const methods = useForm({
-    resolver: yupResolver(schema.customer),
+    resolver: yupResolver(schema.categories),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
@@ -62,7 +45,7 @@ export default function ModifyEmployeesForm() {
     axiosFetchPut({
       axiosInstance: axios,
       method: 'PUT',
-      url: `/api/v1/empleados/${id}`,
+      url: `/api/v1/categorias/${id}`,
       requestConfig: {
         ...data
       }
@@ -73,7 +56,7 @@ export default function ModifyEmployeesForm() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: `/api/v1/empleados/${id}`
+      url: `/api/v1/categorias/${id}`
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -85,7 +68,7 @@ export default function ModifyEmployeesForm() {
 
       for (const [key, value] of objectArray) {
         if (keys.includes(key)) {
-          methods.setValue(key, key !== 'roles' ? String(value ?? '') : value, { shouldValidate: true });
+          methods.setValue(key, String(value), { shouldValidate: true });
         }
       }
     }
@@ -98,6 +81,7 @@ export default function ModifyEmployeesForm() {
 
     if (Array.isArray(resPut) && errorPut) {
       message = errorPut?.message;
+      setErrorPut(null);
     }
 
     if (Array.isArray(resGet) && errorGet) {
@@ -115,17 +99,17 @@ export default function ModifyEmployeesForm() {
   }, [errorPut, errorGet]);
 
   return (
-    <Page title="modificar empleado">
+    <Page title="Modificar categoria">
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Modificar empleado
+          Modificar categoria
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Modifica un empleado existente
+          Modifica una categoria existente
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -136,32 +120,9 @@ export default function ModifyEmployeesForm() {
             <Fieldset title="Datos del cliente *">
               <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="apellido" label="Apellido" />
-                <Controls.Input name="direccion" label="Direccion" />
-                <Controls.Input type="number" name="celular" label="Celular" />
-                <Controls.Input name="ciNit" label="CI / NIT" />
-                <Controls.Input name="idSuc" label="Sucursal" disabled />
+                <Controls.Input name="descripcion" multiline label="Descripcion" />
 
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
-                <Controls.SelectChip name="roles" label="Roles" items={ITEMS_SELECTS} />
-              </Grid>
-            </Fieldset>
-            <Fieldset title="Datos del usuario">
-              <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
-                <Controls.Input name="email" type="email" label="Email" />
-                <Controls.Input
-                  type="password"
-                  name="password"
-                  label="Contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
-                <Controls.Input
-                  name="passwordConfirmation"
-                  type="password"
-                  label="Repetir contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -179,13 +140,13 @@ export default function ModifyEmployeesForm() {
           </form>
         </FormProvider>
         {!loadingPut && !errorPut && !Array.isArray(resPut) && (
-          <Navigate to={PATH_MODULES.employees.root} replace state={resPut} />
+          <Navigate to={PATH_MODULES.categories.root} replace state={resPut} />
         )}
       </Container>
     </Page>
   );
 }
 
-ModifyEmployeesForm.propTypes = {
+ModifyCategoriesForm.propTypes = {
   title: PropTypes.string
 };

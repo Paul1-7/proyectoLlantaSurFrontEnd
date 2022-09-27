@@ -12,7 +12,7 @@ import { LoadingButton } from '@material-ui/lab';
 import { Save } from '@material-ui/icons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import schema from 'validations';
+import schema from 'schemas';
 import { Navigate } from 'react-router';
 import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
@@ -130,7 +130,7 @@ export default function AddCustomerForm() {
           </form>
         </FormProvider>
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.clientes.root} replace state={resPost} />
+          <Navigate to={PATH_MODULES.customers.root} replace state={resPost} />
         )}
       </Container>
     </Page>

@@ -14,7 +14,8 @@ const ICONS = {
   ecommerce: getIcon('ic_ecommerce'),
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
-  employee: getIcon('ic_employee')
+  employee: getIcon('ic_employee'),
+  category: getIcon('ic_category')
 };
 
 const sidebarConfig = [
@@ -22,8 +23,9 @@ const sidebarConfig = [
     subheader: 'modulos',
     items: [
       { title: 'App', path: PATH_MODULES.app, icon: ICONS.dashboard },
-      { title: 'Clientes', path: PATH_MODULES.clientes.root, icon: ICONS.user },
-      { title: 'Empleados', path: PATH_MODULES.empleados.root, icon: ICONS.employee }
+      { title: 'Clientes', path: PATH_MODULES.customers.root, icon: ICONS.user },
+      { title: 'Empleados', path: PATH_MODULES.employees.root, icon: ICONS.employee },
+      { title: 'Categorias', path: PATH_MODULES.categories.root, icon: ICONS.category }
     ]
   }
 ];

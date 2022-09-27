@@ -1,9 +1,11 @@
 import customer from './customer';
 import employees from './employees';
+import categories from './categories';
 
 const schema = {
   customer,
-  employees
+  employees,
+  categories
 };
 
 export default schema;

@@ -11,18 +11,22 @@ const ROOTS_DASHBOARD = '/dashboard';
 export const PATH_MODULES = {
   root: ROOTS_DASHBOARD,
   app: path(ROOTS_DASHBOARD, '/app'),
-  clientes: {
+  customers: {
     root: path(ROOTS_DASHBOARD, '/clientes'),
-    nuevo: `${ROOTS_DASHBOARD}/clientes/nuevo`,
-    modificar: `${ROOTS_DASHBOARD}/clientes/modificar`
+    new: `${ROOTS_DASHBOARD}/clientes/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/clientes/modificar`
   },
-  empleados: {
+  employees: {
     root: path(ROOTS_DASHBOARD, '/empleados'),
-    nuevo: `${ROOTS_DASHBOARD}/empleados/nuevo`,
-    modificar: `${ROOTS_DASHBOARD}/empleados/modificar`
+    new: `${ROOTS_DASHBOARD}/empleados/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/empleados/modificar`
+  },
+  categories: {
+    root: path(ROOTS_DASHBOARD, '/categorias'),
+    new: `${ROOTS_DASHBOARD}/categorias/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/categorias/modificar`
   },
   productos: path(ROOTS_DASHBOARD, '/productos'),
-  categorias: path(ROOTS_DASHBOARD, '/categorias'),
   compras: path(ROOTS_DASHBOARD, '/compras'),
   proveedores: path(ROOTS_DASHBOARD, '/proveedores'),
   marcas: path(ROOTS_DASHBOARD, '/marcas'),

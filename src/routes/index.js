@@ -51,7 +51,11 @@ export default function Router() {
         // employees
         { path: 'empleados', element: <Employees /> },
         { path: 'empleados/nuevo', element: <AddEmployeesForm /> },
-        { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> }
+        { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> },
+        // categories
+        { path: 'categorias', element: <Categories /> },
+        { path: 'categorias/nuevo', element: <AddCategoriesForm /> },
+        { path: 'categorias/modificar/:id', element: <ModifyCategoriesForm /> }
         // {
         //   path: 'reportes',
         //   children: [
@@ -95,10 +99,10 @@ const App = Loadable(lazy(() => import('../pages/App')));
 const Employees = Loadable(lazy(() => import('../pages/employees/Employees')));
 const AddEmployeesForm = Loadable(lazy(() => import('../pages/employees/AddEmployeesForm.js')));
 const ModifyEmployeesForm = Loadable(lazy(() => import('../pages/employees/ModifyEmployeesForm')));
+const Categories = Loadable(lazy(() => import('../pages/categories/Categories')));
+const AddCategoriesForm = Loadable(lazy(() => import('../pages/categories/AddCategoriesForm.js')));
+const ModifyCategoriesForm = Loadable(lazy(() => import('../pages/categories/ModifyCategoriesForm')));
 
-const PageFour = Loadable(lazy(() => import('../pages/PageFour')));
-const PageFive = Loadable(lazy(() => import('../pages/PageFive')));
-const PageSix = Loadable(lazy(() => import('../pages/PageSix')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));

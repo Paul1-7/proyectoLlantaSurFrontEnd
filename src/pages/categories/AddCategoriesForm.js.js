@@ -5,7 +5,6 @@ import Page from 'components/Page';
 import axios from 'apis/apis';
 import useSettings from 'hooks/useSettings';
 import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
-// import { useForm } from 'hooks/useForm';
 import Controls from 'components/forms/Control';
 import Fieldset from 'components/forms/Fieldset';
 import { LoadingButton } from '@material-ui/lab';
@@ -18,41 +17,30 @@ import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
-import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from 'constants/items';
+import { ITEMS_RADIO_GROUP } from 'constants/items';
 
 const initialForm = {
-  usuario: '',
-  email: '',
-  password: '',
   nombre: '',
-  foto: '',
-  apellido: '',
-  estado: '1',
-  direccion: '',
-  celular: '',
-  ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
-  roles: [ITEMS_SELECTS[1].idRol]
+  descripcion: '',
+  estado: '1'
 };
 
-export default function AddEmployeesForm() {
+export default function AddCategoriesForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
-    resolver: yupResolver(schema.employees),
+    resolver: yupResolver(schema.categories),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-
     axiosFetchPost({
       axiosInstance: axios,
       method: 'POST',
-      url: `/api/v1/empleados`,
+      url: `/api/v1/categorias`,
       requestConfig: {
         ...data
       }
@@ -74,14 +62,14 @@ export default function AddEmployeesForm() {
   }, [errorPost]);
 
   return (
-    <Page title="nuevo empleado">
+    <Page title="nueva categoria">
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Nuevo empleado
+          Nueva categoria
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Agrega un nuevo empleado
+          Agrega una nueva categoria
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -89,35 +77,12 @@ export default function AddEmployeesForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos del empleado *">
+            <Fieldset title="Datos de la categoria *">
               <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="apellido" label="Apellido" />
-                <Controls.Input name="direccion" label="Direccion" />
-                <Controls.Input type="number" name="celular" label="Celular" />
-                <Controls.Input name="ciNit" label="CI / NIT" />
-                <Controls.Input name="idSuc" label="Sucursal" disabled />
+                <Controls.Input name="descripcion" multiline label="Descripcion" />
 
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
-                <Controls.SelectChip name="roles" label="Roles" items={ITEMS_SELECTS} />
-              </Grid>
-            </Fieldset>
-            <Fieldset title="Datos del usuario">
-              <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
-                <Controls.Input name="email" type="email" label="Email" />
-                <Controls.Input
-                  type="password"
-                  name="password"
-                  label="Contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
-                <Controls.Input
-                  name="passwordConfirmation"
-                  type="password"
-                  label="Repetir contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -134,13 +99,13 @@ export default function AddEmployeesForm() {
           </form>
         </FormProvider>
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.employees.root} replace state={resPost} />
+          <Navigate to={PATH_MODULES.categories.root} replace state={resPost} />
         )}
       </Container>
     </Page>
   );
 }
 
-AddEmployeesForm.propTypes = {
+AddCategoriesForm.propTypes = {
   title: PropTypes.string
 };
