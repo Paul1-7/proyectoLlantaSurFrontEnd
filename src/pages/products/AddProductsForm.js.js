@@ -14,10 +14,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
 import { Navigate } from 'react-router';
 import { PATH_MODULES } from 'routes/paths';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP } from 'constants/items';
+import UploadSingleFile from './UploadSingleFile';
 
 const initialForm = {
   nombre: '',
@@ -28,6 +29,8 @@ const initialForm = {
 export default function AddBrandForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
+  const [file, setFile] = useState(null);
+  console.log('TCL: AddBrandForm -> [files', file);
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
     resolver: yupResolver(schema.brands),
@@ -61,6 +64,16 @@ export default function AddBrandForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorPost]);
 
+  const handleDropSingleFile = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setFile({
+        ...file,
+        preview: URL.createObjectURL(file)
+      });
+    }
+  }, []);
+
   return (
     <Page title="Nueva marca">
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -81,6 +94,8 @@ export default function AddBrandForm() {
               <Grid container wrap="wrap" spacing={2}>
                 <Controls.Input name="nombre" label="Nombre" />
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+
+                <UploadSingleFile file={file} onDrop={handleDropSingleFile} />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
