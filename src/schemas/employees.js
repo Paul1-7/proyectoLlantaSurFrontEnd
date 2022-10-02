@@ -10,7 +10,7 @@ const employees = yup.object().shape({
   apellido: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
   estado: yup.string().required().matches(regex.number, msg.number),
   direccion: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
-  celular: yup.string().required().matches(regex.number, msg.number),
+  celular: yup.string().required().matches(regex.tel, msg.tel),
   ciNit: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
   idSuc: yup.string().required(),
   roles: yup.array().min(1).required()

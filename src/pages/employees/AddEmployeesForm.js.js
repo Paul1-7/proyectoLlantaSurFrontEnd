@@ -47,8 +47,6 @@ export default function AddEmployeesForm() {
   });
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-
     axiosFetchPost({
       axiosInstance: axios,
       method: 'POST',

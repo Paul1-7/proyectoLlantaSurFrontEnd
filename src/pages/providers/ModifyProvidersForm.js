@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
 import axios from 'apis/apis';
@@ -12,75 +12,106 @@ import { Save } from '@material-ui/icons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
-import { Navigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP } from 'constants/items';
-// import UploadSingleFile from 'components/forms/UploadSingleFile';
 
 const initialForm = {
   nombre: '',
-  precioCompra: '',
-  precioVenta: '',
-  fecha: '',
-  idProv: '',
-  idCat: '',
-  idMarca: '',
-  stock: '',
-  sucarsales: '',
-  imagen: null,
+  tel: '',
+  nombreEnc: '',
+  apEnc: '',
   estado: '1'
 };
 
-export default function AddBrandForm() {
+export default function ModifyProvidersForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
-  const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
+  const location = useLocation();
+  const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
+  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
+
+  const id = location.pathname.split('/').pop();
+
   const methods = useForm({
-    resolver: yupResolver(schema.products),
+    resolver: yupResolver(schema.providers),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
-  console.log(methods.formState.errors);
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-    // axiosFetchPost({
-    //   axiosInstance: axios,
-    //   method: 'POST',
-    //   url: `/api/v1/marcas`,
-    //   requestConfig: {
-    //     ...data
-    //   }
-    // });
+    axiosFetchPut({
+      axiosInstance: axios,
+      method: 'PUT',
+      url: `/api/v1/proveedores/${id}`,
+      requestConfig: {
+        ...data
+      }
+    });
   };
 
   useEffect(() => {
-    if (Array.isArray(resPost) && errorPost) {
-      const severity = 'error';
+    axiosFetchGet({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/proveedores/${id}`
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      enqueueSnackbar(errorPost?.message, {
+  useEffect(() => {
+    if (!Array.isArray(resGet) && !errorGet) {
+      const keys = Object.keys(initialForm);
+      const objectArray = Object.entries(resGet);
+
+      for (const [key, value] of objectArray) {
+        if (keys.includes(key)) {
+          methods.setValue(key, String(value), { shouldValidate: true });
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resGet]);
+
+  useEffect(() => {
+    const severity = 'error';
+    let message = null;
+
+    if (Array.isArray(resPut) && errorPut) {
+      message = errorPut?.message;
+      setErrorPut(null);
+    }
+
+    if (Array.isArray(resGet) && errorGet) {
+      message = errorGet?.message;
+    }
+
+    if (message) {
+      enqueueSnackbar(message, {
         anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
         autoHideDuration: 5000,
         content: (key, message) => <SnackBar id={key} message={message} severity={severity} />
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errorPost]);
+  }, [errorPut, errorGet]);
 
   return (
-    <Page title="Nuevo producto">
+    <Page title="Modificar proveedor">
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Nuevo producto
+          Modificar proveedor
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Agrega un nuevo producto
+          Modifica un proveedor existente
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -88,40 +119,37 @@ export default function AddBrandForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos del producto *">
-              <Grid container wrap="wrap" spacing={2}>
+            <Fieldset title="Datos del proveedor *">
+              <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="precioCompra" label="Precio de compra" />
-                <Controls.Input name="precioVenta" label="precio de venta" />
-                <Controls.Input name="fecha" label="Fecha" />
-                <Controls.Input name="idProv" label="Proveedor" />
-                <Controls.Input name="idMarca" label="Marca" />
-                <Controls.Input name="idCat" label="Categoria" />
+                <Controls.Input name="tel" label="Teléfono" />
+                <Controls.Input name="nombreEnc" label="Nombre del encargado" />
+                <Controls.Input name="apEnc" label="apellido del encargado" />
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
-                <Controls.Dropzone name="imagen" />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <LoadingButton
-                loading={loadingPost}
+                loading={loadingPut}
                 type="submit"
                 loadingPosition="start"
                 startIcon={<Save />}
                 variant="outlined"
+                disabled={Array.isArray(resGet) && errorGet}
               >
                 Guardar
               </LoadingButton>
             </Box>
           </form>
         </FormProvider>
-        {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.brands.root} replace state={resPost} />
+        {!loadingPut && !errorPut && !Array.isArray(resPut) && (
+          <Navigate to={PATH_MODULES.providers.root} replace state={resPut} />
         )}
       </Container>
     </Page>
   );
 }
 
-AddBrandForm.propTypes = {
+ModifyProvidersForm.propTypes = {
   title: PropTypes.string
 };

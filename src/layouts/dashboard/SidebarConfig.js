@@ -17,7 +17,8 @@ const ICONS = {
   employee: getIcon('ic_employee'),
   category: getIcon('ic_category'),
   brand: getIcon('ic_book'),
-  product: getIcon('ic_product')
+  product: getIcon('ic_product'),
+  provider: getIcon('ic_provider')
 };
 
 const sidebarConfig = [
@@ -29,7 +30,8 @@ const sidebarConfig = [
       { title: 'Empleados', path: PATH_MODULES.employees.root, icon: ICONS.employee },
       { title: 'Categorias', path: PATH_MODULES.categories.root, icon: ICONS.category },
       { title: 'Marcas', path: PATH_MODULES.brands.root, icon: ICONS.brand },
-      { title: 'Productos', path: PATH_MODULES.products.root, icon: ICONS.product }
+      { title: 'Productos', path: PATH_MODULES.products.root, icon: ICONS.product },
+      { title: 'Proveedores', path: PATH_MODULES.providers.root, icon: ICONS.provider }
     ]
   }
 ];

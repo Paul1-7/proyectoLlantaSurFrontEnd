@@ -18,13 +18,11 @@ const useAxios = (callback = null) => {
         signal: ctrl.signal
       });
       res = callback ? callback(res) : res;
-      console.log('TCL: axiosFetch -> res', res);
 
       setResponse(res.data);
       setError(null);
     } catch (err) {
       const value = err.response?.data;
-      console.log(value);
       setError(value ?? err);
       setResponse([]);
     } finally {

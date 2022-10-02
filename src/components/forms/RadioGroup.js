@@ -10,11 +10,13 @@ import {
   FormHelperText
 } from '@material-ui/core';
 import { Controller } from 'react-hook-form';
+import { objectByString } from 'utils/dataHandler';
 
 const RadioGroupMemo = memo(
-  ({ name, label, methods, items, ...others }) => {
-    const error = methods.formState.errors[name];
+  ({ name, label, isArray, methods, items, ...others }) => {
+    const error = methods.formState.errors;
 
+    const errorValue = isArray ? objectByString(error, name) : error[name];
     return (
       <Grid item xs={12} md={6}>
         <Controller
@@ -34,8 +36,8 @@ const RadioGroupMemo = memo(
                   <FormControlLabel key={item.id} value={item.id} control={<Radio />} label={item.title} />
                 ))}
               </MuiRadioGroup>
-              <FormHelperText error={error} color="error">
-                {error?.message}
+              <FormHelperText error={!!errorValue} color="error">
+                {errorValue?.message}
               </FormHelperText>
             </FormControl>
           )}
@@ -55,5 +57,6 @@ RadioGroupMemo.propTypes = {
   label: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   methods: PropTypes.object,
-  others: PropTypes.object
+  others: PropTypes.object,
+  isArray: PropTypes.bool
 };

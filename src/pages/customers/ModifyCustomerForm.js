@@ -51,8 +51,6 @@ export default function ModifyCustomerForm() {
   });
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-
     axiosFetchPut({
       axiosInstance: axios,
       method: 'PUT',

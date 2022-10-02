@@ -18,44 +18,35 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP } from 'constants/items';
-// import UploadSingleFile from 'components/forms/UploadSingleFile';
 
 const initialForm = {
   nombre: '',
-  precioCompra: '',
-  precioVenta: '',
-  fecha: '',
-  idProv: '',
-  idCat: '',
-  idMarca: '',
-  stock: '',
-  sucarsales: '',
-  imagen: null,
+  tel: '',
+  nombreEnc: '',
+  apEnc: '',
   estado: '1'
 };
 
-export default function AddBrandForm() {
+export default function AddProvidersForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
-    resolver: yupResolver(schema.products),
+    resolver: yupResolver(schema.providers),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
-  console.log(methods.formState.errors);
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-    // axiosFetchPost({
-    //   axiosInstance: axios,
-    //   method: 'POST',
-    //   url: `/api/v1/marcas`,
-    //   requestConfig: {
-    //     ...data
-    //   }
-    // });
+    axiosFetchPost({
+      axiosInstance: axios,
+      method: 'POST',
+      url: `/api/v1/proveedores`,
+      requestConfig: {
+        ...data
+      }
+    });
   };
 
   useEffect(() => {
@@ -73,14 +64,14 @@ export default function AddBrandForm() {
   }, [errorPost]);
 
   return (
-    <Page title="Nuevo producto">
+    <Page title="nuevo proveedor">
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Nuevo producto
+          Nuevo proveedor
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Agrega un nuevo producto
+          Agrega un nuevo proveedor
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -88,17 +79,13 @@ export default function AddBrandForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos del producto *">
-              <Grid container wrap="wrap" spacing={2}>
+            <Fieldset title="Datos del proveedor *">
+              <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="precioCompra" label="Precio de compra" />
-                <Controls.Input name="precioVenta" label="precio de venta" />
-                <Controls.Input name="fecha" label="Fecha" />
-                <Controls.Input name="idProv" label="Proveedor" />
-                <Controls.Input name="idMarca" label="Marca" />
-                <Controls.Input name="idCat" label="Categoria" />
+                <Controls.Input name="tel" label="Teléfono" />
+                <Controls.Input name="nombreEnc" label="Nombre del encargado" />
+                <Controls.Input name="apEnc" label="apellido del encargado" />
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
-                <Controls.Dropzone name="imagen" />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -115,13 +102,9 @@ export default function AddBrandForm() {
           </form>
         </FormProvider>
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.brands.root} replace state={resPost} />
+          <Navigate to={PATH_MODULES.providers.root} replace state={resPost} />
         )}
       </Container>
     </Page>
   );
 }
-
-AddBrandForm.propTypes = {
-  title: PropTypes.string
-};

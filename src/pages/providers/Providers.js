@@ -15,11 +15,11 @@ import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
-import { LibraryAdd } from '@material-ui/icons';
+import { LibraryAdd, LocalShipping } from '@material-ui/icons';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
-export default function Categories() {
+export default function Providers() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function Categories() {
     axiosFetchDelete({
       axiosInstance: axios,
       method: 'DELETE',
-      url: `/api/v1/categorias/${id}`
+      url: `/api/v1/proveedores/${id}`
     });
   };
 
@@ -79,13 +79,13 @@ export default function Categories() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: '/api/v1/categorias'
+      url: '/api/v1/proveedores'
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Page title="Categorias" sx={{ position: 'relative' }}>
+    <Page title="Proveedores" sx={{ position: 'relative' }}>
       <DialogConfirmation
         open={openDialog}
         setOpen={setOpenDialog}
@@ -98,24 +98,24 @@ export default function Categories() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
-          Categorias
+          Proveedores
         </Typography>
-        <Typography gutterBottom>Administra la informacion de las categorias</Typography>
+        <Typography gutterBottom>Administra la informacion de los proveedores</Typography>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Button
               size="medium"
               variant="outlined"
               LinkComponent={Link}
-              to={PATH_MODULES.categories.new}
-              startIcon={<LibraryAdd />}
+              to={PATH_MODULES.providers.new}
+              startIcon={<LocalShipping />}
             >
-              Nueva categoria
+              Nuevo proveedor
             </Button>
           </Grid>
         </Grid>
         <DataTable
-          columns={COLUMNS.categories}
+          columns={COLUMNS.providers}
           rows={resGet}
           error={errorGet}
           loading={loadingGet}

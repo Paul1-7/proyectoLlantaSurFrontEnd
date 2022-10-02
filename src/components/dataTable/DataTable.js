@@ -50,10 +50,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function standarizedWord(word) {
-  return word.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z/-])/g, '');
-}
-
 const DataTable = ({
   rows,
   columns,
@@ -140,10 +136,9 @@ const DataTable = ({
               .map((row, index) => (
                 <TableRow key={index} hover sx={{ height: 55 }}>
                   {numeration && <TableCell align={align}>{page * rowsPerPage + index + 1}</TableCell>}
-                  {columns.map((column, index) => {
-                    const columnParsed = standarizedWord(column);
-                    const value = row[columnParsed];
-                    if (column.toLowerCase() === 'estado') {
+                  {columns.map(({ field }, index) => {
+                    const value = row[field];
+                    if (field === 'estado') {
                       return (
                         <TableCell key={index} align={align}>
                           <Label color={states[value].variant}>{states[value].name}</Label>
@@ -210,7 +205,7 @@ export default DataTable;
 
 DataTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   numeration: PropTypes.bool,
   btnActions: PropTypes.object,
   orderByDefault: PropTypes.string,
@@ -218,6 +213,6 @@ DataTable.propTypes = {
   states: PropTypes.array,
   handleDelete: PropTypes.func,
   setOpenDialog: PropTypes.func,
-  error: PropTypes.string,
+  error: PropTypes.object,
   loading: PropTypes.bool
 };

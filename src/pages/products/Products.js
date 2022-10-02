@@ -19,11 +19,21 @@ import { Inventory2 } from '@material-ui/icons';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
+const customData = ({ data }) => {
+  const newData = data.map((item) => ({
+    ...item,
+    marca: item.marca.nombre,
+    categoria: item.categoria.nombre,
+    proveedor: item.proveedor.nombre
+  }));
+  return { data: newData };
+};
+
 export default function Products() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios();
+  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
   const [openDialog, setOpenDialog] = useState(false);

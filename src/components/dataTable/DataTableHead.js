@@ -12,7 +12,7 @@ const COLUMN_FORMAT = {
 };
 
 const createDataTableColumns = (columns) =>
-  columns.map((column) => ({ ...COLUMN_FORMAT, id: column, label: column.toUpperCase() }));
+  columns.map(({ header }) => ({ ...COLUMN_FORMAT, id: header, label: header.toUpperCase() }));
 
 function DataTableHead({ order, orderBy, onRequestSort, columns, numeration, btnActions }) {
   const createSortHandler = (property) => (event) => {
@@ -70,7 +70,7 @@ DataTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
-  columns: PropTypes.arrayOf(PropTypes.string),
+  columns: PropTypes.arrayOf(PropTypes.object),
   numeration: PropTypes.bool,
   btnActions: PropTypes.object
 };

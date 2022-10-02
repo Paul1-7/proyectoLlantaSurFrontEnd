@@ -1,9 +1,44 @@
 const COLUMNS = {
-  customers: ['nombre', 'apellido', 'CI/Nit', 'celular', 'estado'],
-  employees: ['nombre', 'apellido', 'CI/Nit', 'celular', 'roles', 'estado'],
-  categories: ['nombre', 'descripción', 'estado'],
-  brands: ['nombre', 'estado'],
-  products: ['nombre', 'estado']
+  customers: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'apellido', header: 'apellido' },
+    { field: 'CI/Nit', header: 'CI/Nit' },
+    { field: 'celular', header: 'celular' },
+    { field: 'estado', header: 'estado' }
+  ],
+  employees: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'apellido', header: 'apellido' },
+    { field: 'CI/Nit', header: 'CI/Nit' },
+    { field: 'celular', header: 'celular' },
+    { field: 'estado', header: 'estado' },
+    { field: 'roles', header: 'roles' }
+  ],
+  categories: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'descripcion', header: 'descripción' },
+    { field: 'estado', header: 'estado' }
+  ],
+  brands: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'estado', header: 'estado' }
+  ],
+  products: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'precioVenta', header: 'precio' },
+    { field: 'fecha', header: 'fecha' },
+    { field: 'marca', header: 'marca' },
+    { field: 'categoria', header: 'categoría' },
+    { field: 'stock', header: 'stock' },
+    { field: 'estado', header: 'estado' }
+  ],
+  providers: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'tel', header: 'teléfono' },
+    { field: 'nombreEnc', header: 'nombre del encargado' },
+    { field: 'apEnc', header: 'apellido del encargado' },
+    { field: 'estado', header: 'estado' }
+  ]
 };
 
 const TABLE_STATES = {

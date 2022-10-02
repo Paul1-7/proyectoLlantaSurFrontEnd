@@ -37,15 +37,21 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 UploadSingleFile.propTypes = {
   error: PropTypes.bool,
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  sx: PropTypes.object
+  sx: PropTypes.object,
+  onChange: PropTypes.func,
+  onDrop: PropTypes.func
 };
 
 const message = {
   fileInvalidType: 'El tipo de imagen permitido es .jpg - .png - .svg - .webp '
 };
 
-export default function UploadSingleFile({ error, file, sx, ...other }) {
+export default function UploadSingleFile({ error, file, onChange, onDrop, sx, ...other }) {
+  // const [file, setFile] = useState(null);
+  console.log('TCL: UploadSingleFile -> file', file);
+
   const maxSize = 1000000;
+
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     accept: {
@@ -56,6 +62,7 @@ export default function UploadSingleFile({ error, file, sx, ...other }) {
     },
     validator: sizeValidator,
     maxFiles: 1,
+    onDrop,
     ...other
   });
 
@@ -63,7 +70,7 @@ export default function UploadSingleFile({ error, file, sx, ...other }) {
     if (file.size > maxSize) {
       return {
         code: 'size-too-large',
-        message: `El tamaño tiene que ser menor a 1MB`
+        message: `El tamaño de la imagen tiene que ser menor a 1MB`
       };
     }
     return null;
@@ -81,8 +88,6 @@ export default function UploadSingleFile({ error, file, sx, ...other }) {
       }}
     >
       {fileRejections.map(({ file, errors }) => {
-        console.log('TCL: errors', errors);
-
         const { path, size } = file;
         return (
           <Box key={path} sx={{ my: 1 }}>
@@ -114,7 +119,7 @@ export default function UploadSingleFile({ error, file, sx, ...other }) {
           ...(file && { padding: '12% 0' })
         }}
       >
-        <input {...getInputProps()} />
+        <input {...getInputProps({ onChange })} />
 
         <UploadIllustration sx={{ width: 220, visibility: file ? 'hidden' : 'visible' }} />
 

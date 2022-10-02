@@ -4,9 +4,9 @@ import { alpha, styled } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('span')(({ theme, styleProps }) => {
+const RootStyle = styled('span')(({ theme, styleprops }) => {
   const isLight = theme.palette.mode === 'light';
-  const { color, variant } = styleProps;
+  const { color, variant } = styleprops;
 
   const styleFilled = (color) => ({
     color: theme.palette[color].contrastText,
@@ -65,7 +65,7 @@ const RootStyle = styled('span')(({ theme, styleProps }) => {
 
 export default function Label({ color = 'default', variant = 'ghost', children, ...other }) {
   return (
-    <RootStyle styleProps={{ color, variant }} {...other}>
+    <RootStyle styleprops={{ color, variant }} {...other}>
       {children}
     </RootStyle>
   );

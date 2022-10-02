@@ -63,19 +63,17 @@ export default function Router() {
         // Products
         { path: 'productos', element: <Products /> },
         { path: 'productos/nuevo', element: <AddProductsForm /> },
-        { path: 'productos/modificar/:id', element: <ModifyProductsForm /> }
+        { path: 'productos/modificar/:id', element: <ModifyProductsForm /> },
+        // Providers
+        { path: 'proveedores', element: <Providers /> },
+        { path: 'proveedores/nuevo', element: <AddProvidersForm /> },
+        { path: 'proveedores/modificar/:id', element: <ModifyProvidersForm /> }
         // {
         //   path: 'reportes',
         //   children: [
         //     {
         //       path: '/',
-        //       element: <Navigate to="/dashboard/reportes/ventas" replace />
-        //     },
-        //     { path: 'ventas', element: <PageFour /> },
-        //     { path: 'five', element: <PageFive /> },
-        //     { path: 'six', element: <PageSix /> }
-        //   ]
-        // }
+        //       element: <Navigate to="/dashboard/reportes/ventas"
       ]
     },
 
@@ -120,6 +118,10 @@ const ModifyBrandForm = Loadable(lazy(() => import('../pages/brands/ModifyBrandF
 const Products = Loadable(lazy(() => import('../pages/products/Products')));
 const AddProductsForm = Loadable(lazy(() => import('../pages/products/AddProductsForm.js')));
 const ModifyProductsForm = Loadable(lazy(() => import('../pages/products/ModifyProductsForm')));
+// providers
+const Providers = Loadable(lazy(() => import('../pages/providers/Providers')));
+const AddProvidersForm = Loadable(lazy(() => import('../pages/providers/AddProvidersForm.js')));
+const ModifyProvidersForm = Loadable(lazy(() => import('../pages/providers/ModifyProvidersForm')));
 
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Main
