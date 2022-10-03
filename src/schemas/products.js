@@ -3,8 +3,8 @@ import * as yup from 'yup';
 
 const products = yup.object().shape({
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
-  precioCompra: yup.string().matches(regex.number, msg.number).required(),
-  precioVenta: yup.string().matches(regex.number, msg.number).required(),
+  precioCompra: yup.string().matches(regex.float, msg.float).required(),
+  precioVenta: yup.string().matches(regex.float, msg.float).required(),
   fecha: yup.date().required(),
   idProv: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idCat: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),

@@ -14,7 +14,7 @@ const COLUMN_FORMAT = {
 const createDataTableColumns = (columns) =>
   columns.map(({ header }) => ({ ...COLUMN_FORMAT, id: header, label: header.toUpperCase() }));
 
-function DataTableHead({ order, orderBy, onRequestSort, columns, numeration, btnActions }) {
+function DataTableHead({ order, orderBy, onRequestSort, columns, numeration, btnActions, collapse }) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -24,6 +24,7 @@ function DataTableHead({ order, orderBy, onRequestSort, columns, numeration, btn
   return (
     <TableHead>
       <TableRow>
+        {collapse && <TableCell />}
         {numeration && (
           <TableCell align={COLUMN_FORMAT.align} padding={COLUMN_FORMAT.disablePadding ? 'none' : 'normal'}>
             NUMERACIÓN

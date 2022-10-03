@@ -1,17 +1,21 @@
 import {
   Box,
   CircularProgress,
+  Collapse,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TablePagination,
   TableRow
 } from '@material-ui/core';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import DataTablesButtons from 'components/DataTablesButtons';
 import Label from 'components/Label';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import SearchBar from '../SearchBar';
 import DataTableHead from './DataTableHead';
 
@@ -61,14 +65,19 @@ const DataTable = ({
   handleDelete = null,
   error,
   loading,
-  setOpenDialog
+  setOpenDialog,
+  collapse = null
 }) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(orderByDefault);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const [open, setOpen] = useState({ state: false, index: null });
   const dataFiltered = filterData(searchQuery, rows);
+  // const collapseHeader = rows[0].sucursales ?? {};
+  // console.log('TCL: collapseHeader', collapseHeader);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -108,6 +117,7 @@ const DataTable = ({
             columns={columns}
             numeration={numeration}
             btnActions={btnActions}
+            collapse={collapse}
           />
           <TableBody>
             {loading && (
@@ -134,47 +144,97 @@ const DataTable = ({
             {stableSort(dataFiltered, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
-                <TableRow key={index} hover sx={{ height: 55 }}>
-                  {numeration && <TableCell align={align}>{page * rowsPerPage + index + 1}</TableCell>}
-                  {columns.map(({ field }, index) => {
-                    const value = row[field];
-                    if (field === 'estado') {
-                      return (
-                        <TableCell key={index} align={align}>
-                          <Label color={states[value].variant}>{states[value].name}</Label>
-                        </TableCell>
-                      );
-                    }
-                    if (Array.isArray(value)) {
-                      return (
-                        <TableCell key={index} align={align}>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            {value.map((item, index) => (
-                              <div key={index}>
-                                <Label color="info">{item}</Label>
-                              </div>
-                            ))}
-                          </div>
-                        </TableCell>
-                      );
-                    }
-                    return (
-                      <TableCell key={index} align={align}>
-                        {value}
+                <Fragment key={index}>
+                  <TableRow hover sx={{ height: 55, '& > *': { borderBottom: 'unset' } }}>
+                    {collapse && (
+                      <TableCell>
+                        <IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={() => setOpen({ state: !open.state, index })}
+                        >
+                          {open.state ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                        </IconButton>
                       </TableCell>
-                    );
-                  })}
-                  {btnActions && (
-                    <TableCell key={index} align={align}>
-                      <DataTablesButtons
-                        id={row.id}
-                        buttons={btnActions}
-                        handleDelete={handleDelete}
-                        setOpenDialog={setOpenDialog}
-                      />
-                    </TableCell>
+                    )}
+                    {numeration && <TableCell align={align}>{page * rowsPerPage + index + 1}</TableCell>}
+                    {columns.map(({ field }, index) => {
+                      const value = row[field];
+                      if (field === 'estado') {
+                        return (
+                          <TableCell key={index} align={align}>
+                            <Label color={states[value].variant}>{states[value].name}</Label>
+                          </TableCell>
+                        );
+                      }
+                      if (field === 'fecha') {
+                        return (
+                          <TableCell key={index} align={align}>
+                            {new Date(value).toLocaleDateString()}
+                          </TableCell>
+                        );
+                      }
+                      if (Array.isArray(value)) {
+                        return (
+                          <TableCell key={index} align={align}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                              {value.map((item, index) => (
+                                <div key={index}>
+                                  <Label color="info">{item}</Label>
+                                </div>
+                              ))}
+                            </div>
+                          </TableCell>
+                        );
+                      }
+                      return (
+                        <TableCell key={index} align={align}>
+                          {value}
+                        </TableCell>
+                      );
+                    })}
+                    {btnActions && (
+                      <TableCell align={align}>
+                        <DataTablesButtons
+                          id={row.id}
+                          buttons={btnActions}
+                          handleDelete={handleDelete}
+                          setOpenDialog={setOpenDialog}
+                        />
+                      </TableCell>
+                    )}
+                  </TableRow>
+                  {collapse && (
+                    <TableRow>
+                      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={columns.length + 3}>
+                        <Collapse in={open.state && open.index === index} timeout="auto">
+                          <Box sx={{ margin: 1 }}>
+                            <Table size="small" aria-label={collapse + index}>
+                              <TableHead>
+                                <TableRow>
+                                  {Object.keys(row?.[collapse]?.[0] ?? {}).map((header, index) => (
+                                    <TableCell key={index}>{header}</TableCell>
+                                  ))}
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {row[collapse].map((item, index) => (
+                                  <TableRow key={index}>
+                                    {Object.values(item).map((header, index) => (
+                                      <TableCell key={index} component="th" scope="row">
+                                        {header}
+                                      </TableCell>
+                                    ))}
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
                   )}
-                </TableRow>
+                </Fragment>
               ))}
             {emptyRows > 0 &&
               !loading &&
@@ -214,5 +274,6 @@ DataTable.propTypes = {
   handleDelete: PropTypes.func,
   setOpenDialog: PropTypes.func,
   error: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  collapse: PropTypes.string
 };

@@ -19,13 +19,30 @@ import { Inventory2 } from '@material-ui/icons';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
+const idSuc = '678197a0-69a8-4c24-89a5-bf13873cc08b';
+
+const currentSubsidiaryStock = (idSuc, subsidiaries) => {
+  const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
+
+  return value ? value.Sucursales_Productos.stock : '0';
+};
+
+const stockOtherSubsidiary = (subsidiaries) =>
+  subsidiaries.map((subsidiary) => ({
+    nombre: subsidiary.nombre,
+    stock: subsidiary.Sucursales_Productos.stock
+  }));
+
 const customData = ({ data }) => {
   const newData = data.map((item) => ({
     ...item,
     marca: item.marca.nombre,
     categoria: item.categoria.nombre,
-    proveedor: item.proveedor.nombre
+    proveedor: item.proveedor.nombre,
+    stock: currentSubsidiaryStock(idSuc, item.sucursales),
+    sucursales: stockOtherSubsidiary(item.sucursales)
   }));
+
   return { data: newData };
 };
 
@@ -135,6 +152,7 @@ export default function Products() {
           states={TABLE_STATES.active}
           handleDelete={handleOpenDialog}
           setOpenDialog={setOpenDialog}
+          collapse="sucursales"
         />
       </Container>
     </Page>

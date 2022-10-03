@@ -1,29 +1,60 @@
-import React from 'react';
-import { FormControl, InputLabel, Select as MuiSelect, MenuItem, FormHelperText } from '@material-ui/core';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
-export default function Select({ name, label, value, error = null, onChange, options }) {
-  return (
-    <FormControl variant="outlined" {...(error && { error: true })}>
-      <InputLabel>{label}</InputLabel>
-      <MuiSelect label={label} name={name} value={value} onChange={onChange}>
-        <MenuItem value="-1">Ninguno</MenuItem>
-        {options.map((item) => (
-          <MenuItem key={item.id} value={item.id}>
-            {item.title}
-          </MenuItem>
-        ))}
-      </MuiSelect>
-      {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl>
-  );
-}
+import { Controller } from 'react-hook-form';
 
-Select.propTypes = {
+import { objectByString } from 'utils/dataHandler';
+import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
+
+const SelectMemo = memo(
+  ({ name, label, isArray, methods, items, ...others }) => {
+    const error = methods.formState.errors;
+    const errorValue = isArray ? objectByString(error, name) : error[name];
+
+    return (
+      <Grid item xs={12} md={6}>
+        <Controller
+          name={name}
+          control={methods.control}
+          render={({ field }) => (
+            <FormControl fullWidth size="small">
+              <InputLabel id={name}>{label}</InputLabel>
+              <Select
+                labelId={name}
+                {...field}
+                label={label}
+                onChange={(value) => field.onChange(value)}
+                value={field.value}
+                {...others}
+              >
+                <MenuItem value="0">Ninguno</MenuItem>
+                {items.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText error={!!errorValue} color="error">
+                {errorValue?.message ?? ' '}
+              </FormHelperText>
+            </FormControl>
+          )}
+        />
+      </Grid>
+    );
+  },
+  (prevProps, nextProps) =>
+    prevProps.methods.formState.isDirty === nextProps.methods.formState.isDirty &&
+    prevProps.methods.formState.errors !== nextProps.methods.formState.errors
+);
+
+export default SelectMemo;
+
+SelectMemo.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  methods: PropTypes.object,
+  others: PropTypes.object,
+  isArray: PropTypes.bool
 };

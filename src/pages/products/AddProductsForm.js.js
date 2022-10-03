@@ -18,18 +18,18 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP } from 'constants/items';
-// import UploadSingleFile from 'components/forms/UploadSingleFile';
+import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
   nombre: '',
   precioCompra: '',
   precioVenta: '',
-  fecha: '',
-  idProv: '',
-  idCat: '',
-  idMarca: '',
-  stock: '',
-  sucarsales: '',
+  fecha: new Date().toLocaleDateString(),
+  idProv: '0',
+  idCat: '0',
+  idMarca: '0',
+  stock: [],
+  sucarsales: [],
   imagen: null,
   estado: '1'
 };
@@ -38,6 +38,30 @@ export default function AddBrandForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
+  const [resGetBrand, , , axiosFetchGetBrand] = useAxios();
+  const [resGetCategory, , , axiosFetchGetCategory] = useAxios();
+  const [resGetProvider, , , axiosFetchGetProvider] = useAxios();
+
+  useEffect(() => {
+    axiosFetchGetBrand({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/marcas`
+    });
+    axiosFetchGetCategory({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/categorias`
+    });
+    axiosFetchGetProvider({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/proveedores`
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const methods = useForm({
     resolver: yupResolver(schema.products),
     defaultValues: initialForm,
@@ -51,7 +75,7 @@ export default function AddBrandForm() {
     // axiosFetchPost({
     //   axiosInstance: axios,
     //   method: 'POST',
-    //   url: `/api/v1/marcas`,
+    //   url: `/api/v1/productos`,
     //   requestConfig: {
     //     ...data
     //   }
@@ -93,11 +117,12 @@ export default function AddBrandForm() {
                 <Controls.Input name="nombre" label="Nombre" />
                 <Controls.Input name="precioCompra" label="Precio de compra" />
                 <Controls.Input name="precioVenta" label="precio de venta" />
-                <Controls.Input name="fecha" label="Fecha" />
-                <Controls.Input name="idProv" label="Proveedor" />
-                <Controls.Input name="idMarca" label="Marca" />
-                <Controls.Input name="idCat" label="Categoria" />
+                <Controls.DatePicker name="fecha" label="Fecha" />
+                <Controls.Select name="idProv" label="Proveedor" items={resGetProvider} />
+                <Controls.Select name="idMarca" label="Marca" items={resGetBrand} />
+                <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <ProductsSubsidiaries />
                 <Controls.Dropzone name="imagen" />
               </Grid>
             </Fieldset>
@@ -115,7 +140,7 @@ export default function AddBrandForm() {
           </form>
         </FormProvider>
         {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.brands.root} replace state={resPost} />
+          <Navigate to={PATH_MODULES.products.root} replace state={resPost} />
         )}
       </Container>
     </Page>
