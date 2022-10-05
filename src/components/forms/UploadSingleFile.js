@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
-import { Paper, Box, Typography } from '@material-ui/core';
+import { Paper, Box, Typography, FormHelperText } from '@material-ui/core';
 // utils
 import { fData } from '../../utils/formatNumber';
 //
@@ -47,9 +47,6 @@ const message = {
 };
 
 export default function UploadSingleFile({ error, file, onChange, onDrop, sx, ...other }) {
-  // const [file, setFile] = useState(null);
-  console.log('TCL: UploadSingleFile -> file', file);
-
   const maxSize = 1000000;
 
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
@@ -125,15 +122,15 @@ export default function UploadSingleFile({ error, file, onChange, onDrop, sx, ..
 
         <Box sx={{ p: 3, ml: { md: 2 }, visibility: file ? 'hidden' : 'visible' }}>
           <Typography gutterBottom variant="h5">
-            Drop or Select file
+            Suelta o selecciona una foto
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Drop files here or click&nbsp;
+            Suelta las fotos aqui o haz click en&nbsp;
             <Typography variant="body2" component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
-              browse
+              navegar
             </Typography>
-            &nbsp;thorough your machine
+            &nbsp;mediante tu maquina
           </Typography>
         </Box>
 
@@ -155,6 +152,9 @@ export default function UploadSingleFile({ error, file, onChange, onDrop, sx, ..
       </DropZoneStyle>
 
       {fileRejections.length > 0 && <ShowRejectionItems />}
+      <FormHelperText required variant="outlined">
+        si no se sube una imagen se asignara la imagen por defecto al producto
+      </FormHelperText>
     </Box>
   );
 }

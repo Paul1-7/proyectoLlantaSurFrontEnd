@@ -1,10 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useCallback } from 'react';
-import { FormHelperText } from '@material-ui/core';
 import UploadSingleFile from '../UploadSingleFile';
 
-const Dropzone = ({ name }) => {
+const Dropzone = ({ name, sx }) => {
   const { setValue, watch, control } = useFormContext();
 
   const handleDropSingleFile = useCallback(
@@ -15,7 +14,7 @@ const Dropzone = ({ name }) => {
         setValue(
           name,
           {
-            ...file,
+            file,
             preview: URL.createObjectURL(file)
           },
           { shouldValidate: true }
@@ -29,11 +28,8 @@ const Dropzone = ({ name }) => {
       <Controller
         name={name}
         control={control}
-        render={() => <UploadSingleFile file={watch(name)} onDrop={handleDropSingleFile} />}
+        render={() => <UploadSingleFile file={watch(name)} onDrop={handleDropSingleFile} sx={sx} />}
       />
-      <FormHelperText required variant="outlined">
-        si no se sube una imagen se asignara la imagen por defecto al producto
-      </FormHelperText>
     </>
   );
 };
@@ -41,5 +37,6 @@ const Dropzone = ({ name }) => {
 export default Dropzone;
 
 Dropzone.propTypes = {
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  sx: PropTypes.object
 };

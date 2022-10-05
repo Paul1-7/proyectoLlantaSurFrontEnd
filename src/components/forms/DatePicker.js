@@ -28,7 +28,7 @@ const DatePickerMemo = memo(
           control={methods.control}
           render={({ field }) => (
             <>
-              <LocalizationProvider locale={es} dateAdapter={AdapterDateFns}>
+              <LocalizationProvider adapterLocale={es} dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={label}
                   {...field}

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
@@ -18,62 +18,119 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP } from 'constants/items';
+import { isString } from 'lodash';
+import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
   nombre: '',
-  descripcion: '',
+  precioCompra: '',
+  precioVenta: '',
+  fecha: new Date().toLocaleDateString(),
+  idProv: '0',
+  idCat: '0',
+  idMarca: '0',
+  sucursales: [],
+  imagen: null,
   estado: '1'
 };
 
-export default function ModifyBrandForm() {
+const stockOtherSubsidiary = (subsidiaries) =>
+  subsidiaries.map((subsidiary) => ({
+    idSuc: subsidiary.id,
+    nombre: subsidiary.nombre,
+    stock: subsidiary.Sucursales_Productos.stock
+  }));
+
+const customData = ({ data }) => ({
+  data: {
+    ...data,
+    sucursales: stockOtherSubsidiary(data.sucursales)
+  }
+});
+
+export default function ModifyProductForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
+  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
+  const [resGetBrand, , , axiosFetchGetBrand] = useAxios();
+  const [resGetCategory, , , axiosFetchGetCategory] = useAxios();
+  const [resGetProvider, , , axiosFetchGetProvider] = useAxios();
 
   const id = location.pathname.split('/').pop();
 
   const methods = useForm({
-    resolver: yupResolver(schema.brands),
+    resolver: yupResolver(schema.products),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
 
   const onSubmit = (data) => {
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(data)) {
+      if (key === 'imagen' && value?.file instanceof File) {
+        formData.append('imagen', value?.file, value?.file?.name);
+      }
+      if (key === 'sucursales') {
+        formData.append(key, JSON.stringify(value));
+      } else formData.append(key, value);
+    }
+
     axiosFetchPut({
       axiosInstance: axios,
       method: 'PUT',
-      url: `/api/v1/marcas/${id}`,
-      requestConfig: {
-        ...data
-      }
+      url: `/api/v1/productos/${id}`,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      requestConfig: formData
     });
   };
 
   useEffect(() => {
+    axiosFetchGetBrand({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/marcas`
+    });
+    axiosFetchGetCategory({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/categorias`
+    });
+    axiosFetchGetProvider({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/proveedores`
+    });
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: `/api/v1/marcas/${id}`
+      url: `/api/v1/productos/${id}`
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!Array.isArray(resGet) && !errorGet) {
+    if (
+      !Array.isArray(resGet) &&
+      !errorGet &&
+      resGetBrand.length > 0 &&
+      resGetProvider.length > 0 &&
+      resGetCategory.length > 0
+    ) {
       const keys = Object.keys(initialForm);
       const objectArray = Object.entries(resGet);
 
       for (const [key, value] of objectArray) {
-        if (keys.includes(key)) {
+        if (keys.includes(key) && key !== 'sucursales') {
           methods.setValue(key, String(value), { shouldValidate: true });
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resGet]);
+  }, [resGet, resGetBrand, resGetProvider, resGetCategory]);
 
   useEffect(() => {
     const severity = 'error';
@@ -99,17 +156,17 @@ export default function ModifyBrandForm() {
   }, [errorPut, errorGet]);
 
   return (
-    <Page title="Modificar marca">
+    <Page title="Modificar producto">
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Modificar marca
+          Modificar producto
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Modifica una marca existente
+          Modifica una producto existente
         </Typography>
         <FormProvider {...methods}>
           <form
@@ -117,10 +174,18 @@ export default function ModifyBrandForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
             autoComplete="off"
           >
-            <Fieldset title="Datos de la marca *">
+            <Fieldset title="Datos del producto *">
               <Grid container wrap="wrap" spacing={1}>
                 <Controls.Input name="nombre" label="Nombre" />
+                <Controls.Input name="precioCompra" label="Precio de compra" />
+                <Controls.Input name="precioVenta" label="precio de venta" />
+                <Controls.DatePicker name="fecha" label="Fecha" />
+                <Controls.Select name="idProv" label="Proveedor" items={resGetProvider} />
+                <Controls.Select name="idMarca" label="Marca" items={resGetBrand} />
+                <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                {!Array.isArray(resGet) && <ProductsSubsidiaries data={resGet.sucursales} />}
+                <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -138,13 +203,13 @@ export default function ModifyBrandForm() {
           </form>
         </FormProvider>
         {!loadingPut && !errorPut && !Array.isArray(resPut) && (
-          <Navigate to={PATH_MODULES.brands.root} replace state={resPut} />
+          <Navigate to={PATH_MODULES.products.root} replace state={resPut} />
         )}
       </Container>
     </Page>
   );
 }
 
-ModifyBrandForm.propTypes = {
+ModifyProductForm.propTypes = {
   title: PropTypes.string
 };

@@ -15,7 +15,7 @@ import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
-import { LibraryAdd, LocalShipping } from '@material-ui/icons';
+import { LocalShipping } from '@material-ui/icons';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 

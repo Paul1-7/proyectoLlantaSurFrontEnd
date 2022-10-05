@@ -19,7 +19,7 @@ setLocale({
 const regex = {
   alphaNumeric: /^$|^[a-zA-Z\d\-_./\séáíóúñ+]+$/,
   password: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}|)/,
-  number: /^[0-9-+]+$/,
+  number: /^[0-9]+$/,
   tel: /^[0-9+\s]+$/,
   float: /^[0-9.-]+$/
 };

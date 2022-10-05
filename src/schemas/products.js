@@ -1,6 +1,12 @@
 import { msg, regex } from 'constants/validations';
 import * as yup from 'yup';
 
+const subsidiaries = yup.object().shape({
+  idSuc: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  stock: yup.string().matches(regex.number, msg.number).required()
+});
+
 const products = yup.object().shape({
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   precioCompra: yup.string().matches(regex.float, msg.float).required(),
@@ -9,11 +15,8 @@ const products = yup.object().shape({
   idProv: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idCat: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idMarca: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
-  stock: yup.string().matches(regex.number, msg.number),
-  sucarsales: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  imagen: yup
-    .mixed()
-    .test('name', 'la imagen es requerida', (value) => value !== undefined && value && value?.name !== ''),
+  sucursales: yup.array().of(subsidiaries).required(),
+  imagen: yup.mixed(),
   estado: yup.string().required().matches(regex.number, msg.number)
 });
 

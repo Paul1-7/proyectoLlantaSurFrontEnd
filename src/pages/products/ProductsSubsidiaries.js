@@ -1,5 +1,6 @@
-import { Container, FormControl, Grid, IconButton, Typography } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { useEffect, Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import axios from 'apis/apis';
 import useAxios from 'hooks/useAxios';
@@ -11,8 +12,8 @@ const initialForm = {
   stock: ''
 };
 
-const ProductsSubsidiaries = () => {
-  const [resGet, , loadingGet, axiosFetchGet] = useAxios();
+const ProductsSubsidiaries = ({ data }) => {
+  const [resGet, , , axiosFetchGet] = useAxios();
   const { control } = useFormContext();
   const { fields, append } = useFieldArray({
     control,
@@ -30,25 +31,35 @@ const ProductsSubsidiaries = () => {
 
   useEffect(() => {
     if (resGet.length > 0) {
-      resGet.forEach(({ nombre, id: idSuc }) => append({ ...initialForm, nombre, idSuc }));
+      const idSucArray = data.map(({ idSuc }) => idSuc);
+      resGet.forEach(({ nombre, id: idSuc }, index) => {
+        console.log(data[index]);
+        if (idSucArray.includes(idSuc)) append(data[index]);
+        else append({ ...initialForm, nombre, idSuc });
+      });
     }
-  }, [resGet, append]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resGet]);
 
   return (
-    <Container>
-      <Typography variant="subtitle1" gutterBottom>
-        Sucursales
-      </Typography>
+    <>
+      <Grid item sx={{ width: '100%' }}>
+        <Typography variant="subtitle1" gutterBottom>
+          Sucursales
+        </Typography>
+      </Grid>
 
       {fields.map((item, index) => (
-        <FormControl disabled={loadingGet} sx={{ width: '100%' }}>
-          <Grid container spacing={2}>
-            <Controls.Input label="Sucursal" disabled name={`sucursales.${index}.nombre`} isArray />
-            <Controls.Input label="Stock" name={`sucursales.${index}.stock`} isArray />
-          </Grid>
-        </FormControl>
+        <Fragment key={item.id}>
+          <Controls.Input label="Sucursal" disabled name={`sucursales.${index}.nombre`} isArray />
+          <Controls.Input label="Stock" name={`sucursales.${index}.stock`} isArray />
+        </Fragment>
       ))}
-    </Container>
+    </>
   );
 };
 export default ProductsSubsidiaries;
+
+ProductsSubsidiaries.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired
+};

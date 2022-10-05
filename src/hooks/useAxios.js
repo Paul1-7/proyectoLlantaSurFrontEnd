@@ -7,16 +7,23 @@ const useAxios = (callback = null) => {
   const [controller, setController] = useState();
 
   const axiosFetch = async (configObj) => {
-    const { axiosInstance, method, url, requestConfig = {} } = configObj;
+    const { axiosInstance, method, headers = {}, url, requestConfig = {} } = configObj;
     let res;
     try {
       setLoading(true);
       const ctrl = new AbortController();
       setController(ctrl);
-      res = await axiosInstance[method.toLowerCase()](url, {
-        ...requestConfig,
-        signal: ctrl.signal
-      });
+
+      res = await axiosInstance[method.toLowerCase()](
+        url,
+        requestConfig,
+        {
+          ...requestConfig,
+
+          signal: ctrl.signal
+        },
+        headers
+      );
       res = callback ? callback(res) : res;
 
       setResponse(res.data);

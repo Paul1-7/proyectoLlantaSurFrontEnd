@@ -28,8 +28,7 @@ const initialForm = {
   idProv: '0',
   idCat: '0',
   idMarca: '0',
-  stock: [],
-  sucarsales: [],
+  sucursales: [],
   imagen: null,
   estado: '1'
 };
@@ -68,18 +67,26 @@ export default function AddBrandForm() {
     mode: 'all',
     criteriaMode: 'all'
   });
-  console.log(methods.formState.errors);
 
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
-    // axiosFetchPost({
-    //   axiosInstance: axios,
-    //   method: 'POST',
-    //   url: `/api/v1/productos`,
-    //   requestConfig: {
-    //     ...data
-    //   }
-    // });
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(data)) {
+      if (key === 'imagen' && value !== null) {
+        formData.append('imagen', value?.file, value?.file?.name);
+      }
+      if (key === 'sucursales') {
+        formData.append(key, JSON.stringify(value));
+      } else formData.append(key, value);
+    }
+
+    axiosFetchPost({
+      axiosInstance: axios,
+      method: 'POST',
+      url: `/api/v1/productos`,
+      headers: { 'Content-Type': 'multipart/form-data' },
+      requestConfig: formData
+    });
   };
 
   useEffect(() => {
@@ -123,7 +130,7 @@ export default function AddBrandForm() {
                 <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
                 <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
                 <ProductsSubsidiaries />
-                <Controls.Dropzone name="imagen" />
+                <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

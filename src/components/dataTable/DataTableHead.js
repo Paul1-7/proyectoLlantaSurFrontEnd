@@ -73,5 +73,6 @@ DataTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object),
   numeration: PropTypes.bool,
-  btnActions: PropTypes.object
+  btnActions: PropTypes.object,
+  collapse: PropTypes.string
 };
