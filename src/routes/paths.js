@@ -41,6 +41,12 @@ export const PATH_MODULES = {
     new: `${ROOTS_DASHBOARD}/proveedores/nuevo`,
     modify: `${ROOTS_DASHBOARD}/proveedores/modificar`
   },
+  subsidiaries: {
+    root: path(ROOTS_DASHBOARD, '/sucursales'),
+    new: `${ROOTS_DASHBOARD}/sucursales/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/sucursales/modificar`
+  },
+
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
   ventas: path(ROOTS_DASHBOARD, '/ventas'),

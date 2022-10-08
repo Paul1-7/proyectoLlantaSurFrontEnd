@@ -38,6 +38,12 @@ const COLUMNS = {
     { field: 'nombreEnc', header: 'nombre del encargado' },
     { field: 'apEnc', header: 'apellido del encargado' },
     { field: 'estado', header: 'estado' }
+  ],
+  subsidiaries: [
+    { field: 'nombre', header: 'nombre' },
+    { field: 'direccion', header: 'dirección' },
+    { field: 'tel', header: 'teléfono' },
+    { field: 'estado', header: 'estado' }
   ]
 };
 
