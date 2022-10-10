@@ -71,7 +71,11 @@ export default function Router() {
         // Subsidiaries
         { path: 'sucursales', element: <Subsidiaries /> },
         { path: 'sucursales/nuevo', element: <AddSubsidiariesForm /> },
-        { path: 'sucursales/modificar/:id', element: <ModifySubsidiariesForm /> }
+        { path: 'sucursales/modificar/:id', element: <ModifySubsidiariesForm /> },
+        // Sells
+        { path: 'ventas', element: <Sells /> },
+        { path: 'ventas/nuevo', element: <AddSellsForm /> },
+        { path: 'ventas/modificar/:id', element: <ModifySellsForm /> }
         // {
         //   path: 'reportes',
         //   children: [
@@ -130,6 +134,10 @@ const ModifyProvidersForm = Loadable(lazy(() => import('../pages/providers/Modif
 const Subsidiaries = Loadable(lazy(() => import('../pages/subsidiaries/Subsidiaries')));
 const AddSubsidiariesForm = Loadable(lazy(() => import('../pages/subsidiaries/AddSubsidiariesForm.js')));
 const ModifySubsidiariesForm = Loadable(lazy(() => import('../pages/subsidiaries/ModifySubsidiariesForm')));
+// sells
+const Sells = Loadable(lazy(() => import('../pages/sells/Sells')));
+const AddSellsForm = Loadable(lazy(() => import('../pages/sells/AddSellsForm')));
+const ModifySellsForm = Loadable(lazy(() => import('../pages/sells/ModifySellsForm')));
 
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Main

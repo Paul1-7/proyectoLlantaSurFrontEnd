@@ -4,6 +4,7 @@ import SelectChip from './container/SelectChipContainer';
 import Dropzone from './container/Dropzone';
 import Select from './container/SelectContainer';
 import DatePicker from './container/DatePickerContainer';
+import Autocomplete from './container/AutocompleteContainer';
 
 const Controls = {
   Input,
@@ -11,7 +12,8 @@ const Controls = {
   SelectChip,
   Dropzone,
   Select,
-  DatePicker
+  DatePicker,
+  Autocomplete
 };
 
 export default Controls;

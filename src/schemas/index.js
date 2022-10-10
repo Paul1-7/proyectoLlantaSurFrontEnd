@@ -5,6 +5,7 @@ import brands from './brands';
 import products from './products';
 import providers from './providers';
 import subsidiaries from './subsidiaries';
+import sells from './sells';
 
 const schema = {
   customer,
@@ -13,7 +14,8 @@ const schema = {
   brands,
   products,
   providers,
-  subsidiaries
+  subsidiaries,
+  sells
 };
 
 export default schema;

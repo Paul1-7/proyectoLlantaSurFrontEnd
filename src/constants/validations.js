@@ -11,6 +11,10 @@ setLocale({
     min: ({ min }) => ({ key: `El valor debe de ser mayor a ${min}`, values: { min } }),
     max: ({ max }) => ({ key: `El valor debe de ser menor a ${max}`, values: { max } })
   },
+  date: 'la fecha es incorrecta',
+  string: {
+    uuid: 'no es correcto el id'
+  },
   array: {
     min: 'el campo deberia tener al menos un item'
   }

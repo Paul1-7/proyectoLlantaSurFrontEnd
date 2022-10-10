@@ -44,6 +44,14 @@ const COLUMNS = {
     { field: 'direccion', header: 'dirección' },
     { field: 'tel', header: 'teléfono' },
     { field: 'estado', header: 'estado' }
+  ],
+  sells: [
+    { field: 'codVenta', header: 'código de venta' },
+    { field: 'fecha', header: 'fecha' },
+    { field: 'tipoVenta', header: 'tipo de venta' },
+    { field: 'metodoPago', header: 'método de pago' },
+    { field: 'cliente', header: 'cliente' },
+    { field: 'vendedor', header: 'vendedor' }
   ]
 };
 
@@ -51,6 +59,15 @@ const TABLE_STATES = {
   active: [
     { name: 'Deshabilitado', variant: 'error' },
     { name: 'Habilitado', variant: 'success' }
+  ],
+  salesTypes: [
+    { name: 'Directa', variant: 'info' },
+    { name: 'Electrónica', variant: 'info' }
+  ],
+  paymentMethods: [
+    { name: 'En efectivo', variant: 'info' },
+    { name: 'Paypal', variant: 'info' },
+    { name: 'Stripe', variant: 'info' }
   ]
 };
 

@@ -19,7 +19,8 @@ const ICONS = {
   brand: getIcon('ic_book'),
   product: getIcon('ic_product'),
   provider: getIcon('ic_provider'),
-  subsidiary: getIcon('ic_subsidiary')
+  subsidiary: getIcon('ic_subsidiary'),
+  sell: getIcon('ic_sell')
 };
 
 const sidebarConfig = [
@@ -33,7 +34,8 @@ const sidebarConfig = [
       { title: 'Marcas', path: PATH_MODULES.brands.root, icon: ICONS.brand },
       { title: 'Productos', path: PATH_MODULES.products.root, icon: ICONS.product },
       { title: 'Proveedores', path: PATH_MODULES.providers.root, icon: ICONS.provider },
-      { title: 'Sucursales', path: PATH_MODULES.subsidiaries.root, icon: ICONS.subsidiary }
+      { title: 'Sucursales', path: PATH_MODULES.subsidiaries.root, icon: ICONS.subsidiary },
+      { title: 'Ventas', path: PATH_MODULES.sells.root, icon: ICONS.sell }
     ]
   }
 ];

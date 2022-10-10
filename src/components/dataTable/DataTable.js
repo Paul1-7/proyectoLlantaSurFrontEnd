@@ -14,6 +14,7 @@ import {
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import DataTablesButtons from 'components/DataTablesButtons';
 import Label from 'components/Label';
+import { TABLE_STATES } from 'constants/dataTable';
 import PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import SearchBar from '../SearchBar';
@@ -171,6 +172,22 @@ const DataTable = ({
                         return (
                           <TableCell key={index} align={align}>
                             {new Date(value).toLocaleDateString()}
+                          </TableCell>
+                        );
+                      }
+                      if (field === 'metodoPago') {
+                        const label = TABLE_STATES.paymentMethods[value];
+                        return (
+                          <TableCell key={index} align={align}>
+                            <Label color={label.variant}>{label.name}</Label>
+                          </TableCell>
+                        );
+                      }
+                      if (field === 'tipoVenta') {
+                        const label = TABLE_STATES.salesTypes[value];
+                        return (
+                          <TableCell key={index} align={align}>
+                            <Label color={label.variant}>{label.name}</Label>
                           </TableCell>
                         );
                       }

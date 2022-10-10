@@ -10,7 +10,7 @@ const DataTablesButtons = ({ id, buttons, handleDelete, setOpenDialog }) => {
   const location = window.location.pathname;
 
   return (
-    <>
+    <div style={{ display: 'flex' }}>
       {detail && (
         <MIconButton aria-label="detalle" LinkComponent={Link} to={`${location}/detalle/${id}`}>
           <Article color="primary" />
@@ -33,7 +33,7 @@ const DataTablesButtons = ({ id, buttons, handleDelete, setOpenDialog }) => {
           <Delete color="error" />
         </MIconButton>
       )}
-    </>
+    </div>
   );
 };
 
