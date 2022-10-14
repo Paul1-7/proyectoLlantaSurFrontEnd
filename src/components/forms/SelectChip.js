@@ -34,42 +34,40 @@ const SelectChipMemo = memo(
     };
 
     return (
-      <Grid item xs={12} md={6}>
-        <Controller
-          name={name}
-          control={methods.control}
-          render={({ field }) => (
-            <FormControl sx={{ width: '100%' }} size="small">
-              <InputLabel id={name}>{label}</InputLabel>
-              <Select
-                multiple
-                labelId={name}
-                {...field}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                onChange={(event) => handleChange(event, field)}
-                value={field.value}
-                {...others}
-                renderValue={(selected) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={itemName(value)} />
-                    ))}
-                  </Box>
-                )}
-              >
-                {items.map((item) => (
-                  <MenuItem key={item.idRol} value={item.idRol}>
-                    {item.nombreRol}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText error={!!errorValue} color="error">
-                {errorValue?.message}
-              </FormHelperText>
-            </FormControl>
-          )}
-        />
-      </Grid>
+      <Controller
+        name={name}
+        control={methods.control}
+        render={({ field }) => (
+          <FormControl sx={{ width: '100%' }} size="small">
+            <InputLabel id={name}>{label}</InputLabel>
+            <Select
+              multiple
+              labelId={name}
+              {...field}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              onChange={(event) => handleChange(event, field)}
+              value={field.value}
+              {...others}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={itemName(value)} />
+                  ))}
+                </Box>
+              )}
+            >
+              {items.map((item) => (
+                <MenuItem key={item.idRol} value={item.idRol}>
+                  {item.nombreRol}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText error={!!errorValue} color="error">
+              {errorValue?.message}
+            </FormHelperText>
+          </FormControl>
+        )}
+      />
     );
   },
   (prevProps, nextProps) =>

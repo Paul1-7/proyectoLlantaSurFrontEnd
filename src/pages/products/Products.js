@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
+import { COLUMNS } from 'constants/dataTable';
 import useSettings from 'hooks/useSettings';
 import Page from 'components/Page';
 import useAxios from 'hooks/useAxios';
@@ -16,10 +16,11 @@ import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
 import { Inventory2 } from '@material-ui/icons';
+import DataTableContext from 'contexts/DataTableContext';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
-const idSuc = '678197a0-69a8-4c24-89a5-bf13873cc08b';
+const idSucBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
 
 const currentSubsidiaryStock = (idSuc, subsidiaries) => {
   const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
@@ -39,7 +40,7 @@ const customData = ({ data }) => {
     marca: item.marca.nombre,
     categoria: item.categoria.nombre,
     proveedor: item.proveedor.nombre,
-    stock: currentSubsidiaryStock(idSuc, item.sucursales),
+    stock: currentSubsidiaryStock(idSucBorrar, item.sucursales),
     sucursales: stockOtherSubsidiary(item.sucursales)
   }));
 
@@ -49,20 +50,11 @@ const customData = ({ data }) => {
 export default function Products() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
+  const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState('');
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDialog = (id) => {
-    setDataDialog(id);
-  };
 
   const handleDelete = (id) => {
     axiosFetchDelete({
@@ -149,9 +141,6 @@ export default function Products() {
           numeration
           btnActions={buttonsActions}
           orderByDefault="nombre"
-          states={TABLE_STATES.active}
-          handleDelete={handleOpenDialog}
-          setOpenDialog={setOpenDialog}
           collapse="sucursales"
         />
       </Container>

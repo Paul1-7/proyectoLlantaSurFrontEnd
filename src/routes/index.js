@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
+import { DataTableProvider } from 'contexts/DataTableContext';
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
@@ -45,35 +46,91 @@ export default function Router() {
         { path: '', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <App /> },
         // customers
-        { path: 'clientes', element: <Customers /> },
+        {
+          path: 'clientes',
+          element: (
+            <DataTableProvider>
+              <Customers />
+            </DataTableProvider>
+          )
+        },
         { path: 'clientes/nuevo', element: <AddCustomerForm /> },
         { path: 'clientes/modificar/:id', element: <ModifyCustomerForm /> },
         // employees
-        { path: 'empleados', element: <Employees /> },
+        {
+          path: 'empleados',
+          element: (
+            <DataTableProvider>
+              <Employees />
+            </DataTableProvider>
+          )
+        },
         { path: 'empleados/nuevo', element: <AddEmployeesForm /> },
         { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> },
         // categories
-        { path: 'categorias', element: <Categories /> },
+        {
+          path: 'categorias',
+          element: (
+            <DataTableProvider>
+              <Categories />
+            </DataTableProvider>
+          )
+        },
         { path: 'categorias/nuevo', element: <AddCategoriesForm /> },
         { path: 'categorias/modificar/:id', element: <ModifyCategoriesForm /> },
         // Brands
-        { path: 'marcas', element: <Brands /> },
+        {
+          path: 'marcas',
+          element: (
+            <DataTableProvider>
+              <Brands />
+            </DataTableProvider>
+          )
+        },
         { path: 'marcas/nuevo', element: <AddBrandForm /> },
         { path: 'marcas/modificar/:id', element: <ModifyBrandForm /> },
         // Products
-        { path: 'productos', element: <Products /> },
+        {
+          path: 'productos',
+          element: (
+            <DataTableProvider>
+              <Products />
+            </DataTableProvider>
+          )
+        },
         { path: 'productos/nuevo', element: <AddProductsForm /> },
         { path: 'productos/modificar/:id', element: <ModifyProductsForm /> },
         // Providers
-        { path: 'proveedores', element: <Providers /> },
+        {
+          path: 'proveedores',
+          element: (
+            <DataTableProvider>
+              <Providers />
+            </DataTableProvider>
+          )
+        },
         { path: 'proveedores/nuevo', element: <AddProvidersForm /> },
         { path: 'proveedores/modificar/:id', element: <ModifyProvidersForm /> },
         // Subsidiaries
-        { path: 'sucursales', element: <Subsidiaries /> },
+        {
+          path: 'sucursales',
+          element: (
+            <DataTableProvider>
+              <Subsidiaries />
+            </DataTableProvider>
+          )
+        },
         { path: 'sucursales/nuevo', element: <AddSubsidiariesForm /> },
         { path: 'sucursales/modificar/:id', element: <ModifySubsidiariesForm /> },
         // Sells
-        { path: 'ventas', element: <Sells /> },
+        {
+          path: 'ventas',
+          element: (
+            <DataTableProvider>
+              <Sells />
+            </DataTableProvider>
+          )
+        },
         { path: 'ventas/nuevo', element: <AddSellsForm /> },
         { path: 'ventas/modificar/:id', element: <ModifySellsForm /> }
         // {

@@ -17,21 +17,55 @@ import { PATH_MODULES } from 'routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
+import DataTable from 'components/dataTable/DataTable';
+import { COLUMNS } from 'constants/dataTable';
+import { DataTableProvider } from 'contexts/DataTableContext';
+import ProductsSell from './ProductSell';
+
+const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
 
 const initialForm = {
   fecha: new Date().toLocaleDateString(),
-  idCliente: '0',
+  idCliente: { nombre: 'Ninguno', id: '0' },
   idVendedor: 'a5f92b6e-77c0-4522-89d5-53ec8c141e76',
-  idSucursal: '678197a0-69a8-4c24-89a5-bf13873cc08b',
-  productos: [{ idProd: '', cantidad: '0' }]
+  idSucursal: idSucursalBorrar,
+  productos: []
 };
+
+const customDataCustomers = ({ data = [] }) => {
+  const newData = data.map(({ nombre, apellido, ciNit, idUsuario }) => ({
+    nombre: `${nombre} ${apellido}  -  ci: ${ciNit}`,
+    idCliente: idUsuario
+  }));
+
+  return { data: newData };
+};
+
+const currentSubsidiaryStock = (idSuc, subsidiaries) => {
+  const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
+
+  return value ? value.Sucursales_Productos.stock : '0';
+};
+
+const customDataProducts = ({ data }) => {
+  const newData = data.map(({ id, nombre, precioVenta, sucursales }) => ({
+    id,
+    nombre,
+    precio: precioVenta,
+    cantidad: currentSubsidiaryStock(idSucursalBorrar, sucursales)
+  }));
+
+  return { data: newData };
+};
+
+const btnActions = { add: true };
 
 export default function AddSellsForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios();
-  const [resGetCustomers, , loadingGetCustomers, axiosFetchGetCustomers] = useAxios();
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(customDataProducts);
+  const [resGetCustomers, , loadingGetCustomers, axiosFetchGetCustomers] = useAxios(customDataCustomers);
 
   useEffect(() => {
     axiosFetchGetCustomers({
@@ -44,16 +78,22 @@ export default function AddSellsForm() {
       method: 'GET',
       url: `/api/v1/productos`
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const methods = useForm({
-    resolver: yupResolver(schema.sells({ initialCustomer: '0' })),
+    resolver: yupResolver(schema.sells),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all'
   });
-  console.log(methods.watch());
+
+  console.log(methods.formState.errors);
+
   const onSubmit = (data) => {
+    console.log('TCL: onSubmit -> data', data);
+    data.fecha = new Date();
+    data.idCliente = data.idCliente.idCliente;
     axiosFetchPost({
       axiosInstance: axios,
       method: 'POST',
@@ -80,50 +120,86 @@ export default function AddSellsForm() {
 
   return (
     <Page title="Nueva venta">
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <BreadcrumbsCustom />
-        <Typography variant="h3" component="h1">
-          Nueva venta
-        </Typography>
-        <Typography gutterBottom variant="subtitle1">
-          Registra una nueva venta
-        </Typography>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
-            autoComplete="off"
-          >
-            <Fieldset title="Datos de la venta *">
-              <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="fecha" label="Fecha" disabled />
-                <Controls.Input name="idVendedor" label="Vendedor" disabled />
-                <Controls.Input name="idSucursal" label="Sucursal" disabled />
-                <Controls.Autocomplete
-                  name="idCliente"
-                  label="Cliente"
-                  items={resGetCustomers}
-                  loading={loadingGetCustomers}
-                />
-              </Grid>
-            </Fieldset>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <LoadingButton
-                loading={loadingPost}
-                type="submit"
-                loadingPosition="start"
-                startIcon={<Save />}
-                variant="outlined"
-              >
-                Guardar
-              </LoadingButton>
-            </Box>
-          </form>
-        </FormProvider>
-        {!loadingPost && !errorPost && !Array.isArray(resPost) && (
-          <Navigate to={PATH_MODULES.subsidiaries.root} replace state={resPost} />
-        )}
-      </Container>
+      <DataTableProvider>
+        <Container
+          maxWidth={themeStretch ? false : 'xl'}
+          sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+        >
+          <BreadcrumbsCustom />
+          <Typography variant="h3" component="h1">
+            Nueva venta
+          </Typography>
+          <Typography gutterBottom variant="subtitle1">
+            Registra una nueva venta
+          </Typography>
+          <FormProvider {...methods}>
+            <form
+              onSubmit={methods.handleSubmit(onSubmit)}
+              style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}
+              autoComplete="off"
+            >
+              <Fieldset title="Datos de la venta *">
+                <Grid container wrap="wrap" spacing={1}>
+                  <Grid item xs={12} md={6}>
+                    <Controls.Input name="fecha" label="Fecha" disabled />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Controls.Input name="idVendedor" label="Vendedor" disabled />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Controls.Input name="idSucursal" label="Sucursal" disabled />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Controls.Autocomplete
+                      name="idCliente"
+                      label="Cliente"
+                      items={resGetCustomers}
+                      loading={loadingGetCustomers}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2} direction={{ md: 'row-reverse' }}>
+                  <Grid item xs={12} md={6} sx={{ marginTop: '16px' }}>
+                    <div>
+                      <Box>
+                        <Typography variant="subtitle1" gutterBottom align="center">
+                          Lista de productos
+                        </Typography>
+                      </Box>
+                      <DataTable
+                        columns={COLUMNS.productsToSell}
+                        rows={resGetProducts}
+                        loading={loadingGetProducts}
+                        error={errorGetProducts}
+                        btnActions={btnActions}
+                        size="small"
+                        width="100%"
+                      />
+                    </div>
+                  </Grid>
+                  <Grid item xs={12} md={6} sx={{ marginTop: '16px' }}>
+                    <ProductsSell />
+                  </Grid>
+                </Grid>
+              </Fieldset>
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <LoadingButton
+                  loading={loadingPost}
+                  type="submit"
+                  loadingPosition="start"
+                  startIcon={<Save />}
+                  variant="outlined"
+                >
+                  Guardar
+                </LoadingButton>
+              </Box>
+            </form>
+          </FormProvider>
+          {!loadingPost && !errorPost && !Array.isArray(resPost) && (
+            <Navigate to={PATH_MODULES.sells.root} replace state={resPost} />
+          )}
+        </Container>
+      </DataTableProvider>
     </Page>
   );
 }

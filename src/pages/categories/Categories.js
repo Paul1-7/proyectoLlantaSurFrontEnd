@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
+import { COLUMNS } from 'constants/dataTable';
 import useSettings from 'hooks/useSettings';
 import Page from 'components/Page';
 import useAxios from 'hooks/useAxios';
@@ -16,26 +16,18 @@ import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
 import { LibraryAdd } from '@material-ui/icons';
+import DataTableContext from 'contexts/DataTableContext';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
 export default function Categories() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
+  const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios();
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState('');
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDialog = (id) => {
-    setDataDialog(id);
-  };
 
   const handleDelete = (id) => {
     axiosFetchDelete({
@@ -122,9 +114,6 @@ export default function Categories() {
           numeration
           btnActions={buttonsActions}
           orderByDefault="nombre"
-          states={TABLE_STATES.active}
-          handleDelete={handleOpenDialog}
-          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

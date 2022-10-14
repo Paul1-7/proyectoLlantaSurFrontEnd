@@ -18,31 +18,29 @@ const RadioGroupMemo = memo(
 
     const errorValue = isArray ? objectByString(error, name) : error[name];
     return (
-      <Grid item xs={12} md={6}>
-        <Controller
-          name={name}
-          control={methods.control}
-          render={({ field }) => (
-            <FormControl>
-              <FormLabel id={name}>{label}</FormLabel>
-              <MuiRadioGroup
-                aria-labelledby={name}
-                {...field}
-                onChange={(event, value) => field.onChange(value)}
-                value={field.value}
-                {...others}
-              >
-                {items.map((item) => (
-                  <FormControlLabel key={item.id} value={item.id} control={<Radio />} label={item.title} />
-                ))}
-              </MuiRadioGroup>
-              <FormHelperText error={!!errorValue} color="error">
-                {errorValue?.message}
-              </FormHelperText>
-            </FormControl>
-          )}
-        />
-      </Grid>
+      <Controller
+        name={name}
+        control={methods.control}
+        render={({ field }) => (
+          <FormControl>
+            <FormLabel id={name}>{label}</FormLabel>
+            <MuiRadioGroup
+              aria-labelledby={name}
+              {...field}
+              onChange={(event, value) => field.onChange(value)}
+              value={field.value}
+              {...others}
+            >
+              {items.map((item) => (
+                <FormControlLabel key={item.id} value={item.id} control={<Radio />} label={item.title} />
+              ))}
+            </MuiRadioGroup>
+            <FormHelperText error={!!errorValue} color="error">
+              {errorValue?.message}
+            </FormHelperText>
+          </FormControl>
+        )}
+      />
     );
   },
   (prevProps, nextProps) =>

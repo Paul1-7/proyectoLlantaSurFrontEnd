@@ -9,57 +9,61 @@ import { Autocomplete, CircularProgress, FormHelperText, Grid, TextField } from 
 const AutocompleteMemo = memo(
   ({ name, label, isArray, loading, methods, items, ...others }) => {
     const [inputValue, setInputValue] = useState('');
+    const defaultValue = { nombre: 'Ninguno', id: '0' };
+    items = [...items, ...[defaultValue]];
+
     const error = methods.formState.errors;
     const errorValue = isArray ? objectByString(error, name) : error[name];
 
     return (
-      <Grid item xs={12} md={6}>
-        <Controller
-          name={name}
-          control={methods.control}
-          render={({ field }) => (
-            <>
-              <Autocomplete
-                value={field.value}
-                size="small"
-                fullWidth
-                inputValue={inputValue}
-                loading={loading}
-                onChange={(event, newValue) => {
-                  field.onChange(newValue);
-                }}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
-                }}
-                id="controllable-states-demo"
-                options={items}
-                isOptionEqualToValue={(option, value) => option.nombre === value.nombre}
-                getOptionLabel={(option) => option?.nombre ?? ''}
-                {...others}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={label}
-                    fullWidth
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      )
-                    }}
-                  />
-                )}
-              />
-              <FormHelperText error={!!errorValue} color="error">
-                {errorValue?.message ?? ' '}
-              </FormHelperText>
-            </>
-          )}
-        />
-      </Grid>
+      <Controller
+        name={name}
+        control={methods.control}
+        render={({ field }) => (
+          <>
+            <Autocomplete
+              value={field.value}
+              size="small"
+              autoComplete
+              fullWidth
+              inputValue={inputValue}
+              loading={loading}
+              loadingText="Cargando..."
+              onChange={(event, newValue) => {
+                if (newValue === null) methods.setValue(name, defaultValue, { shouldValidate: true });
+                else field.onChange(newValue);
+              }}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+              }}
+              id="controllable-states-demo"
+              options={items}
+              isOptionEqualToValue={(option, value) => option.nombre === value.nombre}
+              getOptionLabel={(option) => option?.nombre ?? ''}
+              {...others}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={label}
+                  fullWidth
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                      </>
+                    )
+                  }}
+                />
+              )}
+            />
+            <FormHelperText error={!!errorValue} color="error">
+              {errorValue?.message ?? ' '}
+            </FormHelperText>
+          </>
+        )}
+      />
     );
   },
   (prevProps, nextProps) =>

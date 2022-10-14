@@ -135,33 +135,56 @@ export default function ModifyEmployeesForm() {
           >
             <Fieldset title="Datos del cliente *">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="apellido" label="Apellido" />
-                <Controls.Input name="direccion" label="Direccion" />
-                <Controls.Input type="number" name="celular" label="Celular" />
-                <Controls.Input name="ciNit" label="CI / NIT" />
-                <Controls.Input name="idSuc" label="Sucursal" disabled />
-
-                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
-                <Controls.SelectChip name="roles" label="Roles" items={ITEMS_SELECTS} />
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="nombre" label="Nombre" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="apellido" label="Apellido" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="direccion" label="Direccion" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input type="number" name="celular" label="Celular" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="ciNit" label="CI / NIT" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="idSuc" label="Sucursal" disabled />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.SelectChip name="roles" label="Roles" items={ITEMS_SELECTS} />
+                </Grid>
               </Grid>
             </Fieldset>
             <Fieldset title="Datos del usuario">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
-                <Controls.Input name="email" type="email" label="Email" />
-                <Controls.Input
-                  type="password"
-                  name="password"
-                  label="Contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
-                <Controls.Input
-                  name="passwordConfirmation"
-                  type="password"
-                  label="Repetir contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="email" type="email" label="Email" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input
+                    type="password"
+                    name="password"
+                    label="Contraseña"
+                    placeholder="Por defecto es el numero de celular"
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input
+                    name="passwordConfirmation"
+                    type="password"
+                    label="Repetir contraseña"
+                    placeholder="Por defecto es el numero de celular"
+                  />
+                </Grid>
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

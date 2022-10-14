@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
+import { COLUMNS } from 'constants/dataTable';
 import useSettings from 'hooks/useSettings';
 import Page from 'components/Page';
 import useAxios from 'hooks/useAxios';
@@ -16,6 +16,7 @@ import TEXT_MODAL from 'utils/modalText';
 import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
+import DataTableContext from 'contexts/DataTableContext';
 
 const customData = ({ data }) => {
   const newData = data.map((item) => {
@@ -40,19 +41,10 @@ export default function Employees() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState('');
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDialog = (id) => {
-    setDataDialog(id);
-  };
 
   const handleDelete = (id) => {
     axiosFetchDelete({
@@ -138,9 +130,6 @@ export default function Employees() {
           numeration
           btnActions={buttonsActions}
           orderByDefault="roles"
-          states={TABLE_STATES.active}
-          handleDelete={handleOpenDialog}
-          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

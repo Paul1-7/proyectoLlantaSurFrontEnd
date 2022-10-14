@@ -13,11 +13,11 @@ import {
 } from '@material-ui/core';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
 import DataTablesButtons from 'components/DataTablesButtons';
-import Label from 'components/Label';
-import { TABLE_STATES } from 'constants/dataTable';
+
 import PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import SearchBar from '../SearchBar';
+import DataTableCell from './DataTableCell';
 import DataTableHead from './DataTableHead';
 
 const filterData = (query, data) => {
@@ -62,12 +62,11 @@ const DataTable = ({
   btnActions = null,
   orderByDefault = '',
   align = 'center',
-  states = [],
-  handleDelete = null,
   error,
   loading,
-  setOpenDialog,
-  collapse = null
+  collapse = null,
+  width = null,
+  ...others
 }) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(orderByDefault);
@@ -77,8 +76,6 @@ const DataTable = ({
 
   const [open, setOpen] = useState({ state: false, index: null });
   const dataFiltered = filterData(searchQuery, rows);
-  // const collapseHeader = rows[0].sucursales ?? {};
-  // console.log('TCL: collapseHeader', collapseHeader);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -109,7 +106,7 @@ const DataTable = ({
     <Box sx={{ marginTop: '16px' }}>
       <SearchBar setSearchQuery={setSearchQuery} sx={{ marginBottom: '16px' }} />
       <TableContainer>
-        <Table sx={{ minWidth: 750, height: 350 }} aria-labelledby="tableTitle">
+        <Table sx={{ minWidth: width || 750, height: 350 }} aria-labelledby="tableTitle" {...others}>
           <DataTableHead
             order={order}
             orderBy={orderBy}
@@ -159,65 +156,33 @@ const DataTable = ({
                       </TableCell>
                     )}
                     {numeration && <TableCell align={align}>{page * rowsPerPage + index + 1}</TableCell>}
-                    {columns.map(({ field }, index) => {
+                    {columns.map(({ field, type }, index) => {
                       const value = row[field];
-                      if (field === 'estado') {
-                        return (
-                          <TableCell key={index} align={align}>
-                            <Label color={states[value].variant}>{states[value].name}</Label>
-                          </TableCell>
-                        );
+
+                      if (type === 'states') {
+                        return <DataTableCell.States key={index} align={align} value={Number(value)} />;
                       }
-                      if (field === 'fecha') {
-                        return (
-                          <TableCell key={index} align={align}>
-                            {new Date(value).toLocaleDateString()}
-                          </TableCell>
-                        );
+                      if (type === 'date') {
+                        return <DataTableCell.Date key={index} align={align} value={value} />;
                       }
-                      if (field === 'metodoPago') {
-                        const label = TABLE_STATES.paymentMethods[value];
-                        return (
-                          <TableCell key={index} align={align}>
-                            <Label color={label.variant}>{label.name}</Label>
-                          </TableCell>
-                        );
+                      if (type === 'paymentsMethods') {
+                        return <DataTableCell.PaymentsMethods key={index} align={align} value={value} />;
                       }
-                      if (field === 'tipoVenta') {
-                        const label = TABLE_STATES.salesTypes[value];
-                        return (
-                          <TableCell key={index} align={align}>
-                            <Label color={label.variant}>{label.name}</Label>
-                          </TableCell>
-                        );
+                      if (type === 'salesTypes') {
+                        return <DataTableCell.SalesTypes key={index} align={align} value={value} />;
                       }
-                      if (Array.isArray(value)) {
-                        return (
-                          <TableCell key={index} align={align}>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                              {value.map((item, index) => (
-                                <div key={index}>
-                                  <Label color="info">{item}</Label>
-                                </div>
-                              ))}
-                            </div>
-                          </TableCell>
-                        );
+                      if (type === 'currency') {
+                        return <DataTableCell.Currency key={index} align={align} value={value} />;
                       }
-                      return (
-                        <TableCell key={index} align={align}>
-                          {value}
-                        </TableCell>
-                      );
+                      if (type === 'array') {
+                        return <DataTableCell.ValuesArray key={index} align={align} value={value} />;
+                      }
+                      return <DataTableCell.Default key={index} align={align} value={value} />;
                     })}
+
                     {btnActions && (
                       <TableCell align={align}>
-                        <DataTablesButtons
-                          id={row.id}
-                          buttons={btnActions}
-                          handleDelete={handleDelete}
-                          setOpenDialog={setOpenDialog}
-                        />
+                        <DataTablesButtons data={row} index={index} buttons={btnActions} />
                       </TableCell>
                     )}
                   </TableRow>
@@ -287,10 +252,10 @@ DataTable.propTypes = {
   btnActions: PropTypes.object,
   orderByDefault: PropTypes.string,
   align: PropTypes.string,
-  states: PropTypes.array,
   handleDelete: PropTypes.func,
   setOpenDialog: PropTypes.func,
   error: PropTypes.object,
   loading: PropTypes.bool,
-  collapse: PropTypes.string
+  collapse: PropTypes.string,
+  width: PropTypes.string
 };

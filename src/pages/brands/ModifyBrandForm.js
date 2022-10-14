@@ -119,8 +119,12 @@ export default function ModifyBrandForm() {
           >
             <Fieldset title="Datos de la marca *">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="nombre" label="Nombre" />
-                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="nombre" label="Nombre" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

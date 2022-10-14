@@ -120,11 +120,18 @@ export default function ModifySubsidiariesForm() {
           >
             <Fieldset title="Datos de la sucursal *">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="direccion" multiline label="Dirección" />
-                <Controls.Input name="tel" multiline label="Télefono" />
-
-                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="nombre" label="Nombre" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="direccion" multiline label="Dirección" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="tel" multiline label="Télefono" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

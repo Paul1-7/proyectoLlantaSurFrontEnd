@@ -22,29 +22,27 @@ const DatePickerMemo = memo(
     const errorValue = isArray ? objectByString(error, name) : error[name];
 
     return (
-      <Grid item xs={12} md={6}>
-        <Controller
-          name={name}
-          control={methods.control}
-          render={({ field }) => (
-            <>
-              <LocalizationProvider adapterLocale={es} dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label={label}
-                  {...field}
-                  {...others}
-                  fullWidth
-                  onChange={(value) => field.onChange(convertValueToEvent('fechaInicio', value))}
-                  renderInput={(params) => <TextField fullWidth size="small" {...params} />}
-                />
-              </LocalizationProvider>
-              <FormHelperText error={errorValue} color="error">
-                {errorValue?.message ?? ' '}
-              </FormHelperText>
-            </>
-          )}
-        />
-      </Grid>
+      <Controller
+        name={name}
+        control={methods.control}
+        render={({ field }) => (
+          <>
+            <LocalizationProvider adapterLocale={es} dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label={label}
+                {...field}
+                {...others}
+                fullWidth
+                onChange={(value) => field.onChange(convertValueToEvent('fechaInicio', value))}
+                renderInput={(params) => <TextField fullWidth size="small" {...params} />}
+              />
+            </LocalizationProvider>
+            <FormHelperText error={errorValue} color="error">
+              {errorValue?.message ?? ' '}
+            </FormHelperText>
+          </>
+        )}
+      />
     );
   },
   (prevProps, nextProps) =>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ import DataTable from 'components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
 import { Sell } from '@material-ui/icons';
+import DataTableContext from 'contexts/DataTableContext';
 
 const buttonsActions = { edit: true, remove: true, detail: true };
 
@@ -28,20 +29,11 @@ const customData = ({ data }) => {
 export default function Sales() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
+  const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState('');
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDialog = (id) => {
-    setDataDialog(id);
-  };
 
   const handleDelete = (id) => {
     axiosFetchDelete({
@@ -128,8 +120,6 @@ export default function Sales() {
           numeration
           btnActions={buttonsActions}
           orderByDefault="codVenta"
-          handleDelete={handleOpenDialog}
-          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

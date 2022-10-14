@@ -1,4 +1,4 @@
-import PropTypes, { instanceOf } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
@@ -18,7 +18,6 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP } from 'constants/items';
-import { isString } from 'lodash';
 import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
@@ -176,14 +175,30 @@ export default function ModifyProductForm() {
           >
             <Fieldset title="Datos del producto *">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="precioCompra" label="Precio de compra" />
-                <Controls.Input name="precioVenta" label="precio de venta" />
-                <Controls.DatePicker name="fecha" label="Fecha" />
-                <Controls.Select name="idProv" label="Proveedor" items={resGetProvider} />
-                <Controls.Select name="idMarca" label="Marca" items={resGetBrand} />
-                <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
-                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="nombre" label="Nombre" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="precioCompra" label="Precio de compra" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="precioVenta" label="precio de venta" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.DatePicker name="fecha" label="Fecha" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Select name="idProv" label="Proveedor" items={resGetProvider} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Select name="idMarca" label="Marca" items={resGetBrand} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
                 {!Array.isArray(resGet) && <ProductsSubsidiaries data={resGet.sucursales} />}
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>

@@ -10,26 +10,24 @@ const InputMemo = memo(
 
     const errorValue = isArray ? objectByString(error, name) : error[name];
     return (
-      <Grid item xs={12} md={6}>
-        <Controller
-          name={name}
-          control={methods.control}
-          render={({ field }) => (
-            <TextField
-              variant="outlined"
-              label={label}
-              value={field.value}
-              onChange={field.onChange}
-              error={!!errorValue}
-              helperText={errorValue?.message ?? ' '}
-              fullWidth
-              size="small"
-              {...others}
-              {...field}
-            />
-          )}
-        />
-      </Grid>
+      <Controller
+        name={name}
+        control={methods.control}
+        render={({ field }) => (
+          <TextField
+            variant="outlined"
+            label={label}
+            value={field.value}
+            onChange={field.onChange}
+            error={!!errorValue}
+            helperText={errorValue?.message ?? ' '}
+            fullWidth
+            size="small"
+            {...others}
+            {...field}
+          />
+        )}
+      />
     );
   },
   (prevProps, nextProps) =>

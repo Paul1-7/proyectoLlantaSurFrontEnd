@@ -12,7 +12,7 @@ const initialForm = {
   stock: ''
 };
 
-const ProductsSubsidiaries = ({ data }) => {
+const ProductsSubsidiaries = ({ data = [] }) => {
   const [resGet, , , axiosFetchGet] = useAxios();
   const { control } = useFormContext();
   const { fields, append } = useFieldArray({
@@ -51,8 +51,12 @@ const ProductsSubsidiaries = ({ data }) => {
 
       {fields.map((item, index) => (
         <Fragment key={item.id}>
-          <Controls.Input label="Sucursal" disabled name={`sucursales.${index}.nombre`} isArray />
-          <Controls.Input label="Stock" name={`sucursales.${index}.stock`} isArray />
+          <Grid item xs={12} md={6}>
+            <Controls.Input label="Sucursal" disabled name={`sucursales.${index}.nombre`} isArray />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Controls.Input label="Stock" name={`sucursales.${index}.stock`} isArray />
+          </Grid>
         </Fragment>
       ))}
     </>

@@ -121,11 +121,21 @@ export default function ModifyProvidersForm() {
           >
             <Fieldset title="Datos del proveedor *">
               <Grid container wrap="wrap" spacing={1}>
-                <Controls.Input name="nombre" label="Nombre" />
-                <Controls.Input name="tel" label="Teléfono" />
-                <Controls.Input name="nombreEnc" label="Nombre del encargado" />
-                <Controls.Input name="apEnc" label="apellido del encargado" />
-                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="nombre" label="Nombre" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="tel" label="Teléfono" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="nombreEnc" label="Nombre del encargado" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="apEnc" label="apellido del encargado" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

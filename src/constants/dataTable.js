@@ -1,57 +1,62 @@
 const COLUMNS = {
   customers: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'apellido', header: 'apellido' },
-    { field: 'CI/Nit', header: 'CI/Nit' },
-    { field: 'celular', header: 'celular' },
-    { field: 'estado', header: 'estado' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'apellido', header: 'apellido', type: '' },
+    { field: 'CI/Nit', header: 'CI/Nit', type: '' },
+    { field: 'celular', header: 'celular', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ],
   employees: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'apellido', header: 'apellido' },
-    { field: 'CI/Nit', header: 'CI/Nit' },
-    { field: 'celular', header: 'celular' },
-    { field: 'estado', header: 'estado' },
-    { field: 'roles', header: 'roles' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'apellido', header: 'apellido', type: '' },
+    { field: 'CI/Nit', header: 'CI/Nit', type: '' },
+    { field: 'celular', header: 'celular', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' },
+    { field: 'roles', header: 'roles', type: 'array' }
   ],
   categories: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'descripcion', header: 'descripción' },
-    { field: 'estado', header: 'estado' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'descripcion', header: 'descripción', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ],
   brands: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'estado', header: 'estado' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ],
   products: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'precioVenta', header: 'precio' },
-    { field: 'fecha', header: 'fecha' },
-    { field: 'marca', header: 'marca' },
-    { field: 'categoria', header: 'categoría' },
-    { field: 'stock', header: 'stock' },
-    { field: 'estado', header: 'estado' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'precioventa', header: 'precio', type: 'currency' },
+    { field: 'fecha', header: 'fecha', type: 'date' },
+    { field: 'marca', header: 'marca', type: '' },
+    { field: 'categoria', header: 'categoría', type: '' },
+    { field: 'stock', header: 'stock', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ],
   providers: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'tel', header: 'teléfono' },
-    { field: 'nombreEnc', header: 'nombre del encargado' },
-    { field: 'apEnc', header: 'apellido del encargado' },
-    { field: 'estado', header: 'estado' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'tel', header: 'teléfono', type: '' },
+    { field: 'nombreEnc', header: 'nombre del encargado', type: '' },
+    { field: 'apEnc', header: 'apellido del encargado', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ],
   subsidiaries: [
-    { field: 'nombre', header: 'nombre' },
-    { field: 'direccion', header: 'dirección' },
-    { field: 'tel', header: 'teléfono' },
-    { field: 'estado', header: 'estado' }
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'direccion', header: 'dirección', type: '' },
+    { field: 'tel', header: 'teléfono', type: '' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ],
   sells: [
-    { field: 'codVenta', header: 'código de venta' },
-    { field: 'fecha', header: 'fecha' },
-    { field: 'tipoVenta', header: 'tipo de venta' },
-    { field: 'metodoPago', header: 'método de pago' },
-    { field: 'cliente', header: 'cliente' },
-    { field: 'vendedor', header: 'vendedor' }
+    { field: 'codVenta', header: 'código de venta', type: '' },
+    { field: 'fecha', header: 'fecha', type: 'date' },
+    { field: 'tipoVenta', header: 'tipo de venta', type: 'salesTypes' },
+    { field: 'metodoPago', header: 'método de pago', type: 'paymentsMethods' },
+    { field: 'cliente', header: 'cliente', type: '' },
+    { field: 'vendedor', header: 'vendedor', type: '' }
+  ],
+  productsToSell: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'cantidad', header: 'cantidad', type: '' },
+    { field: 'precio', header: 'precio uni.', type: 'currency' }
   ]
 };
 

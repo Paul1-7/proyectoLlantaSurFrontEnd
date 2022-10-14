@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@material-ui/core';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
+import { COLUMNS } from 'constants/dataTable';
 import useSettings from 'hooks/useSettings';
 import Page from 'components/Page';
 import useAxios from 'hooks/useAxios';
@@ -16,6 +16,7 @@ import DataTable from 'components/dataTable/DataTable';
 import { useSnackbar } from 'notistack';
 import DialogConfirmation from 'components/DialogConfirmation';
 import TEXT_MODAL from 'utils/modalText';
+import DataTableContext from 'contexts/DataTableContext';
 
 const customData = ({ data }) => {
   const newData = data.map((item) => {
@@ -37,20 +38,11 @@ const buttonsActions = { edit: true, remove: true, detail: false };
 export default function Customers() {
   const { themeStretch } = useSettings();
   const navigate = useNavigate();
+  const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const { enqueueSnackbar } = useSnackbar();
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState('');
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleOpenDialog = (id) => {
-    setDataDialog(id);
-  };
 
   const handleDelete = (id) => {
     axiosFetchDelete({
@@ -140,9 +132,6 @@ export default function Customers() {
           numeration
           btnActions={buttonsActions}
           orderByDefault="nombre"
-          states={TABLE_STATES.active}
-          handleDelete={handleOpenDialog}
-          setOpenDialog={setOpenDialog}
         />
       </Container>
     </Page>

@@ -15,4 +15,6 @@ const objectByString = (o, s) => {
   return o;
 };
 
-export { objectByString };
+const getBOBCurrency = (value) => new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB' }).format(value);
+
+export { objectByString, getBOBCurrency };
