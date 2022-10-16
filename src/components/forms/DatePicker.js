@@ -6,7 +6,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { objectByString } from 'utils/dataHandler';
 import { es } from 'date-fns/locale';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { FormHelperText, Grid, TextField } from '@material-ui/core';
+import { FormHelperText, TextField } from '@material-ui/core';
 
 const convertValueToEvent = (name, value) => ({
   target: {

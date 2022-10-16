@@ -88,10 +88,7 @@ export default function AddSellsForm() {
     criteriaMode: 'all'
   });
 
-  console.log(methods.formState.errors);
-
   const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
     data.fecha = new Date();
     data.idCliente = data.idCliente.idCliente;
     axiosFetchPost({

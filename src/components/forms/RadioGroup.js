@@ -6,7 +6,6 @@ import {
   RadioGroup as MuiRadioGroup,
   FormControlLabel,
   Radio,
-  Grid,
   FormHelperText
 } from '@material-ui/core';
 import { Controller } from 'react-hook-form';

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
 import { objectByString } from 'utils/dataHandler';
-import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@material-ui/core';
 
 const SelectMemo = memo(
   ({ name, label, isArray, methods, items, ...others }) => {

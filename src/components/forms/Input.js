@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 import { objectByString } from 'utils/dataHandler';
 
 const InputMemo = memo(
-  ({ name, label, isArray, methods, ...others }) => {
+  ({ name, label, isArray, methods, variant = null, ...others }) => {
     const error = methods.formState.errors;
 
     const errorValue = isArray ? objectByString(error, name) : error[name];
@@ -15,7 +15,7 @@ const InputMemo = memo(
         control={methods.control}
         render={({ field }) => (
           <TextField
-            variant="outlined"
+            variant={variant ?? 'outlined'}
             label={label}
             value={field.value}
             onChange={field.onChange}
@@ -39,6 +39,7 @@ export default InputMemo;
 
 InputMemo.propTypes = {
   name: PropTypes.string.isRequired,
+  variant: PropTypes.string,
   label: PropTypes.string.isRequired,
   others: PropTypes.node,
   methods: PropTypes.object,

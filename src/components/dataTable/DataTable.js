@@ -160,7 +160,7 @@ const DataTable = ({
                       const value = row[field];
 
                       if (type === 'states') {
-                        return <DataTableCell.States key={index} align={align} value={Number(value)} />;
+                        return <DataTableCell.States key={index} align={align} value={value} />;
                       }
                       if (type === 'date') {
                         return <DataTableCell.Date key={index} align={align} value={value} />;

@@ -57,6 +57,10 @@ const COLUMNS = {
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'cantidad', header: 'cantidad', type: '' },
     { field: 'precio', header: 'precio uni.', type: 'currency' }
+  ],
+  defectiveProductsToSell: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'stock', header: 'stock', type: '' }
   ]
 };
 

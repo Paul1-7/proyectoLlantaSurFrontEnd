@@ -132,7 +132,8 @@ export default function Router() {
           )
         },
         { path: 'ventas/nuevo', element: <AddSellsForm /> },
-        { path: 'ventas/modificar/:id', element: <ModifySellsForm /> }
+        { path: 'ventas/modificar/:id', element: <ModifySellsForm /> },
+        { path: 'ventas/detalle/:id', element: <DetailSells /> }
         // {
         //   path: 'reportes',
         //   children: [
@@ -195,6 +196,7 @@ const ModifySubsidiariesForm = Loadable(lazy(() => import('../pages/subsidiaries
 const Sells = Loadable(lazy(() => import('../pages/sells/Sells')));
 const AddSellsForm = Loadable(lazy(() => import('../pages/sells/AddSellsForm')));
 const ModifySellsForm = Loadable(lazy(() => import('../pages/sells/ModifySellsForm')));
+const DetailSells = Loadable(lazy(() => import('../pages/sells/DetailSells')));
 
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Main

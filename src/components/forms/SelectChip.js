@@ -1,16 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormControl,
-  Grid,
-  FormHelperText,
-  InputLabel,
-  Select,
-  Box,
-  Chip,
-  MenuItem,
-  OutlinedInput
-} from '@material-ui/core';
+import { FormControl, FormHelperText, InputLabel, Select, Box, Chip, MenuItem, OutlinedInput } from '@material-ui/core';
 import { Controller } from 'react-hook-form';
 import { objectByString } from 'utils/dataHandler';
 

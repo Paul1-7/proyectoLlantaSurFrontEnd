@@ -16,29 +16,28 @@ const initialForm = {
   precio: ''
 };
 
-const ProductsSell = ({ data = null }) => {
+const DefectiveProductsSell = () => {
   const { control } = useFormContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { dataRow, enableButton } = useContext(DataTableContext);
   const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'productos'
   });
-  const watch = useWatch({ name: 'productos' });
+  const watch = useWatch({ name: 'productos' }) ?? [];
 
-  useEffect(() => {
-    if (dataRow)
-      append({
-        ...initialForm,
-        nombre: dataRow.nombre,
-        idProd: dataRow.id,
-        precio: dataRow.precio,
-        stock: dataRow.cantidad
-      });
+  // useEffect(() => {
+  //   if (dataRow)
+  //     append({
+  //       ...initialForm,
+  //       nombre: dataRow.nombre,
+  //       idProd: dataRow.id,
+  //       precio: dataRow.precio,
+  //       stock: dataRow.cantidad
+  //     });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, dataRow]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dataRow]);
 
   // console.log();
   // watch(
@@ -95,22 +94,12 @@ const ProductsSell = ({ data = null }) => {
             <Grid item xs={12} md={2}>
               <Controls.Input label="Cantidad" name={`productos.${index}.cantidad`} isArray type="number" />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField
-                fullWidth
-                value={getBOBCurrency(watch?.[index]?.cantidad * watch?.[index]?.precio)}
-                label="Subtotal"
-                size="small"
-                disabled
-              />
-            </Grid>
+
             <Grid item xs={12} md={1}>
               <MIconButton
                 aria-label="eliminar"
                 onClick={() => {
-                  const id = watch?.[index].idProd;
                   remove(index);
-                  enableButton(id);
                 }}
               >
                 <Clear color="error" />
@@ -118,18 +107,12 @@ const ProductsSell = ({ data = null }) => {
             </Grid>
           </Grid>
         ))}
-        <Divider />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem', marginRight: '1rem' }}>
-          <Typography variant="subtitle1">
-            Total: {getBOBCurrency(watch.reduce((prev, current) => prev + current.precio * current.cantidad, 0))}
-          </Typography>
-        </Box>
       </Box>
     </>
   );
 };
-export default ProductsSell;
+export default DefectiveProductsSell;
 
-ProductsSell.propTypes = {
+DefectiveProductsSell.propTypes = {
   data: PropTypes.object
 };

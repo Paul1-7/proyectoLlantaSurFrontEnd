@@ -1,5 +1,5 @@
 import States from './States';
-import Date from './Date';
+import DateCell from './Date';
 import PaymentsMethods from './PaymentsMethods';
 import SalesTypes from './SalesTypes';
 import ValuesArray from './ValuesArray';
@@ -8,7 +8,7 @@ import Default from './Default';
 
 const DataTableCell = {
   States,
-  Date,
+  Date: DateCell,
   PaymentsMethods,
   SalesTypes,
   ValuesArray,
