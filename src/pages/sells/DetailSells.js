@@ -98,10 +98,10 @@ export default function DetailSeel() {
               </TableHead>
               {!Array.isArray(resGet) && (
                 <TableBody>
-                  {resGet.detalle.map(({ idProd, cantidad, precioUni }, index) => (
+                  {resGet.detalle.map(({ productos, cantidad, precioUni }, index) => (
                     <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component="th" scope="row">
-                        {idProd}
+                        {productos.nombre}
                       </TableCell>
                       <TableCell align="center">{cantidad}</TableCell>
                       <TableCell align="center">{getBOBCurrency(precioUni)}</TableCell>

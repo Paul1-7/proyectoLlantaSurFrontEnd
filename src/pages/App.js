@@ -1,14 +1,40 @@
 // material
 import { Container, Typography } from '@material-ui/core';
 // hooks
-import useSettings from '../hooks/useSettings';
 // components
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { useSnackbar } from 'notistack';
 import Page from '../components/Page';
+import useSettings from '../hooks/useSettings';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
   const { themeStretch } = useSettings();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    let message = null;
+    const severity = 'success';
+    if (location.state?.message) {
+      message = location.state.message;
+      navigate(location.pathname, { replace: true });
+    }
+
+    if (message) {
+      enqueueSnackbar(message, {
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        autoHideDuration: 4000,
+        variant: severity
+      });
+      message = null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location]);
 
   return (
     <Page title="Page Two | Minimal-UI">

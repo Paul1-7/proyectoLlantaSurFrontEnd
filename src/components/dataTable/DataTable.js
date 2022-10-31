@@ -64,6 +64,7 @@ const DataTable = ({
   align = 'center',
   error,
   loading,
+  minStock = null,
   collapse = null,
   width = null,
   ...others
@@ -177,6 +178,9 @@ const DataTable = ({
                       if (type === 'array') {
                         return <DataTableCell.ValuesArray key={index} align={align} value={value} />;
                       }
+                      if (type === 'stock') {
+                        return <DataTableCell.Stock key={index} align={align} value={value} minStock={minStock} />;
+                      }
                       return <DataTableCell.Default key={index} align={align} value={value} />;
                     })}
 
@@ -257,5 +261,6 @@ DataTable.propTypes = {
   error: PropTypes.object,
   loading: PropTypes.bool,
   collapse: PropTypes.string,
-  width: PropTypes.string
+  width: PropTypes.string,
+  minStock: PropTypes.number
 };

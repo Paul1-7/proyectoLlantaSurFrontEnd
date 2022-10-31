@@ -25,11 +25,11 @@ const COLUMNS = {
   ],
   products: [
     { field: 'nombre', header: 'nombre', type: '' },
-    { field: 'precioventa', header: 'precio', type: 'currency' },
+    { field: 'precioVenta', header: 'precio', type: 'currency' },
     { field: 'fecha', header: 'fecha', type: 'date' },
     { field: 'marca', header: 'marca', type: '' },
     { field: 'categoria', header: 'categoría', type: '' },
-    { field: 'stock', header: 'stock', type: '' },
+    { field: 'stock', header: 'stock', type: 'stock' },
     { field: 'estado', header: 'estado', type: 'states' }
   ],
   providers: [
@@ -55,7 +55,7 @@ const COLUMNS = {
   ],
   productsToSell: [
     { field: 'nombre', header: 'nombre', type: '' },
-    { field: 'cantidad', header: 'cantidad', type: '' },
+    { field: 'cantidad', header: 'cantidad', type: 'stock' },
     { field: 'precio', header: 'precio uni.', type: 'currency' }
   ],
   defectiveProductsToSell: [

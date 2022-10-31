@@ -53,7 +53,9 @@ export default function Products() {
   const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
+  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
+
   const location = useLocation();
 
   const handleDelete = (id) => {
@@ -100,6 +102,11 @@ export default function Products() {
       method: 'GET',
       url: '/api/v1/productos'
     });
+    axiosFetchGetBusinessData({
+      axiosInstance: axios,
+      method: 'GET',
+      url: '/api/v1/datos-negocio'
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -136,9 +143,10 @@ export default function Products() {
         <DataTable
           columns={COLUMNS.products}
           rows={resGet}
-          error={errorGet}
-          loading={loadingGet}
+          error={errorGet ?? errorGetBusinessData}
+          loading={loadingGet || loadingGetBusinessData}
           numeration
+          minStock={resGetBusinessData?.cantMinProd}
           btnActions={buttonsActions}
           orderByDefault="nombre"
           collapse="sucursales"

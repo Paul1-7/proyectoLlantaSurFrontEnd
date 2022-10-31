@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import { objectByString } from 'utils/dataHandler';
 
 const InputMemo = memo(
-  ({ name, label, isArray, methods, variant = null, ...others }) => {
+  ({ name, label, isArray, helperText, methods, variant = null, ...others }) => {
     const error = methods.formState.errors;
 
     const errorValue = isArray ? objectByString(error, name) : error[name];
@@ -20,7 +20,7 @@ const InputMemo = memo(
             value={field.value}
             onChange={field.onChange}
             error={!!errorValue}
-            helperText={errorValue?.message ?? ' '}
+            helperText={errorValue?.message ?? helperText ?? ' '}
             fullWidth
             size="small"
             {...others}
@@ -39,6 +39,7 @@ export default InputMemo;
 
 InputMemo.propTypes = {
   name: PropTypes.string.isRequired,
+  helperText: PropTypes.string,
   variant: PropTypes.string,
   label: PropTypes.string.isRequired,
   others: PropTypes.node,

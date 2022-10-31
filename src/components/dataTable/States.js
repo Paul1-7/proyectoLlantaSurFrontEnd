@@ -16,6 +16,6 @@ const States = ({ value, align }) => {
 export default States;
 
 States.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.any,
   align: PropTypes.string
 };

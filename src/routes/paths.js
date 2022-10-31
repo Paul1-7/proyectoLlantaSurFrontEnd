@@ -51,12 +51,16 @@ export const PATH_MODULES = {
     new: `${ROOTS_DASHBOARD}/ventas/nuevo`,
     modify: `${ROOTS_DASHBOARD}/ventas/modificar`
   },
+  generalManagement: {
+    root: path(ROOTS_DASHBOARD, '/administracion'),
+    businessData: `${ROOTS_DASHBOARD}/administracion/datos-negocio`,
+    invoiceBatching: `${ROOTS_DASHBOARD}/administracion/dosificacion-facturas`
+  },
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
   reseñas: path(ROOTS_DASHBOARD, '/reseñas'),
   descuentos: path(ROOTS_DASHBOARD, '/descuentos'),
   favoritos: path(ROOTS_DASHBOARD, '/favoritos'),
-  administracionGeneral: path(ROOTS_DASHBOARD, '/administracion-general'),
   reportes: {
     root: path(ROOTS_DASHBOARD, '/reportes'),
     pageFour: path(ROOTS_DASHBOARD, '/reportes/ventas'),

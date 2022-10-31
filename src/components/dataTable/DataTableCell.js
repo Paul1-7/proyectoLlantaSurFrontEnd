@@ -5,6 +5,7 @@ import SalesTypes from './SalesTypes';
 import ValuesArray from './ValuesArray';
 import Currency from './Currency';
 import Default from './Default';
+import Stock from './Stock';
 
 const DataTableCell = {
   States,
@@ -13,6 +14,7 @@ const DataTableCell = {
   SalesTypes,
   ValuesArray,
   Currency,
+  Stock,
   Default
 };
 

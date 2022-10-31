@@ -133,7 +133,10 @@ export default function Router() {
         },
         { path: 'ventas/nuevo', element: <AddSellsForm /> },
         { path: 'ventas/modificar/:id', element: <ModifySellsForm /> },
-        { path: 'ventas/detalle/:id', element: <DetailSells /> }
+        { path: 'ventas/detalle/:id', element: <DetailSells /> },
+        // generalManagement
+        { path: 'administracion/dosificacion-facturas', element: <InvoiceBatchingForm /> },
+        { path: 'administracion/datos-negocio', element: <BusinessDataForm /> }
         // {
         //   path: 'reportes',
         //   children: [
@@ -197,6 +200,9 @@ const Sells = Loadable(lazy(() => import('../pages/sells/Sells')));
 const AddSellsForm = Loadable(lazy(() => import('../pages/sells/AddSellsForm')));
 const ModifySellsForm = Loadable(lazy(() => import('../pages/sells/ModifySellsForm')));
 const DetailSells = Loadable(lazy(() => import('../pages/sells/DetailSells')));
+// generalManagement
+const InvoiceBatchingForm = Loadable(lazy(() => import('../pages/generalManagement/InvoiceBatchingForm')));
+const BusinessDataForm = Loadable(lazy(() => import('../pages/generalManagement/BusinessDataForm')));
 
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 // Main

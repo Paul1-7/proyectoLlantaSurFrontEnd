@@ -64,6 +64,7 @@ export default function AddSellsForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
+  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
   const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(customDataProducts);
   const [resGetCustomers, , loadingGetCustomers, axiosFetchGetCustomers] = useAxios(customDataCustomers);
 
@@ -77,6 +78,11 @@ export default function AddSellsForm() {
       axiosInstance: axios,
       method: 'GET',
       url: `/api/v1/productos`
+    });
+    axiosFetchGetBusinessData({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/datos-negocio`
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -166,8 +172,9 @@ export default function AddSellsForm() {
                       <DataTable
                         columns={COLUMNS.productsToSell}
                         rows={resGetProducts}
-                        loading={loadingGetProducts}
-                        error={errorGetProducts}
+                        loading={loadingGetProducts || loadingGetBusinessData}
+                        minStock={resGetBusinessData?.cantMinProd}
+                        error={errorGetProducts ?? errorGetBusinessData}
                         btnActions={btnActions}
                         size="small"
                         width="100%"

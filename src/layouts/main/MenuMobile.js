@@ -9,7 +9,7 @@ import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, List, Drawer, Link, Collapse, ListItemButton, ListItemText, ListItemIcon } from '@material-ui/core';
 // components
-import Logo from '../../components/Logo';
+import Logo from 'components/Logo';
 import NavSection from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
 import { MIconButton } from '../../components/@material-extend';

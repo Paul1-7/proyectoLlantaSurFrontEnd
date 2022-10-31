@@ -25,16 +25,33 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
 import Fieldset from 'components/forms/Fieldset';
-import DataTable from 'components/dataTable/DataTable';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
-import { DataTableProvider } from 'contexts/DataTableContext';
 import DefectiveProductsSell from './DefectiveProductsSell';
 
 const { paymentMethods, salesTypes } = TABLE_STATES;
 
+const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
+
 const initialForm = {
-  idSucursal: '1'
+  idSucursal: idSucursalBorrar
+};
+
+const currentSubsidiaryStock = (idSuc, subsidiaries) => {
+  const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
+
+  return value ? value.Sucursales_Productos.stock : '0';
+};
+
+const salesCustomData = ({ data }) => {
+  const newData = data.detalle.map((item) => ({
+    ...item,
+    productos: {
+      ...item.productos,
+      stock: currentSubsidiaryStock(idSucursalBorrar, item.productos.sucursales)
+    }
+  }));
+  return { data: { ...data, detalle: newData } };
 };
 
 export default function ModifySell() {
@@ -42,8 +59,7 @@ export default function ModifySell() {
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios();
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios();
+  const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios(salesCustomData);
 
   const id = location.pathname.split('/').pop();
 
@@ -52,11 +68,6 @@ export default function ModifySell() {
       axiosInstance: axios,
       method: 'GET',
       url: `/api/v1/ventas/${id}`
-    });
-    axiosFetchGetProducts({
-      axiosInstance: axios,
-      method: 'GET',
-      url: `/api/v1/productos`
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,10 +81,6 @@ export default function ModifySell() {
       setErrorGetSale(null);
     }
 
-    if (Array.isArray(resGetProducts) && errorGetProducts) {
-      message = errorGetProducts?.message;
-    }
-
     if (message) {
       enqueueSnackbar(message, {
         anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
@@ -82,7 +89,7 @@ export default function ModifySell() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errorGetProducts, errorGetSale]);
+  }, [errorGetSale]);
 
   const methods = useForm({
     resolver: yupResolver(schema.sells),
@@ -159,14 +166,14 @@ export default function ModifySell() {
                             <TableCell align="center">STOCK</TableCell>
                           </TableRow>
                         </TableHead>
-                        {resGetProducts > 0 && (
+                        {!Array.isArray(resGetSale) && !errorGetSale && (
                           <TableBody>
-                            {resGetProducts.detalle.map(({ nombre, cantidad }, index) => (
+                            {resGetSale.detalle.map(({ productos }, index) => (
                               <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <TableCell component="th" scope="row">
-                                  {nombre}
+                                  {productos.nombre}
                                 </TableCell>
-                                <TableCell align="center">{cantidad}</TableCell>
+                                <TableCell align="center">{productos.stock}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
@@ -176,7 +183,7 @@ export default function ModifySell() {
                   </div>
                 </Grid>
                 <Grid item xs={12} md={6} sx={{ marginTop: '16px' }}>
-                  <DefectiveProductsSell />
+                  {!Array.isArray(resGetSale) && !errorGetSale && <DefectiveProductsSell data={resGetSale.detalle} />}
                 </Grid>
               </Grid>
             </form>

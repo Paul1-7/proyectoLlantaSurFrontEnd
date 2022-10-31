@@ -20,6 +20,7 @@ const ICONS = {
   product: getIcon('ic_product'),
   provider: getIcon('ic_provider'),
   subsidiary: getIcon('ic_subsidiary'),
+  setting: getIcon('ic_setting'),
   sell: getIcon('ic_sell')
 };
 
@@ -35,7 +36,16 @@ const sidebarConfig = [
       { title: 'Productos', path: PATH_MODULES.products.root, icon: ICONS.product },
       { title: 'Proveedores', path: PATH_MODULES.providers.root, icon: ICONS.provider },
       { title: 'Sucursales', path: PATH_MODULES.subsidiaries.root, icon: ICONS.subsidiary },
-      { title: 'Ventas', path: PATH_MODULES.sells.root, icon: ICONS.sell }
+      { title: 'Ventas', path: PATH_MODULES.sells.root, icon: ICONS.sell },
+      {
+        title: 'Administración General',
+        path: PATH_MODULES.generalManagement.root,
+        icon: ICONS.setting,
+        children: [
+          { title: 'Datos del negocio', path: PATH_MODULES.generalManagement.businessData },
+          { title: 'Dosificación de facturas', path: PATH_MODULES.generalManagement.invoiceBatching }
+        ]
+      }
     ]
   }
 ];

@@ -150,7 +150,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         )}
       </Stack>
 
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} sx={{ paddingBottom: '2rem' }} />
     </Scrollbar>
   );
 
