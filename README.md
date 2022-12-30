@@ -16,7 +16,10 @@ to make it run
 ```bash
   npm start
 ```
-If necessary, you can go to the config.js file to modify the url of the API.
+## Demo
+
+[project demo](https://llanta-sur.vercel.app/)
+
 ## Screenshots
 
 ![App Screenshot](https://res.cloudinary.com/paul1-7/image/upload/v1672410955/llanta-sur/screenshoot/1_sbs06q.jpg)  
