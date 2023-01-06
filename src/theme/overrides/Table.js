@@ -18,6 +18,13 @@ export default function Table(theme) {
       styleOverrides: {
         root: {
           // borderBottom: 'none'
+          '@media print': {
+            color: '#000',
+            backgroundColor: '#fff',
+            border: '1px solid #000',
+            textAlign: 'center',
+            padding: 0
+          }
         },
         head: {
           color: theme.palette.text.secondary,
@@ -25,7 +32,10 @@ export default function Table(theme) {
           '&:first-of-type': {
             paddingLeft: theme.spacing(3),
             borderTopLeftRadius: theme.shape.borderRadius,
-            borderBottomLeftRadius: theme.shape.borderRadius
+            borderBottomLeftRadius: theme.shape.borderRadius,
+            '@media print': {
+              paddingLeft: 0
+            }
           },
           '&:last-of-type': {
             paddingRight: theme.spacing(3),

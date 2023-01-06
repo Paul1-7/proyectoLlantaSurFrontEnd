@@ -18,6 +18,6 @@ const ValuesArray = ({ value, align }) => (
 export default ValuesArray;
 
 ValuesArray.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.array,
   align: PropTypes.string
 };

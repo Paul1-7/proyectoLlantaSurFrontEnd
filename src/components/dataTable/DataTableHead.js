@@ -12,7 +12,7 @@ const COLUMN_FORMAT = {
 };
 
 const createDataTableColumns = (columns) =>
-  columns.map(({ header }) => ({ ...COLUMN_FORMAT, id: header, label: header.toUpperCase() }));
+  columns.map(({ header, field }) => ({ ...COLUMN_FORMAT, id: field, label: header.toUpperCase() }));
 
 function DataTableHead({ order, orderBy, onRequestSort, columns, numeration, btnActions, collapse }) {
   const createSortHandler = (property) => (event) => {

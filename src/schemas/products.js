@@ -11,7 +11,7 @@ const products = yup.object().shape({
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   precioCompra: yup.string().matches(regex.float, msg.float).required(),
   precioVenta: yup.string().matches(regex.float, msg.float).required(),
-  fecha: yup.date().required(),
+  fecha: yup.date().typeError('la fecha introducida es incorrecta').required(),
   idProv: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idCat: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idMarca: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),

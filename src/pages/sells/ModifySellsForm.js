@@ -20,7 +20,7 @@ import axios from 'apis/apis';
 
 import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
 import { useLocation } from 'react-router';
-import { COLUMNS, TABLE_STATES } from 'constants/dataTable';
+import { TABLE_STATES } from 'constants/dataTable';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';

@@ -21,7 +21,8 @@ const ICONS = {
   provider: getIcon('ic_provider'),
   subsidiary: getIcon('ic_subsidiary'),
   setting: getIcon('ic_setting'),
-  sell: getIcon('ic_sell')
+  sell: getIcon('ic_sell'),
+  report: getIcon('ic_analytics')
 };
 
 const sidebarConfig = [
@@ -37,6 +38,16 @@ const sidebarConfig = [
       { title: 'Proveedores', path: PATH_MODULES.providers.root, icon: ICONS.provider },
       { title: 'Sucursales', path: PATH_MODULES.subsidiaries.root, icon: ICONS.subsidiary },
       { title: 'Ventas', path: PATH_MODULES.sells.root, icon: ICONS.sell },
+      {
+        title: 'Reportes',
+        path: PATH_MODULES.reports.root,
+        icon: ICONS.report,
+        children: [
+          { title: 'Reporte de ventas', path: PATH_MODULES.reports.sales },
+          { title: 'Reporte de compras', path: PATH_MODULES.reports.purchases },
+          { title: 'Reporte del inventario', path: PATH_MODULES.reports.products }
+        ]
+      },
       {
         title: 'Administración General',
         path: PATH_MODULES.generalManagement.root,

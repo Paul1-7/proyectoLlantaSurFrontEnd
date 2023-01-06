@@ -11,7 +11,6 @@ setLocale({
     min: ({ min }) => ({ key: `El valor debe de ser mayor a ${min}`, values: { min } }),
     max: ({ max }) => ({ key: `El valor debe de ser menor a ${max}`, values: { max } })
   },
-  date: 'la fecha es incorrecta',
   string: {
     uuid: 'no es correcto el id'
   },
@@ -25,7 +24,7 @@ const regex = {
   password: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}|)/,
   number: /^[0-9]+$/,
   tel: /^[0-9-+\s]+$/,
-  float: /^[0-9.-]+$/
+  float: /[+-]?([0-9]*[.])?[0-9]+/
 };
 
 const msg = {

@@ -134,6 +134,9 @@ export default function Router() {
         { path: 'ventas/nuevo', element: <AddSellsForm /> },
         { path: 'ventas/modificar/:id', element: <ModifySellsForm /> },
         { path: 'ventas/detalle/:id', element: <DetailSells /> },
+        // reports
+        { path: 'reportes/inventario', element: <InventoryReport /> },
+        // { path: 'reportes/datos-negocio', element: <BusinessDataForm /> }
         // generalManagement
         { path: 'administracion/dosificacion-facturas', element: <InvoiceBatchingForm /> },
         { path: 'administracion/datos-negocio', element: <BusinessDataForm /> }
@@ -200,6 +203,9 @@ const Sells = Loadable(lazy(() => import('../pages/sells/Sells')));
 const AddSellsForm = Loadable(lazy(() => import('../pages/sells/AddSellsForm')));
 const ModifySellsForm = Loadable(lazy(() => import('../pages/sells/ModifySellsForm')));
 const DetailSells = Loadable(lazy(() => import('../pages/sells/DetailSells')));
+// reports
+const InventoryReport = Loadable(lazy(() => import('../pages/reports/InventoryReport')));
+// const BusinessDataForm = Loadable(lazy(() => import('../pages/generalManagement/BusinessDataForm')));
 // generalManagement
 const InvoiceBatchingForm = Loadable(lazy(() => import('../pages/generalManagement/InvoiceBatchingForm')));
 const BusinessDataForm = Loadable(lazy(() => import('../pages/generalManagement/BusinessDataForm')));
