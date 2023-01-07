@@ -24,7 +24,10 @@ const initialForm = {
   actividadEco: '',
   leyenda: '',
   cantMinProd: '',
-  email: ''
+  email: '',
+  tel: '',
+  direccion: '',
+  ciudad: ''
 };
 
 export default function BusinessDataForm() {
@@ -127,19 +130,30 @@ export default function BusinessDataForm() {
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="actividadEco" label="Actividad Economica" multiline />
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Controls.Input name="leyenda" label="leyenda" multiline />
-                </Grid>
+
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="email" label="Email" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Input
-                    name="cantMinProd"
-                    label="Cantidad mínima de productos"
-                    helperText="el stock será de un color difente si la cantidad del producto es menor o igual a la ingresada en este campo"
-                  />
+                  <Controls.Input name="tel" label="Teléfono" />
                 </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="direccion" label="Dirección" />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="ciudad" label="Ciudad" />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Controls.Input name="leyenda" label="leyenda" multiline />
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controls.Input
+                  name="cantMinProd"
+                  label="Cantidad mínima de productos"
+                  helperText="el stock será de un color difente si la cantidad del producto es menor o igual a la ingresada en este campo"
+                />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
