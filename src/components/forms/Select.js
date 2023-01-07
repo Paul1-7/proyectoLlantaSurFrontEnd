@@ -27,11 +27,14 @@ const SelectMemo = memo(
               {...others}
             >
               <MenuItem value="0">Ninguno</MenuItem>
-              {items.map((item, index) => (
-                <MenuItem key={index} value={item.id}>
-                  {item.nombre}
-                </MenuItem>
-              ))}
+              {items.map((item, index) => {
+                const value = Object.values(item);
+                return (
+                  <MenuItem key={index} value={value?.[0]}>
+                    {value?.[1]}
+                  </MenuItem>
+                );
+              })}
             </Select>
             <FormHelperText error={!!errorValue} color="error">
               {errorValue?.message ?? ' '}
@@ -43,7 +46,8 @@ const SelectMemo = memo(
   },
   (prevProps, nextProps) =>
     prevProps.methods.formState.isDirty === nextProps.methods.formState.isDirty &&
-    prevProps.methods.formState.errors !== nextProps.methods.formState.errors
+    prevProps.methods.formState.errors !== nextProps.methods.formState.errors &&
+    prevProps.methods.formState.submitCount === nextProps.methods.formState.submitCount
 );
 
 export default SelectMemo;
