@@ -68,7 +68,8 @@ const AutocompleteMemo = memo(
   },
   (prevProps, nextProps) =>
     prevProps.methods.formState.isDirty === nextProps.methods.formState.isDirty &&
-    prevProps.methods.formState.errors !== nextProps.methods.formState.errors
+    prevProps.methods.formState.errors !== nextProps.methods.formState.errors &&
+    prevProps.methods.formState.submitCount === nextProps.methods.formState.submitCount
 );
 
 export default AutocompleteMemo;
