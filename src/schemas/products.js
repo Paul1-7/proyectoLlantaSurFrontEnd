@@ -12,9 +12,18 @@ const products = yup.object().shape({
   precioCompra: yup.string().matches(regex.float, msg.float).required(),
   precioVenta: yup.string().matches(regex.float, msg.float).required(),
   fecha: yup.date().typeError('la fecha introducida es incorrecta').required(),
-  idProv: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
-  idCat: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
-  idMarca: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
+  idProv: yup
+    .string()
+    .matches(regex.alphaNumeric, msg.alphaNumeric)
+    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
+  idCat: yup
+    .string()
+    .matches(regex.alphaNumeric, msg.alphaNumeric)
+    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
+  idMarca: yup
+    .string()
+    .matches(regex.alphaNumeric, msg.alphaNumeric)
+    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
   sucursales: yup.array().of(subsidiaries).required(),
   imagen: yup.mixed(),
   estado: yup.string().required().matches(regex.number, msg.number)
