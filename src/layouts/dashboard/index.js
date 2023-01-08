@@ -50,7 +50,10 @@ export default function DashboardLayout() {
           }),
           ...(collapseClick && {
             ml: '102px'
-          })
+          }),
+          '@media print': {
+            paddingTop: 0
+          }
         }}
       >
         <Outlet />

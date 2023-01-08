@@ -53,7 +53,10 @@ export default function DashboardNavbar({ onOpenSidebar }) {
       sx={{
         ...(isCollapse && {
           width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px)` }
-        })
+        }),
+        '@media print': {
+          display: 'none'
+        }
       }}
     >
       <ToolbarStyle>

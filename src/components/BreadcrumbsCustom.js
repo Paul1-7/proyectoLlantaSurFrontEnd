@@ -3,7 +3,7 @@ import { Breadcrumbs, Link as LinkItem, Typography } from '@material-ui/core';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Link } from 'react-router-dom';
 
-const BreadcrumbsCustom = () => {
+const BreadcrumbsCustom = ({ sx }) => {
   const regexUUID = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 
   const location = window.location.pathname.slice(1);
@@ -13,7 +13,7 @@ const BreadcrumbsCustom = () => {
   const nameWhitoutId = names.filter((name) => !regexUUID.test(name));
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '16px' }}>
+    <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '16px', ...sx }}>
       {nameWhitoutId.map((name, index) => {
         route += `/${name.toLowerCase()}`;
         if (index + 1 !== nameWhitoutId.length)
