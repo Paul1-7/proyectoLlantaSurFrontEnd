@@ -24,10 +24,6 @@ const ITEMS_SELECTS = [
 
 const ITEM_INVENTORY_REPORT_CRITERIA = [
   {
-    id: '1',
-    name: 'mas vendidos'
-  },
-  {
     id: '2',
     name: 'por orden alfabético'
   },
@@ -48,8 +44,19 @@ const ITEM_INVENTORY_REPORT_CRITERIA = [
 const ITEM_INVENTORY_REPORT_SUBSIDIARIES = [
   {
     id: '1',
-    name: 'todas las sucursales'
+    name: 'Todas las sucursales'
   }
+];
+
+const COLUMN_INVENTORY_REPORT_BY_DEFAULT = [
+  'N°',
+  'Nombre',
+  'Precio de compra',
+  'Precio de venta',
+  'Fecha',
+  'Categoria',
+  'Marca',
+  'Proveedor'
 ];
 
 export {
@@ -57,5 +64,6 @@ export {
   ITEMS_SELECTS,
   ITEM_INVENTORY_REPORT_CRITERIA,
   ITEM_INVENTORY_REPORT_SUBSIDIARIES,
-  DEFAULT_VALUE_ITEM
+  DEFAULT_VALUE_ITEM,
+  COLUMN_INVENTORY_REPORT_BY_DEFAULT
 };
