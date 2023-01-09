@@ -22,40 +22,4 @@ const ITEMS_SELECTS = [
   }
 ];
 
-const ITEM_INVENTORY_REPORT_CRITERIA = [
-  {
-    id: '1',
-    name: 'mas vendidos'
-  },
-  {
-    id: '2',
-    name: 'por orden alfabético'
-  },
-  {
-    id: '3',
-    name: 'por cantidad de stock'
-  },
-  {
-    id: '4',
-    name: 'por categoría'
-  },
-  {
-    id: '5',
-    name: 'por proveedores'
-  }
-];
-
-const ITEM_INVENTORY_REPORT_SUBSIDIARIES = [
-  {
-    id: '1',
-    name: 'todas las sucursales'
-  }
-];
-
-export {
-  ITEMS_RADIO_GROUP,
-  ITEMS_SELECTS,
-  ITEM_INVENTORY_REPORT_CRITERIA,
-  ITEM_INVENTORY_REPORT_SUBSIDIARIES,
-  DEFAULT_VALUE_ITEM
-};
+export { ITEMS_RADIO_GROUP, ITEMS_SELECTS, DEFAULT_VALUE_ITEM };

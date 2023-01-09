@@ -22,7 +22,6 @@ import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
 import { useLocation } from 'react-router';
 import { getBOBCurrency } from 'utils/dataHandler';
 import { TABLE_STATES } from 'constants/dataTable';
-import Fieldset from 'components/forms/Fieldset';
 import { usePrint } from 'hooks/usePrint';
 import { Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -42,8 +41,10 @@ export default function DetailSeel() {
   const { themeStretch } = useSettings();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
-  const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({ fileName: 'detalleVenta' });
   const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios();
+  const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({
+    fileName: `Factura-${resGetSale?.cliente?.nombre ?? ''}`
+  });
   const [
     resGetBusinessData,
     errorGetBusinessData,
@@ -104,22 +105,21 @@ export default function DetailSeel() {
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
-        <Typography variant="h3" component="h1" paragraph>
+        <Typography variant="h3" component="h1" paragraph sx={{ displayPrint: 'none' }}>
           Detalle de venta
         </Typography>
-        <Typography gutterBottom sx={{ paddingBottom: '2rem' }}>
+        <Typography gutterBottom sx={{ paddingBottom: '2rem', displayPrint: 'none' }}>
           Muestra el detalle de la venta
         </Typography>
-        <Button onClick={handlePrint} variant="outlined">
+        <Button onClick={handlePrint} variant="outlined" sx={{ displayPrint: 'none' }}>
           Imprimir factura
         </Button>
-        <Fieldset title="Datos de la venta">
+        {!Array.isArray(resGetSale) && (
           <Grid
             ref={componentToPrintRef}
             sx={{
-              '@media print': {
-                padding: '2rem'
-              },
+              '@media print': { padding: '2rem' },
+              padding: '2.5rem 1.5rem',
               minWidth: '720px'
             }}
           >
@@ -283,7 +283,7 @@ export default function DetailSeel() {
               </Typography>
             </Grid>
           </Grid>
-        </Fieldset>
+        )}
       </Container>
     </Page>
   );

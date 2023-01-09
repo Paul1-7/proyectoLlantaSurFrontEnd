@@ -8,7 +8,10 @@ const products = yup.object().shape({
 
 const sells = yup.object().shape({
   fecha: yup.string().required(),
-  idCliente: yup.object().required(),
+  idCliente: yup
+    .object()
+    .required()
+    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
   idVendedor: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idSucursal: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   productos: yup.array().of(products).required().min(1)
