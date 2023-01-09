@@ -2,6 +2,7 @@ import React from 'react';
 import { Breadcrumbs, Link as LinkItem, Typography } from '@material-ui/core';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const BreadcrumbsCustom = ({ sx }) => {
   const regexUUID = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
@@ -12,8 +13,14 @@ const BreadcrumbsCustom = ({ sx }) => {
 
   const nameWhitoutId = names.filter((name) => !regexUUID.test(name));
 
+  const sxNoPrint = {
+    '@media print': {
+      display: 'none'
+    }
+  };
+
   return (
-    <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '16px', ...sx }}>
+    <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '16px', ...sxNoPrint, ...sx }}>
       {nameWhitoutId.map((name, index) => {
         route += `/${name.toLowerCase()}`;
         if (index + 1 !== nameWhitoutId.length)
@@ -41,3 +48,7 @@ const BreadcrumbsCustom = ({ sx }) => {
 };
 
 export default BreadcrumbsCustom;
+
+BreadcrumbsCustom.propTypes = {
+  sx: PropTypes.object
+};

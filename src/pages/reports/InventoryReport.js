@@ -163,7 +163,7 @@ export default function InventoryReport() {
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <BreadcrumbsCustom sx={sxNoPrint} />
+        <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" sx={sxNoPrint}>
           Reporte del inventario
         </Typography>

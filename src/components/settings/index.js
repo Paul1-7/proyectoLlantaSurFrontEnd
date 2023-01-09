@@ -47,6 +47,7 @@ export default function Settings() {
           right: 0,
           position: 'fixed',
           zIndex: 2001,
+          displayPrint: 'none',
           ...(open && { right: 12 })
         }}
       >
