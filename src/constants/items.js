@@ -22,48 +22,4 @@ const ITEMS_SELECTS = [
   }
 ];
 
-const ITEM_INVENTORY_REPORT_CRITERIA = [
-  {
-    id: '2',
-    name: 'por orden alfabético'
-  },
-  {
-    id: '3',
-    name: 'por cantidad de stock'
-  },
-  {
-    id: '4',
-    name: 'por categoría'
-  },
-  {
-    id: '5',
-    name: 'por proveedores'
-  }
-];
-
-const ITEM_INVENTORY_REPORT_SUBSIDIARIES = [
-  {
-    id: '1',
-    name: 'Todas las sucursales'
-  }
-];
-
-const COLUMN_INVENTORY_REPORT_BY_DEFAULT = [
-  'N°',
-  'Nombre',
-  'Precio de compra',
-  'Precio de venta',
-  'Fecha',
-  'Categoria',
-  'Marca',
-  'Proveedor'
-];
-
-export {
-  ITEMS_RADIO_GROUP,
-  ITEMS_SELECTS,
-  ITEM_INVENTORY_REPORT_CRITERIA,
-  ITEM_INVENTORY_REPORT_SUBSIDIARIES,
-  DEFAULT_VALUE_ITEM,
-  COLUMN_INVENTORY_REPORT_BY_DEFAULT
-};
+export { ITEMS_RADIO_GROUP, ITEMS_SELECTS, DEFAULT_VALUE_ITEM };

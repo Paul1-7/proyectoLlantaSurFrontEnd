@@ -16,25 +16,26 @@ import {
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
 import axios from 'apis/apis';
+import CsvDownloader from 'react-csv-downloader';
 import useSettings from 'hooks/useSettings';
 import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
 import { PictureAsPdf, TableView } from '@material-ui/icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { FormProvider, useForm } from 'react-hook-form';
 import Controls from 'components/forms/Control';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
-import {
-  COLUMN_INVENTORY_REPORT_BY_DEFAULT,
-  DEFAULT_VALUE_ITEM,
-  ITEM_INVENTORY_REPORT_CRITERIA,
-  ITEM_INVENTORY_REPORT_SUBSIDIARIES
-} from 'constants/items';
+import { DEFAULT_VALUE_ITEM } from 'constants/items';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { usePrint } from 'hooks/usePrint';
-import { CSVDownload, CSVLink } from 'react-csv';
+import {
+  COLUMN_INVENTORY_REPORT_BY_DEFAULT,
+  ID_CSV_PRODUCT,
+  ITEM_INVENTORY_REPORT_CRITERIA,
+  ITEM_INVENTORY_REPORT_SUBSIDIARIES
+} from 'constants/inventaryReport';
 
 const customDataSubsidiary = ({ data }) => {
   const newData = data.map(({ id, nombre }) => ({ id, name: nombre }));
@@ -59,16 +60,27 @@ const styleTableCell = {
   }
 };
 
-const FILENAME = `ReporteInventario-${new Date().toLocaleDateString()}`;
-
 export default function InventoryReport() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [showAllRows, setShowAllRows] = useState(true);
-  const [dataToCSV, setDataToCSV] = useState([]);
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
   const [resGetSubsidiary, errorGetSubsidiary, loadingGetSubsidiary, axiosFetchGetSubsidiary] =
     useAxios(customDataSubsidiary);
+
+  const methods = useForm({
+    resolver: yupResolver(schema.inventaryReport),
+    defaultValues: initialForm,
+    mode: 'all',
+    criteriaMode: 'all'
+  });
+
+  const criterio = methods.watch('criterio');
+  const sucursal = methods.watch('sucursal');
+
+  const nameCriteria = ITEM_INVENTORY_REPORT_CRITERIA.find(({ id }) => id === criterio)?.name;
+  const FILENAME = `ReporteInventario-${nameCriteria}`;
+
   const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({ fileName: FILENAME });
   const { sucursales = [] } = resGet?.at(0) ?? {};
 
@@ -81,16 +93,6 @@ export default function InventoryReport() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const methods = useForm({
-    resolver: yupResolver(schema.inventaryReport),
-    defaultValues: initialForm,
-    mode: 'all',
-    criteriaMode: 'all'
-  });
-
-  const criterio = methods.watch('criterio');
-  const sucursal = methods.watch('sucursal');
 
   useEffect(() => {
     if (criterio === DEFAULT_VALUE_ITEM || sucursal === DEFAULT_VALUE_ITEM) return;
@@ -127,37 +129,31 @@ export default function InventoryReport() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorGet]);
 
-  const filterProductsValues = (product) => {
-    const data = Object.entries(product).filter(([key]) => key !== 'id' && key !== 'sucursales');
-
-    return Object.fromEntries(data);
+  const getStockSubsidiariesToCSV = (subsidiaries, columnsName) => {
+    const productEntries = subsidiaries.map(({ stock }, index) => [columnsName[index].displayname, stock]);
+    return Object.fromEntries(productEntries);
   };
 
-  const transformProductsData = (products) =>
-    products.map((product) => {
-      const filterProduct = filterProductsValues(product);
-      const objectValues = Object.values(filterProduct);
+  const transformProductsData = (products, columnsName) =>
+    products.map((product) => ({
+      Nombre: product.nombre,
+      'Precio de compra': product.precioCompra,
+      'Precio de venta': product.precioVenta,
+      Fecha: new Date(product.fecha).toLocaleDateString(),
+      Categoria: product.categoria.nombre,
+      Marca: product.marca.nombre,
+      Proveedor: product.proveedor.nombre,
+      ...getStockSubsidiariesToCSV(product.sucursalesProductos, columnsName)
+    }));
 
-      const transformedValues = objectValues.map((value) => {
-        if (typeof value === 'object' && !Array.isArray(value)) {
-          return Object.values(value).at(0);
-        }
-        if (Array.isArray(value)) {
-          return value.map((item) => Object.values(item).at(0)).at(0);
-        }
+  const handleDataCSV = () => {
+    const nameColumns =
+      sucursales.length > 1
+        ? sucursales.map(({ nombre }, index) => ({ id: `${ID_CSV_PRODUCT}-${index}`, displayname: nombre }))
+        : [{ id: ID_CSV_PRODUCT, displayname: resGetSubsidiary.find(({ id }) => id === sucursal).name }];
 
-        return value;
-      });
-      return transformedValues;
-    });
-
-  const handleCSV = () => {
-    const columsNameByDefault = COLUMN_INVENTORY_REPORT_BY_DEFAULT.slice(1);
-    const nameColumns = sucursales.length > 1 ? sucursales.map(({ nombre }) => nombre) : ['Cantidad'];
-
-    setDataToCSV([[...columsNameByDefault, ...nameColumns], ...transformProductsData(resGet)]);
+    return transformProductsData(resGet, nameColumns);
   };
-
   return (
     <Page title="Reporte del inventario">
       <Backdrop
@@ -193,11 +189,11 @@ export default function InventoryReport() {
                 <Button type="button" startIcon={<PictureAsPdf />} variant="outlined" onClick={handlePrint}>
                   Reporte en PDF
                 </Button>
-                <CSVLink data={dataToCSV}>
-                  <Button startIcon={<TableView />} variant="outlined" onClick={handleCSV}>
+                <CsvDownloader datas={handleDataCSV} filename={FILENAME} extension=".csv" separator=",">
+                  <Button startIcon={<TableView />} variant="outlined">
                     Reporte en CSV
                   </Button>
-                </CSVLink>
+                </CsvDownloader>
               </Box>
             )}
           </form>
