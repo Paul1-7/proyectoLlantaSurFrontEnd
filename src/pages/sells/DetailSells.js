@@ -42,8 +42,10 @@ export default function DetailSeel() {
   const { themeStretch } = useSettings();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
-  const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({ fileName: 'detalleVenta' });
   const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios();
+  const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({
+    fileName: `Factura-${resGetSale?.cliente?.nombre ?? ''}`
+  });
   const [
     resGetBusinessData,
     errorGetBusinessData,
@@ -113,177 +115,179 @@ export default function DetailSeel() {
         <Button onClick={handlePrint} variant="outlined">
           Imprimir factura
         </Button>
-        <Fieldset title="Datos de la venta">
-          <Grid
-            ref={componentToPrintRef}
-            sx={{
-              '@media print': {
-                padding: '2rem'
-              },
-              minWidth: '720px'
-            }}
-          >
-            <Grid container wrap="wrap" justifyContent="space-between">
-              <Grid item>
-                <Typography variant="subtitle1" align="center">
-                  {resGetBusinessData.nombre}
-                </Typography>
-                <Typography variant="subtitle1" align="center">
-                  Casa Matriz
-                </Typography>
-                <Typography variant="body2" align="center">
-                  {resGetBusinessData.direccion}
-                </Typography>
-                <Typography variant="body2" align="center">
-                  {`Teléfono: ${resGetBusinessData.tel}`}
-                </Typography>
-                <Typography variant="body2" align="center" paragraph>
-                  {resGetBusinessData.ciudad}
+        {!Array.isArray(resGetSale) && (
+          <Fieldset title="Datos de la venta">
+            <Grid
+              ref={componentToPrintRef}
+              sx={{
+                '@media print': {
+                  padding: '2rem'
+                },
+                minWidth: '720px'
+              }}
+            >
+              <Grid container wrap="wrap" justifyContent="space-between">
+                <Grid item>
+                  <Typography variant="subtitle1" align="center">
+                    {resGetBusinessData.nombre}
+                  </Typography>
+                  <Typography variant="subtitle1" align="center">
+                    Casa Matriz
+                  </Typography>
+                  <Typography variant="body2" align="center">
+                    {resGetBusinessData.direccion}
+                  </Typography>
+                  <Typography variant="body2" align="center">
+                    {`Teléfono: ${resGetBusinessData.tel}`}
+                  </Typography>
+                  <Typography variant="body2" align="center" paragraph>
+                    {resGetBusinessData.ciudad}
+                  </Typography>
+                </Grid>
+                <Grid item container width={250}>
+                  <Grid item xs={6}>
+                    <Typography variant="subtitle2">NIT</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">{resGetBusinessData.numDoc}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="subtitle2">Factura N°</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">{resGetSale?.codVenta ?? ''}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="subtitle2">CUF</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">{resGetBusinessData.cuf}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="subtitle2">ACTIVIDAD</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2">{resGetBusinessData.actividadEco}</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid>
+                <Typography variant="h3" align="center" paragraph>
+                  Factura
                 </Typography>
               </Grid>
-              <Grid item container width={250}>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle2">NIT</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">{resGetBusinessData.numDoc}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle2">Factura N°</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">{resGetSale?.codVenta ?? ''}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle2">CUF</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">{resGetBusinessData.cuf}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle2">ACTIVIDAD</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2">{resGetBusinessData.actividadEco}</Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid>
-              <Typography variant="h3" align="center" paragraph>
-                Factura
-              </Typography>
-            </Grid>
-            <Grid>
-              <Typography variant="h6" align="center" paragraph>
-                (Con Derecho a Credito Fiscal)
-              </Typography>
-            </Grid>
-            <Grid container>
-              <Grid item xs={6}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Fecha: </span>
-                  {new Date(resGetSale?.fecha).toLocaleDateString()}
+              <Grid>
+                <Typography variant="h6" align="center" paragraph>
+                  (Con Derecho a Credito Fiscal)
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>NIT/CI/CEX: </span>
-                  {resGetSale?.cliente?.ciNit ?? ''}
-                </Typography>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography component="h3">
+                    <span style={{ fontWeight: 600 }}>Fecha: </span>
+                    {new Date(resGetSale?.fecha).toLocaleDateString()}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography component="h3">
+                    <span style={{ fontWeight: 600 }}>NIT/CI/CEX: </span>
+                    {resGetSale?.cliente?.ciNit ?? ''}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography component="h3">
+                    <span style={{ fontWeight: 600 }}>Nombre/Razon social: </span>
+                    {resGetSale?.cliente?.nombre ?? ''}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sx={sxNoPrint}>
+                  <Typography component="h3">
+                    <span style={{ fontWeight: 600 }}>Vendedor: </span>
+                    {resGetSale?.vendedor?.nombre ?? ''}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sx={sxNoPrint}>
+                  <Typography component="h3">
+                    <span style={{ fontWeight: 600 }}>Método de pago: </span>
+                    {paymentMethods?.[resGetSale?.tipoVenta]?.name ?? ''}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sx={sxNoPrint}>
+                  <Typography component="h3">
+                    <span style={{ fontWeight: 600 }}>Tipo de venta: </span>
+                    {salesTypes?.[resGetSale?.tipoVenta]?.name ?? ''}
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Nombre/Razon social: </span>
-                  {resGetSale?.cliente?.nombre ?? ''}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={sxNoPrint}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Vendedor: </span>
-                  {resGetSale?.vendedor?.nombre ?? ''}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={sxNoPrint}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Método de pago: </span>
-                  {paymentMethods?.[resGetSale?.tipoVenta]?.name ?? ''}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={sxNoPrint}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Tipo de venta: </span>
-                  {salesTypes?.[resGetSale?.tipoVenta]?.name ?? ''}
-                </Typography>
-              </Grid>
-            </Grid>
-            <TableContainer sx={{ paddingTop: '1rem' }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>PRODUCTO</TableCell>
-                    <TableCell align="center">CANTIDAD</TableCell>
-                    <TableCell align="center">PRECIO UNITARIO</TableCell>
-                    <TableCell align="center">SUBTOTAL</TableCell>
-                  </TableRow>
-                </TableHead>
-                {!Array.isArray(resGetSale) && (
-                  <TableBody>
-                    {resGetSale.detalle.map(({ productos, cantidad, precioUni }, index) => (
-                      <TableRow
-                        key={index}
-                        sx={{
-                          '&:last-child td, &:last-child th': { border: 0 }
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {productos.nombre}
-                        </TableCell>
-                        <TableCell align="center">{cantidad}</TableCell>
-                        <TableCell align="center">{precioUni}</TableCell>
-                        <TableCell align="center">{(precioUni * cantidad).toFixed(2)}</TableCell>
-                      </TableRow>
-                    ))}
+              <TableContainer sx={{ paddingTop: '1rem' }}>
+                <Table>
+                  <TableHead>
                     <TableRow>
-                      <TableCell
-                        colSpan={2}
-                        sx={{
-                          borderBottom: 'none',
-                          '@media print': {
-                            borderBottom: 'none',
-                            borderLeft: 'none'
-                          }
-                        }}
-                      />
-                      <TableCell align="center" sx={{ fontWeight: '700' }}>
-                        TOTAL
-                      </TableCell>
-                      <TableCell align="center">{getBOBCurrency(total)}</TableCell>
+                      <TableCell>PRODUCTO</TableCell>
+                      <TableCell align="center">CANTIDAD</TableCell>
+                      <TableCell align="center">PRECIO UNITARIO</TableCell>
+                      <TableCell align="center">SUBTOTAL</TableCell>
                     </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-            <Grid>
-              <Typography sx={{ fontWeight: '700', pt: 1 }} variant="body2" paragraph>
-                {`Son: ${conversorNumerico.convertToText(parseInt(total, 10))} ${
-                  (total - parseInt(total, 10)).toFixed(2) * 100
-                }/100 Bolivianos`}
-              </Typography>
+                  </TableHead>
+                  {!Array.isArray(resGetSale) && (
+                    <TableBody>
+                      {resGetSale.detalle.map(({ productos, cantidad, precioUni }, index) => (
+                        <TableRow
+                          key={index}
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 }
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {productos.nombre}
+                          </TableCell>
+                          <TableCell align="center">{cantidad}</TableCell>
+                          <TableCell align="center">{precioUni}</TableCell>
+                          <TableCell align="center">{(precioUni * cantidad).toFixed(2)}</TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow>
+                        <TableCell
+                          colSpan={2}
+                          sx={{
+                            borderBottom: 'none',
+                            '@media print': {
+                              borderBottom: 'none',
+                              borderLeft: 'none'
+                            }
+                          }}
+                        />
+                        <TableCell align="center" sx={{ fontWeight: '700' }}>
+                          TOTAL
+                        </TableCell>
+                        <TableCell align="center">{getBOBCurrency(total)}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+              <Grid>
+                <Typography sx={{ fontWeight: '700', pt: 1 }} variant="body2" paragraph>
+                  {`Son: ${conversorNumerico.convertToText(parseInt(total, 10))} ${
+                    (total - parseInt(total, 10)).toFixed(2) * 100
+                  }/100 Bolivianos`}
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography variant="body2" paragraph align="center" sx={{ textTransform: 'uppercase' }}>
+                  "ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE
+                  ACUERDO A LEY"
+                </Typography>
+              </Grid>
+              <Grid>
+                <Typography variant="caption" align="center" paragraph>
+                  Ley N° 453: Tienes derecho a recibir información sobre las caracteristicas y contenidos de los
+                  servicios que utilices
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid>
-              <Typography variant="body2" paragraph align="center" sx={{ textTransform: 'uppercase' }}>
-                "ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE
-                ACUERDO A LEY"
-              </Typography>
-            </Grid>
-            <Grid>
-              <Typography variant="caption" align="center" paragraph>
-                Ley N° 453: Tienes derecho a recibir información sobre las caracteristicas y contenidos de los servicios
-                que utilices
-              </Typography>
-            </Grid>
-          </Grid>
-        </Fieldset>
+          </Fieldset>
+        )}
       </Container>
     </Page>
   );
