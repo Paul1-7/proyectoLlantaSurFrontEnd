@@ -11,12 +11,10 @@ Logo.propTypes = {
 
 export default function Logo({ sx }) {
   const theme = useTheme();
-  const PRIMARY_LIGHT = theme.palette.primary.light;
   const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_DARK = theme.palette.primary.dark;
 
   return (
-    <Box sx={{ width: 150, height: 80, ...sx }}>
+    <Box sx={{ width: 150, height: 80, display: 'flex', alignItems: 'center', ...sx }}>
       <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="50px" viewBox="0 0 194.73 71.7">
         <defs>
           <path id="b" d="M-2.67 14.56h41.3v11.59h-41.3z" />
