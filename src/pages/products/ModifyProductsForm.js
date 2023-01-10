@@ -69,14 +69,15 @@ export default function ModifyProductForm() {
   const onSubmit = (data) => {
     const formData = new FormData();
 
-    for (const [key, value] of Object.entries(data)) {
+    Object.entries(data).forEach(([key, value]) => {
       if (key === 'imagen' && value?.file instanceof File) {
         formData.append('imagen', value?.file, value?.file?.name);
       }
       if (key === 'sucursales') {
         formData.append(key, JSON.stringify(value));
-      } else formData.append(key, value);
-    }
+      }
+      formData.append(key, value);
+    });
 
     axiosFetchPut({
       axiosInstance: axios,
@@ -122,11 +123,11 @@ export default function ModifyProductForm() {
       const keys = Object.keys(initialForm);
       const objectArray = Object.entries(resGet);
 
-      for (const [key, value] of objectArray) {
+      objectArray.forEach(([key, value]) => {
         if (keys.includes(key) && key !== 'sucursales') {
           methods.setValue(key, String(value), { shouldValidate: true });
         }
-      }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resGet, resGetBrand, resGetProvider, resGetCategory]);

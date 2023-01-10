@@ -71,14 +71,14 @@ export default function AddBrandForm() {
   const onSubmit = (data) => {
     const formData = new FormData();
 
-    for (const [key, value] of Object.entries(data)) {
+    Object.entries(data).forEach(([key, value]) => {
       if (key === 'imagen' && value !== null) {
         formData.append('imagen', value?.file, value?.file?.name);
       }
       if (key === 'sucursales') {
         formData.append(key, JSON.stringify(value));
       } else formData.append(key, value);
-    }
+    });
 
     axiosFetchPost({
       axiosInstance: axios,
