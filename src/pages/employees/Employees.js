@@ -108,8 +108,8 @@ export default function Employees() {
         <Typography variant="h3" component="h1" paragraph>
           Empleados
         </Typography>
-        <Typography gutterBottom>Administra la informacion de los empleados</Typography>
-        <Grid container justifyContent="flex-end">
+        <Typography sx={{ marginBottom: '1.5rem' }}>Administra la informacion de los empleados</Typography>
+        <Grid container justifyContent={{ sm: 'flex-end' }} sx={{ marginBottom: '3rem' }}>
           <Grid item>
             <Button
               size="medium"

@@ -92,9 +92,9 @@ export default function Categories() {
         <Typography variant="h3" component="h1" paragraph>
           Categorias
         </Typography>
-        <Typography gutterBottom>Administra la informacion de las categorias</Typography>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
+        <Typography sx={{ marginBottom: '1.5rem' }}>Administra la informacion de las categorias</Typography>
+        <Grid container justifyContent={{ sm: 'flex-end' }} sx={{ marginBottom: '3rem' }}>
+          <Grid>
             <Button
               size="medium"
               variant="outlined"

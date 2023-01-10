@@ -126,8 +126,8 @@ export default function Products() {
         <Typography variant="h3" component="h1" paragraph>
           Productos
         </Typography>
-        <Typography gutterBottom>Administra la informacion de los productos</Typography>
-        <Grid container justifyContent="flex-end">
+        <Typography sx={{ marginBottom: '1.5rem' }}>Administra la informacion de los productos</Typography>
+        <Grid container justifyContent={{ sm: 'flex-end' }} sx={{ marginBottom: '3rem' }}>
           <Grid item>
             <Button
               size="medium"

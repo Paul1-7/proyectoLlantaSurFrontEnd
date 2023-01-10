@@ -104,10 +104,10 @@ const DataTable = ({
   }
 
   return (
-    <Box sx={{ marginTop: '16px' }}>
+    <Box>
       <SearchBar setSearchQuery={setSearchQuery} sx={{ marginBottom: '16px' }} />
       <TableContainer sx={{ minHeight: '25rem' }}>
-        <Table sx={{ minWidth: width || 750 }} aria-labelledby="tableTitle" {...others}>
+        <Table sx={{ minWidth: width || 750, height: '25rem' }} aria-labelledby="tableTitle" {...others}>
           <DataTableHead
             order={order}
             orderBy={orderBy}
