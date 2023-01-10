@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
 import axios from 'apis/apis';
@@ -8,7 +8,7 @@ import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
 import Controls from 'components/forms/Control';
 import Fieldset from 'components/forms/Fieldset';
 import { LoadingButton } from '@material-ui/lab';
-import { Save } from '@material-ui/icons';
+import { Clear, Save } from '@material-ui/icons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
@@ -20,6 +20,7 @@ import SnackBar from 'components/SnackBar';
 import DataTable from 'components/dataTable/DataTable';
 import { COLUMNS } from 'constants/dataTable';
 import { DataTableProvider } from 'contexts/DataTableContext';
+import { Link } from 'react-router-dom';
 import ProductsSell from './ProductSell';
 
 const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
@@ -186,7 +187,16 @@ export default function AddSellsForm() {
                   </Grid>
                 </Grid>
               </Fieldset>
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                <Button
+                  startIcon={<Clear />}
+                  variant="outlined"
+                  color="error"
+                  LinkComponent={Link}
+                  to={PATH_MODULES.sells.root}
+                >
+                  Cancelar
+                </Button>
                 <LoadingButton
                   loading={loadingPost}
                   type="submit"

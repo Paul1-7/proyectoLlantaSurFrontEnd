@@ -40,14 +40,6 @@ const ProductsSell = ({ data = null }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dataRow]);
 
-  // console.log();
-  // watch(
-  //   ('productos',
-  //   (data) => {
-  //     console.log(data);
-  //   })
-  // );
-
   useEffect(() => {
     if (watch.length <= 0) return;
 
@@ -66,18 +58,6 @@ const ProductsSell = ({ data = null }) => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch]);
-
-  // useEffect(() => {
-  //   if (resGet.length > 0) {
-  //     const idSucArray = data.map(({ idSuc }) => idSuc);
-  //     resGet.forEach(({ nombre, id: idSuc }, index) => {
-  //       console.log(data[index]);
-  //       if (idSucArray.includes(idSuc)) append(data[index]);
-  //       else append({ ...initialForm, nombre, idSuc });
-  //     });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [resGet]);
 
   return (
     <>

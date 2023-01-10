@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
+import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
 import useAxios from 'hooks/useAxios';
 import Page from 'components/Page';
 import axios from 'apis/apis';
@@ -8,7 +8,7 @@ import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
 import Controls from 'components/forms/Control';
 import Fieldset from 'components/forms/Fieldset';
 import { LoadingButton } from '@material-ui/lab';
-import { Save } from '@material-ui/icons';
+import { Clear, Save } from '@material-ui/icons';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from 'schemas';
@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from 'components/SnackBar';
 import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from 'constants/items';
+import { Link } from 'react-router-dom';
 
 const initialForm = {
   usuario: '',
@@ -83,11 +84,11 @@ export default function ModifyEmployeesForm() {
       const keys = Object.keys(initialForm);
       const objectArray = Object.entries(resGet);
 
-      for (const [key, value] of objectArray) {
+      objectArray.forEach(([key, value]) => {
         if (keys.includes(key)) {
           methods.setValue(key, key !== 'roles' ? String(value ?? '') : value, { shouldValidate: true });
         }
-      }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resGet]);
@@ -187,7 +188,16 @@ export default function ModifyEmployeesForm() {
                 </Grid>
               </Grid>
             </Fieldset>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+              <Button
+                startIcon={<Clear />}
+                variant="outlined"
+                color="error"
+                LinkComponent={Link}
+                to={PATH_MODULES.employees.root}
+              >
+                Cancelar
+              </Button>
               <LoadingButton
                 loading={loadingPut}
                 type="submit"
