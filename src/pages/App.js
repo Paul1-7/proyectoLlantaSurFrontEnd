@@ -42,6 +42,7 @@ export default function App() {
         <Typography variant="h3" component="h1" paragraph>
           Page Two
         </Typography>
+
         <Typography gutterBottom>
           Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod
           ligula urna in dolor. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Phasellus blandit leo

@@ -121,9 +121,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           })
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" alignItems="center" justifyContent="space-evenly">
           <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-            <Logo />
+            <Logo sx={{ display: 'flex', alignItems: 'center' }} />
           </Box>
 
           <MHidden width="lgDown">

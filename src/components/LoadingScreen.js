@@ -70,8 +70,10 @@ export default function LoadingScreen({ ...other }) {
       <ProgressBar />
 
       <motion.div
-        initial={{ rotateY: 0 }}
-        animate={{ rotateY: 360 }}
+        initial={{ rotateX: 0 }}
+        animate={{
+          scale: [1, 1.2, 1.2, 1, 1]
+        }}
         transition={{
           duration: 2,
           ease: 'easeInOut',
@@ -79,9 +81,8 @@ export default function LoadingScreen({ ...other }) {
           repeat: Infinity
         }}
       >
-        <Logo sx={{ width: 64, height: 64 }} />
+        <Logo sx={{ width: 80, height: 80, display: 'flex', alignItems: 'center' }} />
       </motion.div>
-
       <Box
         component={motion.div}
         animate={{
