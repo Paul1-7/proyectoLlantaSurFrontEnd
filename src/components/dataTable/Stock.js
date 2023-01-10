@@ -19,6 +19,6 @@ export default Stock;
 
 Stock.propTypes = {
   value: PropTypes.any.isRequired,
-  minStock: PropTypes.number.isRequired,
+  minStock: PropTypes.number,
   align: PropTypes.string
 };

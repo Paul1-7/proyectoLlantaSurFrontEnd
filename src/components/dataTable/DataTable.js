@@ -106,8 +106,8 @@ const DataTable = ({
   return (
     <Box sx={{ marginTop: '16px' }}>
       <SearchBar setSearchQuery={setSearchQuery} sx={{ marginBottom: '16px' }} />
-      <TableContainer>
-        <Table sx={{ minWidth: width || 750, height: 350 }} aria-labelledby="tableTitle" {...others}>
+      <TableContainer sx={{ minHeight: '25rem' }}>
+        <Table sx={{ minWidth: width || 750 }} aria-labelledby="tableTitle" {...others}>
           <DataTableHead
             order={order}
             orderBy={orderBy}
@@ -228,7 +228,7 @@ const DataTable = ({
               rows.length !== 0 &&
               arrayEmpty.map((item) => (
                 <TableRow key={item} sx={{ height: 55 }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={6} sx={{ border: 'none' }} />
                 </TableRow>
               ))}
           </TableBody>

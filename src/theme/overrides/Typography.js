@@ -1,10 +1,4 @@
 // ----------------------------------------------------------------------
-const printStyles = {
-  '@media print': {
-    color: '#000'
-  }
-};
-
 export default function Typography(theme) {
   return {
     MuiTypography: {
