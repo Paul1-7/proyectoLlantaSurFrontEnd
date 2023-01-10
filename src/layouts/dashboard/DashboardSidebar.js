@@ -5,6 +5,7 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Link, Stack, Avatar, Drawer, Tooltip, Typography, CardActionArea } from '@material-ui/core';
 // hooks
+import { height } from '@material-ui/system';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import Logo from '../../components/Logo';
@@ -123,7 +124,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       >
         <Stack direction="row" alignItems="center" justifyContent="space-evenly">
           <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-            <Logo sx={{ display: 'flex', alignItems: 'center' }} />
+            <Logo sx={{ display: 'flex', alignItems: 'center', ...(isCollapse && { height: '30px' }) }} />
           </Box>
 
           <MHidden width="lgDown">
