@@ -65,5 +65,5 @@ const ProductsSubsidiaries = ({ data = [] }) => {
 export default ProductsSubsidiaries;
 
 ProductsSubsidiaries.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired
+  data: PropTypes.arrayOf(PropTypes.object)
 };

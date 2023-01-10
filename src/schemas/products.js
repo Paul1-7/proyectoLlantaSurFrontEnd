@@ -9,8 +9,17 @@ const subsidiaries = yup.object().shape({
 
 const products = yup.object().shape({
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
-  precioCompra: yup.string().matches(regex.float, msg.float).required(),
-  precioVenta: yup.string().matches(regex.float, msg.float).required(),
+  precioCompra: yup.number().typeError('El precio de compra debe ser un número').required(),
+  precioVenta: yup
+    .number()
+    .typeError('El precio de venta debe ser un número')
+    .required()
+    .when('precioCompra', (precioCompra, schema) => {
+      if (precioCompra) {
+        return schema.moreThan(precioCompra, 'El precio de venta debe ser mayor al precio de compra');
+      }
+      return schema;
+    }),
   fecha: yup.date().typeError('la fecha introducida es incorrecta').required(),
   idProv: yup
     .string()
