@@ -9,7 +9,7 @@ const Stock = ({ value, align, minStock }) => {
   const SUCCESS = theme.palette.success.main;
 
   return (
-    <TableCell align={align} sx={{ color: minStock < value ? SUCCESS : ERROR }}>
+    <TableCell align={align} sx={{ color: minStock < Number(value) ? SUCCESS : ERROR }}>
       {value}
     </TableCell>
   );
@@ -18,7 +18,7 @@ const Stock = ({ value, align, minStock }) => {
 export default Stock;
 
 Stock.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.any.isRequired,
   minStock: PropTypes.number.isRequired,
   align: PropTypes.string
 };

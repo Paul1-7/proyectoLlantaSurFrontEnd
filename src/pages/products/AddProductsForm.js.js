@@ -24,7 +24,7 @@ const initialForm = {
   nombre: '',
   precioCompra: '',
   precioVenta: '',
-  fecha: new Date().toLocaleDateString(),
+  fecha: new Date(),
   idProv: '0',
   idCat: '0',
   idMarca: '0',
