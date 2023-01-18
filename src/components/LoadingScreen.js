@@ -59,6 +59,10 @@ function ProgressBar() {
 
   useEffect(() => {
     NProgress.done();
+
+    return () => {
+      NProgress.remove();
+    };
   }, []);
 
   return null;
