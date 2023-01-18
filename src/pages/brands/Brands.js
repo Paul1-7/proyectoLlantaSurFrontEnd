@@ -22,7 +22,7 @@ const buttonsActions = { edit: true, remove: true, detail: false };
 
 export default function Brands() {
   const { themeStretch } = useSettings();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios();
@@ -40,6 +40,7 @@ export default function Brands() {
   useEffect(() => {
     let message = null;
     let severity = 'success';
+    let keySnackBar;
     if (location.state?.message) {
       message = location.state.message;
       navigate(location.pathname, { replace: true });
@@ -56,7 +57,7 @@ export default function Brands() {
     }
 
     if (message) {
-      enqueueSnackbar(message, {
+      keySnackBar = enqueueSnackbar(message, {
         anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
         autoHideDuration: 4000,
         variant: severity
@@ -64,6 +65,10 @@ export default function Brands() {
       message = null;
     }
     setOpenDialog(false);
+
+    return () => {
+      closeSnackbar(keySnackBar);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, resDelete, errorDelete]);
 
