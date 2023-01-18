@@ -71,9 +71,7 @@ export default function MainNavbar() {
           <RouterLink to="/">
             <Logo />
           </RouterLink>
-          <Label color="info" sx={{ ml: 1 }}>
-            Simple 2.5.0
-          </Label>
+
           <Box sx={{ flexGrow: 1 }} />
 
           <MHidden width="mdDown">
