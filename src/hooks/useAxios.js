@@ -41,7 +41,7 @@ const useAxios = (callback = null) => {
     () =>
       // useEffect cleanup function
       () =>
-        controller && controller.abort(),
+        controller?.abort(),
     [controller]
   );
 
