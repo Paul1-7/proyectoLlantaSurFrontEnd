@@ -1,13 +1,17 @@
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
+import { Box, Button, AppBar, Toolbar, Container, Badge, Icon } from '@material-ui/core';
 // hooks
+import { ShoppingCart } from '@material-ui/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTotalQuantity } from 'redux/slices/productsShop';
+import { useEffect } from 'react';
 import useOffSetTop from '../../hooks/useOffSetTop';
 // components
 import Logo from '../../components/Logo';
 import Label from '../../components/Label';
-import { MHidden } from '../../components/@material-extend';
+import { MHidden, MIconButton } from '../../components/@material-extend';
 //
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
@@ -45,9 +49,15 @@ const ToolbarShadowStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function MainNavbar() {
+  const { checkout } = useSelector(({ products }) => products);
+  const dispatch = useDispatch();
   const isOffset = useOffSetTop(100);
   const { pathname } = useLocation();
   const isHome = pathname === '/';
+
+  useEffect(() => {
+    dispatch(getTotalQuantity());
+  }, [checkout.cart]);
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -77,6 +87,11 @@ export default function MainNavbar() {
           <MHidden width="mdDown">
             <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
           </MHidden>
+          <MIconButton size="large" color="default">
+            <Badge badgeContent={checkout.totalQuantity} color="error">
+              <ShoppingCart />
+            </Badge>
+          </MIconButton>
 
           <Button variant="contained" target="_blank" href="https://material-ui.com/store/items/minimal-dashboard/">
             Purchase Now
