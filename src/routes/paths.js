@@ -63,8 +63,8 @@ export const PATH_MODULES = {
     invoiceBatching: `${ROOTS_DASHBOARD}/administracion/dosificacion-facturas`
   },
   shop: {
-    root: path('/administracion'),
-    products: `${ROOTS_DASHBOARD}/productos`
+    root: path('/shop'),
+    products: `/shop/productos`
   },
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
