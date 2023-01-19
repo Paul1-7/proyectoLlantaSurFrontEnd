@@ -7,23 +7,10 @@ import ShopProductList from 'components/shop/ShopProductList';
 import ShopProductSearch from 'components/shop/ShopProductSearch';
 import ShopTagFiltered from 'components/shop/ShopTagFiltered';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Carousel } from 'react-responsive-carousel';
 import { useGetProductsQuery } from 'redux/api/productApi';
 import { getProducts } from 'redux/slices/productsShop';
-
-// const RootStyle = styled(Page)({
-//   height: '100%'
-// });
-
-// const ContentStyle = styled('div')(({ theme }) => ({
-//   overflow: 'hidden',
-//   position: 'relative',
-//   backgroundColor: theme.palette.background.default
-// }));
-
-// ----------------------------------------------------------------------
 
 export default function Shop() {
   const dispatch = useDispatch();
@@ -87,7 +74,7 @@ export default function Shop() {
             <ShopProductSort />
           </Stack> */}
         </Stack>
-        <ShopMainSection />
+        <ShopMainSection titleSidebar="Categorias" />
         <Stack sx={{ mb: 3 }}>
           {!isDefault && (
             <>

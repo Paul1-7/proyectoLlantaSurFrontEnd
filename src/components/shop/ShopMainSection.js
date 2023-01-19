@@ -4,6 +4,7 @@ import { Box, Button, Card, styled } from '@material-ui/core';
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import Image from 'components/Image';
+import ShopSidebarMain from './ShopSidebarMain';
 
 const RootGrid = styled('section')(({ theme }) => ({
   display: 'grid',
@@ -25,7 +26,7 @@ const RootGrid = styled('section')(({ theme }) => ({
   }
 }));
 
-const ShopMainSection = ({ items }) => {
+const ShopMainSection = ({ items, titleSidebar }) => {
   const a = 0;
   return (
     <RootGrid>
@@ -38,6 +39,8 @@ const ShopMainSection = ({ items }) => {
           useKeyboardArrows
           showStatus={false}
           swipeScrollTolerance={5}
+          interval={4000}
+          transitionTime={1000}
         >
           <Box>
             <Image
@@ -61,11 +64,8 @@ const ShopMainSection = ({ items }) => {
           </Box>
         </Carousel>
       </Card>
-      <Card
-        component="article"
-        sx={{ gridArea: 'sidebar', bgcolor: 'error.main', display: { xs: 'none', md: 'block' } }}
-      >
-        Sidebar
+      <Card component="article" sx={{ gridArea: 'sidebar', display: { xs: 'none', md: 'block' } }}>
+        <ShopSidebarMain title={titleSidebar} />
       </Card>
       <Card component="article" sx={{ gridArea: 'footer', bgcolor: 'warning.dark' }}>
         Footer
@@ -74,6 +74,8 @@ const ShopMainSection = ({ items }) => {
   );
 };
 
-ShopMainSection.propTypes = {};
+ShopMainSection.propTypes = {
+  titleSidebar: PropTypes.string.isRequired
+};
 
 export default ShopMainSection;

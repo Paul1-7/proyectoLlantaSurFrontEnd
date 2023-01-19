@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 
-// @mui
-import { Box, Card, Typography, Stack } from '@mui/material';
-// routes
+import { Card, Typography, Stack } from '@mui/material';
+
 import { PATH_MODULES } from 'routes/paths';
-// utils
-// components
+
 import Label from 'components/Label';
 import Image from 'components/Image';
 import { Link } from 'react-router-dom';
@@ -14,9 +12,6 @@ import { getBOBCurrency } from 'utils/dataHandler';
 import { useDispatch } from 'react-redux';
 import { addCart } from 'redux/slices/productsShop';
 import { MIconButton } from 'components/@material-extend';
-// import { ColorPreview } from 'components/color-utils';
-
-// ----------------------------------------------------------------------
 
 ShopProductCard.propTypes = {
   product: PropTypes.object
