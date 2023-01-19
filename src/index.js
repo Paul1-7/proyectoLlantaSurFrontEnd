@@ -1,5 +1,6 @@
 // scroll bar
 import 'simplebar/src/simplebar.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import ReactDOM from 'react-dom';
 import { StrictMode } from 'react';
@@ -7,6 +8,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 // contexts
 import { SnackbarProvider } from 'notistack';
+import { Provider } from 'react-redux';
+import store, { persistor } from 'redux/store';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 //
@@ -22,9 +26,13 @@ ReactDOM.render(
       <SettingsProvider>
         <CollapseDrawerProvider>
           <BrowserRouter>
-            <SnackbarProvider maxSnack={3}>
-              <App />
-            </SnackbarProvider>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
+                <SnackbarProvider maxSnack={3}>
+                  <App />
+                </SnackbarProvider>
+              </PersistGate>
+            </Provider>
           </BrowserRouter>
         </CollapseDrawerProvider>
       </SettingsProvider>
