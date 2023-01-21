@@ -22,6 +22,7 @@ const ICONS = {
   subsidiary: getIcon('ic_subsidiary'),
   setting: getIcon('ic_setting'),
   sell: getIcon('ic_sell'),
+  discount: getIcon('ic_discount'),
   report: getIcon('ic_analytics')
 };
 
@@ -38,6 +39,7 @@ const sidebarConfig = [
       { title: 'Proveedores', path: PATH_MODULES.providers.root, icon: ICONS.provider },
       { title: 'Sucursales', path: PATH_MODULES.subsidiaries.root, icon: ICONS.subsidiary },
       { title: 'Ventas', path: PATH_MODULES.sells.root, icon: ICONS.sell },
+      { title: 'Descuentos', path: PATH_MODULES.discounts.root, icon: ICONS.discount },
       {
         title: 'Reportes',
         path: PATH_MODULES.reports.root,
