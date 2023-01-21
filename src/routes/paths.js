@@ -51,6 +51,11 @@ export const PATH_MODULES = {
     new: `${ROOTS_DASHBOARD}/ventas/nuevo`,
     modify: `${ROOTS_DASHBOARD}/ventas/modificar`
   },
+  discounts: {
+    root: path(ROOTS_DASHBOARD, '/descuentos'),
+    new: `${ROOTS_DASHBOARD}/descuentos/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/descuentos/modificar`
+  },
   reports: {
     root: path(ROOTS_DASHBOARD, '/reportes'),
     sales: path(ROOTS_DASHBOARD, '/reportes/ventas'),
@@ -69,6 +74,5 @@ export const PATH_MODULES = {
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
   reseñas: path(ROOTS_DASHBOARD, '/reseñas'),
-  descuentos: path(ROOTS_DASHBOARD, '/descuentos'),
   favoritos: path(ROOTS_DASHBOARD, '/favoritos')
 };

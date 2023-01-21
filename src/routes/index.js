@@ -2,6 +2,9 @@ import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import { DataTableProvider } from 'contexts/DataTableContext';
+import Discounts from 'pages/discounts/Discounts';
+import AddDiscountsForm from 'pages/discounts/AddDiscountsForm';
+import ModifyDiscountsForm from 'pages/discounts/ModifyDiscountsForm';
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
@@ -122,6 +125,31 @@ export default function Router() {
         },
         { path: 'sucursales/nuevo', element: <AddSubsidiariesForm /> },
         { path: 'sucursales/modificar/:id', element: <ModifySubsidiariesForm /> },
+        // Discounts
+        {
+          path: 'descuentos',
+          element: (
+            <DataTableProvider>
+              <Discounts />
+            </DataTableProvider>
+          )
+        },
+        {
+          path: 'descuentos/nuevo',
+          element: (
+            <DataTableProvider>
+              <AddDiscountsForm />
+            </DataTableProvider>
+          )
+        },
+        {
+          path: 'descuentos/modificar/:id',
+          element: (
+            <DataTableProvider>
+              <ModifyDiscountsForm />{' '}
+            </DataTableProvider>
+          )
+        },
         // Sells
         {
           path: 'ventas',
