@@ -59,7 +59,6 @@ export default function ModifyBrandForm() {
       method: 'GET',
       url: `/api/v1/marcas/${id}`
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -73,7 +72,6 @@ export default function ModifyBrandForm() {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resGet]);
 
   useEffect(() => {

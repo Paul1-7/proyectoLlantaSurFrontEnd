@@ -33,7 +33,6 @@ const ProductsSubsidiaries = ({ data = [] }) => {
     if (resGet.length > 0) {
       const idSucArray = data.map(({ idSuc }) => idSuc);
       resGet.forEach(({ nombre, id: idSuc }, index) => {
-        console.log(data[index]);
         if (idSucArray.includes(idSuc)) append(data[index]);
         else append({ ...initialForm, nombre, idSuc });
       });

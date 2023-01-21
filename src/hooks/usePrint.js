@@ -8,16 +8,11 @@ export const usePrint = ({ fileName = 'file' } = {}) => {
   const [loadingPrint, setLoadingPrint] = useState(false);
   const [text, setText] = useState('old boring text');
 
-  const handleAfterPrint = useCallback(() => {
-    console.log('`onAfterPrint` called'); // tslint:disable-line no-console
-  }, []);
+  const handleAfterPrint = useCallback(() => {}, []);
 
-  const handleBeforePrint = useCallback(() => {
-    console.log('`onBeforePrint` called'); // tslint:disable-line no-console
-  }, []);
+  const handleBeforePrint = useCallback(() => {}, []);
 
   const handleOnBeforeGetContent = useCallback(() => {
-    console.log('`onBeforeGetContent` called'); // tslint:disable-line no-console
     setLoadingPrint(true);
     setText('Loading new text...');
 
