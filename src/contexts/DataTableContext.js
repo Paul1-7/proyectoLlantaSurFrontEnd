@@ -22,6 +22,18 @@ const DataTableProvider = ({ children }) => {
     setDataRow(data);
   };
 
+  const setDataToDisabledButton = (data) => {
+    let idsData = {};
+    data.forEach(({ id }) => {
+      idsData = { ...idsData, [id]: true };
+    });
+    setDisabledButtons(idsData);
+  };
+
+  const resetDataRow = () => {
+    setDataRow(null);
+  };
+
   const enableButton = (id) => {
     setDisabledButtons({ ...disabledButtons, [id]: false });
     setDataRow(null);
@@ -30,8 +42,10 @@ const DataTableProvider = ({ children }) => {
   const data = {
     disableButton,
     enableButton,
+    setDataToDisabledButton,
     disabledButtons,
     dataRow,
+    resetDataRow,
     handleCloseDialog,
     handleOpenDialog,
     setOpenDialog,

@@ -58,9 +58,19 @@ const COLUMNS = {
     { field: 'cantidad', header: 'cantidad', type: 'stock' },
     { field: 'precio', header: 'precio uni.', type: 'currency' }
   ],
+  productsDiscounts: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'precioVenta', header: 'precio uni.', type: 'currency' }
+  ],
   defectiveProductsToSell: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'stock', header: 'stock', type: '' }
+  ],
+  discounts: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'fechaInicio', header: 'fecha de inicio', type: 'date' },
+    { field: 'fechaFin', header: 'fecha de finalización', type: 'date' },
+    { field: 'estado', header: 'estado', type: 'states' }
   ]
 };
 
