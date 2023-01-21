@@ -48,15 +48,20 @@ const customData = ({ data }) => ({
   }
 });
 
+const getOnlyActiveDatas = ({ data }) => {
+  const newData = data.filter(({ estado }) => estado === 1);
+  return { data: newData };
+};
+
 export default function ModifyProductForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
-  const [resGetBrand, , , axiosFetchGetBrand] = useAxios();
-  const [resGetCategory, , , axiosFetchGetCategory] = useAxios();
-  const [resGetProvider, , , axiosFetchGetProvider] = useAxios();
+  const [resGetBrand, , , axiosFetchGetBrand] = useAxios(getOnlyActiveDatas);
+  const [resGetCategory, , , axiosFetchGetCategory] = useAxios(getOnlyActiveDatas);
+  const [resGetProvider, , , axiosFetchGetProvider] = useAxios(getOnlyActiveDatas);
 
   const id = location.pathname.split('/').pop();
 
@@ -76,10 +81,8 @@ export default function ModifyProductForm() {
       }
       if (key === 'sucursales') {
         formData.append(key, JSON.stringify(value));
-      }
-      formData.append(key, value);
+      } else formData.append(key, value);
     });
-
     axiosFetchPut({
       axiosInstance: axios,
       method: 'PUT',
@@ -110,7 +113,6 @@ export default function ModifyProductForm() {
       method: 'GET',
       url: `/api/v1/productos/${id}`
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -130,7 +132,6 @@ export default function ModifyProductForm() {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resGet, resGetBrand, resGetProvider, resGetCategory]);
 
   useEffect(() => {
@@ -153,7 +154,6 @@ export default function ModifyProductForm() {
         content: (key, message) => <SnackBar id={key} message={message} severity={severity} />
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorPut, errorGet]);
 
   return (

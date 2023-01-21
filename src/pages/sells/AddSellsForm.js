@@ -34,10 +34,12 @@ const initialForm = {
 };
 
 const customDataCustomers = ({ data = [] }) => {
-  const newData = data.map(({ nombre, apellido, ciNit, idUsuario }) => ({
-    nombre: `${nombre} ${apellido}  -  ci: ${ciNit}`,
-    idCliente: idUsuario
-  }));
+  const newData = data
+    .filter(({ estado }) => estado === 1)
+    .map(({ nombre, apellido, ciNit, idUsuario }) => ({
+      nombre: `${nombre} ${apellido}  -  ci: ${ciNit}`,
+      idCliente: idUsuario
+    }));
 
   return { data: newData };
 };
@@ -49,12 +51,14 @@ const currentSubsidiaryStock = (idSuc, subsidiaries) => {
 };
 
 const customDataProducts = ({ data }) => {
-  const newData = data.map(({ id, nombre, precioVenta, sucursales }) => ({
-    id,
-    nombre,
-    precio: precioVenta,
-    cantidad: currentSubsidiaryStock(idSucursalBorrar, sucursales)
-  }));
+  const newData = data
+    .filter(({ estado }) => estado === 1)
+    .map(({ id, nombre, precioVenta, sucursales }) => ({
+      id,
+      nombre,
+      precio: precioVenta,
+      cantidad: currentSubsidiaryStock(idSucursalBorrar, sucursales)
+    }));
 
   return { data: newData };
 };

@@ -34,13 +34,18 @@ const initialForm = {
   estado: '1'
 };
 
+const getOnlyActiveDatas = ({ data }) => {
+  const newData = data.filter(({ estado }) => estado === 1);
+  return { data: newData };
+};
+
 export default function AddBrandForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
-  const [resGetBrand, , , axiosFetchGetBrand] = useAxios();
-  const [resGetCategory, , , axiosFetchGetCategory] = useAxios();
-  const [resGetProvider, , , axiosFetchGetProvider] = useAxios();
+  const [resGetBrand, , , axiosFetchGetBrand] = useAxios(getOnlyActiveDatas);
+  const [resGetCategory, , , axiosFetchGetCategory] = useAxios(getOnlyActiveDatas);
+  const [resGetProvider, , , axiosFetchGetProvider] = useAxios(getOnlyActiveDatas);
 
   useEffect(() => {
     axiosFetchGetBrand({

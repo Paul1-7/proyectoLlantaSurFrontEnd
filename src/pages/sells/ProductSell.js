@@ -44,8 +44,6 @@ const ProductsSell = ({ data = null }) => {
     if (watch.length <= 0) return;
 
     watch.forEach((item, index) => {
-      console.log('TCL: item', item);
-
       if (item.cantidad > item.stock) {
         const msg = `la cantidad del producto ${item.nombre} excede el stock disponible`;
         enqueueSnackbar(msg, {
@@ -69,6 +67,19 @@ const ProductsSell = ({ data = null }) => {
       <Box sx={{ marginTop: '16px' }}>
         {fields.map((item, index) => (
           <Grid container wrap="wrap" spacing={1} key={item.id}>
+            <Grid item xs={12} md={1} sx={{ textAlign: 'center' }}>
+              <MIconButton
+                aria-label="eliminar"
+                color="error"
+                onClick={() => {
+                  const id = watch?.[index].idProd;
+                  remove(index);
+                  enableButton(id);
+                }}
+              >
+                <Clear color="error" />
+              </MIconButton>
+            </Grid>
             <Grid item xs={12} md={6}>
               <Controls.Input label="Producto" disabled name={`productos.${index}.nombre`} isArray />
             </Grid>
@@ -83,18 +94,6 @@ const ProductsSell = ({ data = null }) => {
                 size="small"
                 disabled
               />
-            </Grid>
-            <Grid item xs={12} md={1}>
-              <MIconButton
-                aria-label="eliminar"
-                onClick={() => {
-                  const id = watch?.[index].idProd;
-                  remove(index);
-                  enableButton(id);
-                }}
-              >
-                <Clear color="error" />
-              </MIconButton>
             </Grid>
           </Grid>
         ))}
