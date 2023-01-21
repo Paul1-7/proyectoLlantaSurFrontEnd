@@ -37,7 +37,7 @@ const DatePickerMemo = memo(
                 renderInput={(params) => <TextField fullWidth size="small" {...params} />}
               />
             </LocalizationProvider>
-            <FormHelperText error={errorValue} color="error">
+            <FormHelperText error={!!errorValue} color="error">
               {errorValue?.message ?? ' '}
             </FormHelperText>
           </>
