@@ -17,4 +17,9 @@ const objectByString = (o, s) => {
 
 const getBOBCurrency = (value) => new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB' }).format(value);
 
-export { objectByString, getBOBCurrency };
+const DEFAULT_CONFIG_NOTISTACK = {
+  anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+  autoHideDuration: 4000,
+};
+
+export { objectByString, getBOBCurrency, DEFAULT_CONFIG_NOTISTACK };
