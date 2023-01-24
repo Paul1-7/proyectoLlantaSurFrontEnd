@@ -29,7 +29,7 @@ const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    getProducts: (state, action) => {
+    setProducts: (state, action) => {
       state.products = action.payload;
     },
 
@@ -201,7 +201,7 @@ export default productsSlice.reducer;
 
 // Actions
 export const {
-  getProducts,
+  setProducts,
   addCart,
   getTotalQuantity,
 
