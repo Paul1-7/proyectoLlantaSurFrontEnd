@@ -1,14 +1,14 @@
 // material
-import { styled } from '@material-ui/core/styles';
-import { Box, Grid, Container, Typography } from '@material-ui/core';
+import { styled } from '@mui/material';
+import { Box, Grid, Container, Typography } from '@mui/material';
 //
-import { MotionInView, varFadeInUp, varFadeInDown } from '../../animate';
+import { MotionInView, varFadeInUp, varFadeInDown } from '~/../animate';
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(28, 0),
-  backgroundColor: theme.palette.grey[900]
+  backgroundColor: theme.palette.grey[900],
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -22,8 +22,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
     display: 'inline-flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'flex-start'
-  }
+    alignItems: 'flex-start',
+  },
 }));
 
 // ----------------------------------------------------------------------
@@ -43,7 +43,7 @@ export default function LandingDarkMode() {
             my: 'auto',
             position: 'absolute',
             filter: 'grayscale(1) opacity(48%)',
-            display: { xs: 'none', md: 'block' }
+            display: { xs: 'none', md: 'block' },
           }}
         />
 

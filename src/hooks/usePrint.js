@@ -35,7 +35,7 @@ export const usePrint = ({ fileName = 'file' } = {}) => {
     onBeforeGetContent: handleOnBeforeGetContent,
     onBeforePrint: handleBeforePrint,
     onAfterPrint: handleAfterPrint,
-    removeAfterPrint: true
+    removeAfterPrint: true,
   });
 
   useEffect(() => {
@@ -43,13 +43,5 @@ export const usePrint = ({ fileName = 'file' } = {}) => {
       onBeforeGetContentResolve.current();
     }
   }, [text]);
-
-  // return (
-  //   <div>
-  //     {loading && <p className="indicator">onBeforeGetContent: Loading...</p>}
-  //     <button onClick={handlePrint}>Print using a Functional Component with the useReactToPrint hook</button>
-  //     <ComponentToPrint ref={componentRef} text={text} />
-  //   </div>
-  // );
   return { loadingPrint, handlePrint, componentToPrintRef };
 };

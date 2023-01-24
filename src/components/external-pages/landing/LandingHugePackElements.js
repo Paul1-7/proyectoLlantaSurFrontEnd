@@ -1,8 +1,8 @@
 // material
-import { alpha, useTheme, styled } from '@material-ui/core/styles';
-import { Box, Grid, Button, Container, Typography } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material';
+import { Box, Grid, Button, Container, Typography } from '@mui/material';
 //
-import { varFadeInUp, MotionInView } from '../../animate';
+import { varFadeInUp, MotionInView } from '~/../animate';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundImage:
     theme.palette.mode === 'light'
       ? `linear-gradient(180deg, ${alpha(theme.palette.grey[300], 0)} 0%, ${theme.palette.grey[300]} 100%)`
-      : 'none'
+      : 'none',
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -20,8 +20,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
   marginBottom: theme.spacing(10),
   [theme.breakpoints.up('md')]: {
     textAlign: 'left',
-    marginBottom: 0
-  }
+    marginBottom: 0,
+  },
 }));
 
 const ScreenStyle = styled(MotionInView)(({ theme }) => ({
@@ -33,14 +33,14 @@ const ScreenStyle = styled(MotionInView)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     maxWidth: 320,
     paddingRight: 4,
-    borderRadius: 12
+    borderRadius: 12,
   },
   '& img': {
     borderRadius: 8,
     [theme.breakpoints.up('sm')]: {
-      borderRadius: 12
-    }
-  }
+      borderRadius: 12,
+    },
+  },
 }));
 
 const COMMON = {
@@ -50,20 +50,20 @@ const COMMON = {
   scaleY: 1,
   translateX: 0,
   translateY: 0,
-  opacity: 0
+  opacity: 0,
 };
 
 const variantScreenLeft = {
   initial: COMMON,
-  animate: { ...COMMON, translateX: '-50%', translateY: 40, opacity: 1 }
+  animate: { ...COMMON, translateX: '-50%', translateY: 40, opacity: 1 },
 };
 const variantScreenCenter = {
   initial: COMMON,
-  animate: { ...COMMON, opacity: 1 }
+  animate: { ...COMMON, opacity: 1 },
 };
 const variantScreenRight = {
   initial: COMMON,
-  animate: { ...COMMON, translateX: '50%', translateY: -40, opacity: 1 }
+  animate: { ...COMMON, translateX: '50%', translateY: -40, opacity: 1 },
 };
 
 // ----------------------------------------------------------------------
@@ -100,7 +100,7 @@ export default function LandingHugePackElements() {
                 <Typography
                   sx={{
                     mb: 5,
-                    color: isLight ? 'text.secondary' : 'common.white'
+                    color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
                   We collected most popular elements. Menu, sliders, buttons, inputs etc. are all here. Just dive in!
@@ -121,7 +121,7 @@ export default function LandingHugePackElements() {
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               {[...Array(3)].map((_, index) => (
@@ -131,24 +131,24 @@ export default function LandingHugePackElements() {
                   variants={{
                     ...(index === 0 && screenLeftAnimate),
                     ...(index === 1 && screenCenterAnimate),
-                    ...(index === 2 && screenRightAnimate)
+                    ...(index === 2 && screenRightAnimate),
                   }}
                   transition={{ duration: 0.72, ease: 'easeOut' }}
                   sx={{
                     boxShadow: `${isRTL ? -80 : 80}px -40px 80px ${alpha(
                       isLight ? theme.palette.grey[600] : theme.palette.common.black,
-                      0.48
+                      0.48,
                     )}`,
                     ...(index === 0 && {
                       zIndex: 3,
-                      position: 'absolute'
+                      position: 'absolute',
                     }),
                     ...(index === 1 && { zIndex: 2 }),
                     ...(index === 2 && {
                       zIndex: 1,
                       position: 'absolute',
-                      boxShadow: 'none'
-                    })
+                      boxShadow: 'none',
+                    }),
                   }}
                 >
                   <img

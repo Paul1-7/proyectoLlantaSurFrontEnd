@@ -1,5 +1,5 @@
-import DataTablesButtons from '../components/DataTablesButtons';
-import Label from '../components/Label';
+import DataTablesButtons from '~/components/DataTablesButtons';
+import Label from '~/components/Label';
 
 /**
  * It takes an array of strings, an array of objects, a function, an object and another function and
@@ -22,14 +22,14 @@ const createDataTableColumns = (columns, buttonsValues, setIsOpen, state, handle
     const data = {
       field: column,
       headerName: column.charAt(0).toUpperCase() + column.slice(1),
-      flex: 1
+      flex: 1,
     };
 
     const estado = {
       renderCell: (params) => {
         const { estado } = params.row;
         return <Label color={state[estado].variant}>{state[estado].name}</Label>;
-      }
+      },
     };
 
     return column === 'estado' ? { ...data, ...estado } : data;
@@ -44,7 +44,7 @@ const createDataTableColumns = (columns, buttonsValues, setIsOpen, state, handle
     renderCell: (params) => {
       const { id } = params.row;
       return <DataTablesButtons id={id} buttons={buttonsValues} setIsOpen={setIsOpen} handleDelete={handleDelete} />;
-    }
+    },
   });
   return newColumns;
 };

@@ -20,9 +20,9 @@ const useAxios = (callback = null) => {
         {
           ...requestConfig,
 
-          signal: ctrl.signal
+          signal: ctrl.signal,
         },
-        headers
+        headers,
       );
       res = callback ? callback(res) : res;
 
@@ -42,7 +42,7 @@ const useAxios = (callback = null) => {
       // useEffect cleanup function
       () =>
         controller?.abort(),
-    [controller]
+    [controller],
   );
 
   return [response, error, loading, axiosFetch, setResponse, setError];

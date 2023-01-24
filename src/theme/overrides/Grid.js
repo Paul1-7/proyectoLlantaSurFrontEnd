@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------
 const printStyles = {
   '@media print': {
-    color: '#000'
-  }
+    color: '#000',
+  },
 };
 
 export default function Grid() {
@@ -10,9 +10,9 @@ export default function Grid() {
     MuiGrid: {
       styleOverrides: {
         root: {
-          ...printStyles
-        }
-      }
-    }
+          ...printStyles,
+        },
+      },
+    },
   };
 }

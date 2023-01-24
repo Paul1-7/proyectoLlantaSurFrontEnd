@@ -1,4 +1,4 @@
-import { msg, regex } from 'constants/validations';
+import { msg, regex } from '~/constants/validations';
 import * as yup from 'yup';
 
 const inventaryReport = yup.object().shape({
@@ -9,7 +9,7 @@ const inventaryReport = yup.object().shape({
   sucursal: yup
     .string()
     .matches(regex.alphaNumeric, msg.alphaNumeric)
-    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0')
+    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
 });
 
 export default inventaryReport;

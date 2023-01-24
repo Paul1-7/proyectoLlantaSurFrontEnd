@@ -7,7 +7,7 @@ export default function useIsMountedRef() {
     () => () => {
       isMounted.current = false;
     },
-    []
+    [],
   );
 
   return isMounted;

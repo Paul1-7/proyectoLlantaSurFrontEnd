@@ -6,13 +6,13 @@ export default function Typography(theme) {
         // ...printStyles,
         paragraph: {
           // ...printStyles,
-          marginBottom: theme.spacing(2)
+          marginBottom: theme.spacing(2),
         },
         gutterBottom: {
           // ...printStyles,
-          marginBottom: theme.spacing(1)
-        }
-      }
-    }
+          marginBottom: theme.spacing(1),
+        },
+      },
+    },
   };
 }

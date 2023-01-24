@@ -7,21 +7,21 @@ function pxToRem(value) {
 function responsiveFontSizes({ sm, md, lg }) {
   return {
     '@media (min-width:600px)': {
-      fontSize: pxToRem(sm)
+      fontSize: pxToRem(sm),
     },
     '@media (min-width:900px)': {
-      fontSize: pxToRem(md)
+      fontSize: pxToRem(md),
     },
     '@media (min-width:1200px)': {
-      fontSize: pxToRem(lg)
-    }
+      fontSize: pxToRem(lg),
+    },
   };
 }
 
 const printStyles = {
   '@media print': {
-    color: '#000'
-  }
+    color: '#000',
+  },
 };
 
 const FONT_PRIMARY = 'Public Sans, sans-serif'; // Google Font
@@ -37,69 +37,69 @@ const typography = {
     lineHeight: 80 / 64,
     fontSize: pxToRem(40),
     ...responsiveFontSizes({ sm: 52, md: 58, lg: 64 }),
-    ...printStyles
+    ...printStyles,
   },
   h2: {
     fontWeight: 700,
     lineHeight: 64 / 48,
     fontSize: pxToRem(32),
     ...responsiveFontSizes({ sm: 40, md: 44, lg: 48 }),
-    ...printStyles
+    ...printStyles,
   },
   h3: {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(24),
     ...responsiveFontSizes({ sm: 26, md: 30, lg: 32 }),
-    ...printStyles
+    ...printStyles,
   },
   h4: {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(20),
     ...responsiveFontSizes({ sm: 20, md: 24, lg: 24 }),
-    ...printStyles
+    ...printStyles,
   },
   h5: {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(18),
     ...responsiveFontSizes({ sm: 19, md: 20, lg: 20 }),
-    ...printStyles
+    ...printStyles,
   },
   h6: {
     fontWeight: 700,
     lineHeight: 28 / 18,
     fontSize: pxToRem(17),
     ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
-    ...printStyles
+    ...printStyles,
   },
   subtitle1: {
     fontWeight: 600,
     lineHeight: 1.5,
     fontSize: pxToRem(16),
-    ...printStyles
+    ...printStyles,
   },
   subtitle2: {
     fontWeight: 600,
     lineHeight: 22 / 14,
     fontSize: pxToRem(14),
-    ...printStyles
+    ...printStyles,
   },
   body1: {
     lineHeight: 1.5,
     fontSize: pxToRem(16),
-    ...printStyles
+    ...printStyles,
   },
   body2: {
     lineHeight: 22 / 14,
     fontSize: pxToRem(14),
-    ...printStyles
+    ...printStyles,
   },
   caption: {
     lineHeight: 1.5,
     fontSize: pxToRem(12),
-    ...printStyles
+    ...printStyles,
   },
   overline: {
     fontWeight: 700,
@@ -107,15 +107,15 @@ const typography = {
     fontSize: pxToRem(12),
     letterSpacing: 1.1,
     textTransform: 'uppercase',
-    ...printStyles
+    ...printStyles,
   },
   button: {
     fontWeight: 700,
     lineHeight: 24 / 14,
     fontSize: pxToRem(14),
     textTransform: 'capitalize',
-    ...printStyles
-  }
+    ...printStyles,
+  },
 };
 
 export default typography;

@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import sum from 'lodash/sum';
-import uniqBy from 'lodash/uniqBy';
 
 const initialState = {
   isLoading: false,
@@ -13,7 +11,7 @@ const initialState = {
     category: 'All',
     colors: [],
     priceRange: '',
-    rating: ''
+    rating: '',
   },
   checkout: {
     activeStep: 0,
@@ -23,8 +21,8 @@ const initialState = {
     total: 0,
     discount: 0,
     shipping: 0,
-    billing: null
-  }
+    billing: null,
+  },
 };
 
 const productsSlice = createSlice({
@@ -46,7 +44,7 @@ const productsSlice = createSlice({
           if (productExists) {
             return {
               ..._product,
-              quantity: _product.quantity + 1
+              quantity: _product.quantity + 1,
             };
           }
           return _product;
@@ -67,7 +65,7 @@ const productsSlice = createSlice({
       });
 
       state.checkout.totalQuantity = total;
-    }
+    },
     // START LOADING
     //   startLoading(state) {
     //     state.isLoading = true;
@@ -195,7 +193,7 @@ const productsSlice = createSlice({
     //     state.checkout.shipping = shipping;
     //     state.checkout.total = state.checkout.subtotal - state.checkout.discount + shipping;
     //   }
-  }
+  },
 });
 
 // Reducer
@@ -205,7 +203,7 @@ export default productsSlice.reducer;
 export const {
   getProducts,
   addCart,
-  getTotalQuantity
+  getTotalQuantity,
 
   // getCart,
   // resetCart,

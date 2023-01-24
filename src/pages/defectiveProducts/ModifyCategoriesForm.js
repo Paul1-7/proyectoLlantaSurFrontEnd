@@ -1,28 +1,28 @@
 import PropTypes from 'prop-types';
-import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@material-ui/core';
-import useAxios from 'hooks/useAxios';
-import Page from 'components/Page';
-import axios from 'apis/apis';
-import useSettings from 'hooks/useSettings';
-import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
-import Controls from 'components/forms/Control';
-import Fieldset from 'components/forms/Fieldset';
-import { LoadingButton } from '@material-ui/lab';
-import { Save } from '@material-ui/icons';
+import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import useAxios from '~/hooks/useAxios';
+import Page from '~/components/Page';
+import axios from '~/apis/apis';
+import useSettings from '~/hooks/useSettings';
+import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
+import Controls from '~/components/forms/Control';
+import Fieldset from '~/components/forms/Fieldset';
+import { LoadingButton } from '@mui/lab';
+import { Save } from '@mui/icons-material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import schema from 'schemas';
+import schema from '~/schemas';
 import { Navigate, useLocation } from 'react-router';
-import { PATH_MODULES } from 'routes/paths';
+import { PATH_MODULES } from '~/routes/paths';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
-import SnackBar from 'components/SnackBar';
-import { ITEMS_RADIO_GROUP } from 'constants/items';
+import SnackBar from '~/components/SnackBar';
+import { ITEMS_RADIO_GROUP } from '~/constants/items';
 
 const initialForm = {
   nombre: '',
   descripcion: '',
-  estado: '1'
+  estado: '1',
 };
 
 export default function ModifyCategoriesForm() {
@@ -38,7 +38,7 @@ export default function ModifyCategoriesForm() {
     resolver: yupResolver(schema.categories),
     defaultValues: initialForm,
     mode: 'all',
-    criteriaMode: 'all'
+    criteriaMode: 'all',
   });
 
   const onSubmit = (data) => {
@@ -47,8 +47,8 @@ export default function ModifyCategoriesForm() {
       method: 'PUT',
       url: `/api/v1/categorias/${id}`,
       requestConfig: {
-        ...data
-      }
+        ...data,
+      },
     });
   };
 
@@ -56,9 +56,8 @@ export default function ModifyCategoriesForm() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: `/api/v1/categorias/${id}`
+      url: `/api/v1/categorias/${id}`,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -72,7 +71,6 @@ export default function ModifyCategoriesForm() {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resGet]);
 
   useEffect(() => {
@@ -92,10 +90,9 @@ export default function ModifyCategoriesForm() {
       enqueueSnackbar(message, {
         anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
         autoHideDuration: 5000,
-        content: (key, message) => <SnackBar id={key} message={message} severity={severity} />
+        content: (key, message) => <SnackBar id={key} message={message} severity={severity} />,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorPut, errorGet]);
 
   return (
@@ -153,5 +150,5 @@ export default function ModifyCategoriesForm() {
 }
 
 ModifyCategoriesForm.propTypes = {
-  title: PropTypes.string
+  title: PropTypes.string,
 };

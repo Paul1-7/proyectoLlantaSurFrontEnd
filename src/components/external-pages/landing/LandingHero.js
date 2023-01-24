@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import flashFill from '@iconify/icons-eva/flash-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { styled } from '@material-ui/core/styles';
-import { Button, Box, Link, Container, Typography, Stack } from '@material-ui/core';
+import { styled } from '@mui/material';
+import { Button, Box, Link, Container, Typography, Stack } from '@mui/material';
 // routes
-import { PATH_MODULES } from '../../../routes/paths';
+import { PATH_MODULES } from '~/../../routes/paths';
 //
-import { varFadeIn, varFadeInUp, varWrapEnter, varFadeInRight } from '../../animate';
+import { varFadeIn, varFadeInUp, varWrapEnter, varFadeInRight } from '~/../animate';
 
 // ----------------------------------------------------------------------
 
@@ -22,8 +22,8 @@ const RootStyle = styled(motion.div)(({ theme }) => ({
     height: '100vh',
     display: 'flex',
     position: 'fixed',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 }));
 
 const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(({ theme }) => ({
@@ -36,8 +36,8 @@ const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(({ them
   paddingBottom: theme.spacing(15),
   [theme.breakpoints.up('md')]: {
     margin: 'unset',
-    textAlign: 'left'
-  }
+    textAlign: 'left',
+  },
 }));
 
 const HeroOverlayStyle = styled(motion.img)({
@@ -45,7 +45,7 @@ const HeroOverlayStyle = styled(motion.img)({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  position: 'absolute'
+  position: 'absolute',
 });
 
 const HeroImgStyle = styled(motion.img)(({ theme }) => ({
@@ -59,8 +59,8 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     right: '8%',
     width: 'auto',
-    height: '48vh'
-  }
+    height: '48vh',
+  },
 }));
 
 // ----------------------------------------------------------------------

@@ -4,9 +4,9 @@ export default function FormControlLabel(theme) {
     MuiFormControlLabel: {
       styleOverrides: {
         root: {
-          color: theme.palette.text.secondary
-        }
-      }
-    }
+          color: theme.palette.text.secondary,
+        },
+      },
+    },
   };
 }

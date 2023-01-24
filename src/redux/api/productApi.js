@@ -1,12 +1,12 @@
-const { apiSlice } = require('./apiSlice');
+import { apiSlice } from './apiSlice';
 
 const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getProducts: build.query({
       query: () => `/api/v1/productos`,
-      providesTags: ['Products']
-    })
-  })
+      providesTags: ['Products'],
+    }),
+  }),
 });
 
 export default productsApiSlice;

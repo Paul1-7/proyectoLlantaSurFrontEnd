@@ -1,11 +1,11 @@
-import { msg, regex } from 'constants/validations';
+import { msg, regex } from '~/constants/validations';
 import * as yup from 'yup';
 
 const products = yup.object().shape({
   idProd: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
   cantMax: yup.string().matches(regex.number, msg.number).required(),
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  precio: yup.string().matches(regex.float, msg.float).required()
+  precio: yup.string().matches(regex.float, msg.float).required(),
 });
 
 const discounts = yup.object().shape({
@@ -23,7 +23,7 @@ const discounts = yup.object().shape({
       return schema.min(new Date());
     }),
   estado: yup.string().required().matches(regex.number, msg.number),
-  productos: yup.array().of(products).required().min(1)
+  productos: yup.array().of(products).required().min(1),
 });
 
 export default discounts;

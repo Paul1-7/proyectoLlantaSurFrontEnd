@@ -1,4 +1,4 @@
-import { msg, regex } from 'constants/validations';
+import { msg, regex } from '~/constants/validations';
 import * as yup from 'yup';
 
 const businessData = yup.object().shape({
@@ -10,7 +10,7 @@ const businessData = yup.object().shape({
   email: yup.string().email(),
   tel: yup.string().required().matches(regex.tel, msg.tel),
   direccion: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
-  ciudad: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric)
+  ciudad: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
 });
 
 export default businessData;

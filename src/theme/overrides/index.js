@@ -25,7 +25,6 @@ import SvgIcon from './SvgIcon';
 import Tooltip from './Tooltip';
 import Popover from './Popover';
 import Stepper from './Stepper';
-import Pickers from './Pickers';
 import DataGrid from './DataGrid';
 import Skeleton from './Skeleton';
 import Backdrop from './Backdrop';
@@ -73,7 +72,6 @@ export default function ComponentsOverrides(theme) {
     Avatar(theme),
     Slider(theme),
     Drawer(theme),
-    Pickers(theme),
     Stepper(theme),
     Tooltip(theme),
     Popover(theme),
@@ -97,6 +95,6 @@ export default function ComponentsOverrides(theme) {
     ControlLabel(theme),
     ToggleButton(theme),
     LoadingButton(theme),
-    FormControlLabel(theme)
+    FormControlLabel(theme),
   );
 }

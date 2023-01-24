@@ -1,17 +1,15 @@
-import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
-
-// ----------------------------------------------------------------------
+import { ExpandMoreRounded } from '@mui/icons-material';
 
 export default function Select() {
   return {
     MuiSelect: {
       defaultProps: {
-        IconComponent: ExpandMoreRoundedIcon
+        IconComponent: ExpandMoreRounded,
       },
 
       styleOverrides: {
-        root: {}
-      }
-    }
+        root: {},
+      },
+    },
   };
 }

@@ -1,22 +1,22 @@
 import { useContext, useEffect } from 'react';
-import { Button, Container, Grid, Typography } from '@material-ui/core';
+import { Button, Container, Grid, Typography } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { COLUMNS } from 'constants/dataTable';
-import useSettings from 'hooks/useSettings';
-import Page from 'components/Page';
-import useAxios from 'hooks/useAxios';
-import axios from 'apis/apis';
+import { COLUMNS } from '~/constants/dataTable';
+import useSettings from '~/hooks/useSettings';
+import Page from '~/components/Page';
+import useAxios from '~/hooks/useAxios';
+import axios from '~/apis/apis';
 
-import BreadcrumbsCustom from 'components/BreadcrumbsCustom';
-import { PATH_MODULES } from 'routes/paths';
-import DialogConfirmation from 'components/DialogConfirmation';
-import TEXT_MODAL from 'utils/modalText';
-import DataTable from 'components/dataTable/DataTable';
+import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
+import { PATH_MODULES } from '~/routes/paths';
+import DialogConfirmation from '~/components/DialogConfirmation';
+import TEXT_MODAL from '~/utils/modalText';
+import DataTable from '~/components/dataTable/DataTable';
 
 import { useSnackbar } from 'notistack';
-import { LibraryAdd } from '@material-ui/icons';
-import DataTableContext from 'contexts/DataTableContext';
+import { LibraryAdd } from '@mui/icons-material';
+import DataTableContext from '~/contexts/DataTableContext';
 
 const buttonsActions = { edit: true, remove: true, detail: false };
 
@@ -33,7 +33,7 @@ export default function Categories() {
     axiosFetchDelete({
       axiosInstance: axios,
       method: 'DELETE',
-      url: `/api/v1/categorias/${id}`
+      url: `/api/v1/categorias/${id}`,
     });
   };
 
@@ -59,21 +59,19 @@ export default function Categories() {
       enqueueSnackbar(message, {
         anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
         autoHideDuration: 4000,
-        variant: severity
+        variant: severity,
       });
       message = null;
     }
     setOpenDialog(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, resDelete, errorDelete]);
 
   useEffect(() => {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: '/api/v1/categorias'
+      url: '/api/v1/categorias',
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

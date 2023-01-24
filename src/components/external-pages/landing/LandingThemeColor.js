@@ -1,7 +1,7 @@
 import { capitalCase } from 'change-case';
 import { motion } from 'framer-motion';
 // material
-import { styled, alpha } from '@material-ui/core/styles';
+import { styled, alpha } from '@mui/material';
 import {
   Box,
   Stack,
@@ -11,12 +11,12 @@ import {
   Typography,
   RadioGroup,
   CardActionArea,
-  FormControlLabel
-} from '@material-ui/core';
+  FormControlLabel,
+} from '@mui/material';
 // hooks
-import useSettings from '../../../hooks/useSettings';
+import useSettings from '~/../../hooks/useSettings';
 //
-import { MotionInView, varFadeInUp, varFadeInDown } from '../../animate';
+import { MotionInView, varFadeInUp, varFadeInDown } from '~/../animate';
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   backgroundImage:
     theme.palette.mode === 'light'
       ? `linear-gradient(180deg, ${theme.palette.grey[300]} 0%, ${alpha(theme.palette.grey[300], 0)} 100%)`
-      : 'none'
+      : 'none',
 }));
 
 // ----------------------------------------------------------------------
@@ -51,7 +51,7 @@ export default function LandingThemeColor() {
         <MotionInView variants={varFadeInUp}>
           <Typography
             sx={{
-              color: (theme) => (theme.palette.mode === 'light' ? 'text.secondary' : 'text.primary')
+              color: (theme) => (theme.palette.mode === 'light' ? 'text.secondary' : 'text.primary'),
             }}
           >
             Express your own style with just one click.
@@ -65,7 +65,7 @@ export default function LandingThemeColor() {
             spacing={1}
             sx={{
               position: { lg: 'absolute' },
-              right: { lg: 0 }
+              right: { lg: 0 },
             }}
           >
             {colorOption.map((color) => {
@@ -87,8 +87,8 @@ export default function LandingThemeColor() {
                         ...(isSelected && {
                           borderStyle: 'solid',
                           borderWidth: 4,
-                          borderColor: alpha(colorValue, 0.24)
-                        })
+                          borderColor: alpha(colorValue, 0.24),
+                        }),
                       }}
                     >
                       <Box
@@ -103,9 +103,9 @@ export default function LandingThemeColor() {
                             transition: (theme) =>
                               theme.transitions.create('all', {
                                 easing: theme.transitions.easing.easeInOut,
-                                duration: theme.transitions.duration.shorter
-                              })
-                          })
+                                duration: theme.transitions.duration.shorter,
+                              }),
+                          }),
                         }}
                       />
                       <FormControlLabel

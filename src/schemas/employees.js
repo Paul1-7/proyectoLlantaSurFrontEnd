@@ -1,4 +1,4 @@
-import { msg, regex } from 'constants/validations';
+import { msg, regex } from '~/constants/validations';
 import * as yup from 'yup';
 
 const employees = yup.object().shape({
@@ -13,7 +13,7 @@ const employees = yup.object().shape({
   celular: yup.string().required().matches(regex.tel, msg.tel),
   ciNit: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
   idSuc: yup.string().required(),
-  roles: yup.array().min(1).required()
+  roles: yup.array().min(1).required(),
 });
 
 export default employees;
