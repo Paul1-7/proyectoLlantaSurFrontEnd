@@ -8,17 +8,31 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductsQuery } from '~/redux/api/productApi';
-import { getProducts } from '~/redux/slices/productsShop';
+import { setProducts } from '~/redux/slices/productsShop';
+import { useSnackbar } from 'notistack';
+import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { data: dataProducts, isLoading } = useGetProductsQuery();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const productsData = useGetProductsQuery();
+
+  if (productsData.isError) {
+    const msg = productsData.error.error;
+    enqueueSnackbar(msg, {
+      ...DEFAULT_CONFIG_NOTISTACK,
+      variant: 'error',
+    });
+  }
+
   const { products, sortBy, filters } = useSelector((state) => state.products);
 
   useEffect(() => {
-    if (!dataProducts) return;
-    dispatch(getProducts(dataProducts));
-  }, [dataProducts]);
+    if (productsData.isSuccess) {
+      dispatch(setProducts(productsData.data));
+    }
+  }, [productsData.isSuccess]);
 
   const filteredProducts = products;
   // applyFilter(products, sortBy, filters);
@@ -93,7 +107,7 @@ export default function Shop() {
           )}
         </Stack>
 
-        <ShopProductList products={filteredProducts} loading={isLoading && isDefault} />
+        <ShopProductList products={filteredProducts} loading={productsData.isLoading && isDefault} />
         {/* <CartWidget /> */}
       </Container>
     </Page>

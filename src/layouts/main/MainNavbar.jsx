@@ -48,7 +48,6 @@ export default function MainNavbar() {
   const { checkout } = useSelector(({ products }) => products);
   const dispatch = useDispatch();
   const isOffset = useOffSetTop(100);
-  console.log('TCL: MainNavbar -> isOffset', isOffset);
   const { pathname } = useLocation();
   const isHome = pathname === '/';
 
@@ -61,10 +60,6 @@ export default function MainNavbar() {
       <ToolbarStyle
         disableGutters
         sx={{
-          // ...(isOffset && {
-          //   bgcolor: 'background.default',
-          //   height: { md: APP_BAR_DESKTOP - 16 },
-          // }),
           bgcolor: 'background.default',
           height: { md: APP_BAR_DESKTOP - 16 },
           borderBottom: '1px solid rgba(255, 255, 255,0.10)',

@@ -4,7 +4,9 @@ import { Box, Button, Card, styled } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import Image from '~/components/Image';
+import { CARDS_INFO } from '~/constants/shop';
 import ShopSidebarMain from './ShopSidebarMain';
+import ShopItemInfo from './ShopItemInfo';
 
 const RootGrid = styled('section')(({ theme }) => ({
   display: 'grid',
@@ -29,7 +31,7 @@ const RootGrid = styled('section')(({ theme }) => ({
 function ShopMainSection({ titleSidebar }) {
   return (
     <RootGrid>
-      <Card component="article" sx={{ gridArea: 'main' }}>
+      <Card component="article" sx={{ gridArea: 'main', height: 'fit-content' }}>
         <Carousel
           autoPlay
           infiniteLoop
@@ -38,26 +40,26 @@ function ShopMainSection({ titleSidebar }) {
           useKeyboardArrows
           showStatus={false}
           swipeScrollTolerance={5}
-          interval={4000}
-          transitionTime={1000}
+          interval={5000}
+          transitionTime={1200}
         >
           <Box>
             <Image
-              ratio="2/1"
-              src="https://res.cloudinary.com/paul1-7/image/upload/v1674055674/llanta-sur/ofertas/oferta_llanta_qkqunn.webp"
+              ratio="16/9"
+              src="https://res.cloudinary.com/paul1-7/image/upload/v1674596227/llanta-sur/ofertas/oferta_fuowuk.webp"
               alt="s"
             />
-            <Button LinkComponent={Link} variant="outlined" to="#" sx={{ position: 'absolute', top: 0 }}>
+            <Button LinkComponent={Link} variant="contained" to="#" sx={{ position: 'absolute', bottom: 24, left: 24 }}>
               Compralo ahora
             </Button>
           </Box>
           <Box>
             <Image
-              ratio="2/1"
-              src="https://res.cloudinary.com/paul1-7/image/upload/v1674055674/llanta-sur/ofertas/oferta_llanta_qkqunn.webp"
+              ratio="16/9"
+              src="https://res.cloudinary.com/paul1-7/image/upload/v1674596227/llanta-sur/ofertas/oferta_fuowuk.webp"
               alt="s"
             />
-            <Button LinkComponent={Link} variant="outlined" to="#" sx={{ position: 'absolute', top: 0 }}>
+            <Button LinkComponent={Link} variant="contained" to="#" sx={{ position: 'absolute', bottom: 24, left: 24 }}>
               Compralo ahora
             </Button>
           </Box>
@@ -66,9 +68,25 @@ function ShopMainSection({ titleSidebar }) {
       <Card component="article" sx={{ gridArea: 'sidebar', display: { xs: 'none', md: 'block' } }}>
         <ShopSidebarMain title={titleSidebar} />
       </Card>
-      <Card component="article" sx={{ gridArea: 'footer', bgcolor: 'warning.dark' }}>
-        Footer
-      </Card>
+      <Box
+        component="article"
+        sx={{
+          gridArea: 'footer',
+          display: 'grid',
+          gap: '24px',
+          height: '100%',
+          gridTemplateColumns: {
+            xs: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+          },
+        }}
+      >
+        {CARDS_INFO.map(({ id, title, subtitle, icon }) => (
+          <ShopItemInfo key={id} title={title} subtitle={subtitle} icon={icon} />
+        ))}
+      </Box>
     </RootGrid>
   );
 }
