@@ -86,7 +86,7 @@ function ProductsSell({ data = null }) {
             <Grid item xs={12} md={3}>
               <TextField
                 fullWidth
-                value={getBOBCurrency(watch[index].cantidad * watch[index].precio ?? 0)}
+                value={watch[index] ? getBOBCurrency(watch[index].cantidad * watch[index].precio) : 0}
                 label="Subtotal"
                 size="small"
                 disabled
