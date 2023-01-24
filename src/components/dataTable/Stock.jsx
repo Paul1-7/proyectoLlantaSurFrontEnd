@@ -8,7 +8,7 @@ function Stock({ value, align, minStock }) {
   const SUCCESS = theme.palette.success.main;
 
   return (
-    <TableCell align={align} sx={{ color: minStock < Number(value) ? SUCCESS : ERROR }}>
+    <TableCell align={align} sx={{ color: minStock < Number(value) ? SUCCESS : ERROR, borderBottom: 0 }}>
       {value}
     </TableCell>
   );
