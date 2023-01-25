@@ -13,8 +13,8 @@ export default function ShopProductList({ products, loading }) {
         display: 'grid',
         gap: 3,
         gridTemplateColumns: {
-          xs: 'repeat(2, 1fr)',
-          sm: 'repeat(3, 1fr)',
+          xs: 'repeat(1, 1fr)',
+          sm: 'repeat(2, 1fr)',
           md: 'repeat(3, 1fr)',
           lg: 'repeat(4, 1fr)',
         },
@@ -28,6 +28,6 @@ export default function ShopProductList({ products, loading }) {
 }
 
 ShopProductList.propTypes = {
-  products: PropTypes.array.isRequired,
+  products: PropTypes.array,
   loading: PropTypes.bool,
 };
