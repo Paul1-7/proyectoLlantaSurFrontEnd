@@ -6,9 +6,13 @@ const productsApiSlice = apiSlice.injectEndpoints({
       query: () => `/api/v1/productos`,
       providesTags: ['Products'],
     }),
+    getBestSellingProducts: build.query({
+      query: () => `/api/v1/productos/best-selling`,
+      providesTags: ['Products'],
+    }),
   }),
 });
 
 export default productsApiSlice;
 
-export const { useGetProductsQuery } = productsApiSlice;
+export const { useGetProductsQuery, useGetBestSellingProductsQuery } = productsApiSlice;

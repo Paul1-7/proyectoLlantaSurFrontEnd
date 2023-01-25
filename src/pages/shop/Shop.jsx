@@ -1,4 +1,4 @@
-import { Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 import Page from '~/components/Page';
 import ShopMainSection from '~/components/shop/ShopMainSection';
 import ShopProductList from '~/components/shop/ShopProductList';
@@ -7,7 +7,7 @@ import ShopTagFiltered from '~/components/shop/ShopTagFiltered';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetProductsQuery } from '~/redux/api/productApi';
+import { useGetBestSellingProductsQuery, useGetProductsQuery } from '~/redux/api/productApi';
 import { setProducts } from '~/redux/slices/productsShop';
 import { useSnackbar } from 'notistack';
 import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
@@ -15,16 +15,24 @@ import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
 export default function Shop() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-
+  const bestSellingProducts = useGetBestSellingProductsQuery();
   const productsData = useGetProductsQuery();
+  const someBestSellingProducts = bestSellingProducts.data?.slice(0, 4);
 
-  if (productsData.isError) {
-    const msg = productsData.error.error;
+  useEffect(() => {
+    if (!productsData.isError || !bestSellingProducts.isError) return;
+
+    let msg = '';
+
+    if (productsData.error.error) msg = productsData.error.error;
+
+    if (bestSellingProducts.error.error) msg = bestSellingProducts.error.error;
+
     enqueueSnackbar(msg, {
       ...DEFAULT_CONFIG_NOTISTACK,
       variant: 'error',
     });
-  }
+  }, [productsData.isError, bestSellingProducts.isError]);
 
   const { products, sortBy, filters } = useSelector((state) => state.products);
 
@@ -85,7 +93,7 @@ export default function Shop() {
           </Stack> */}
         </Stack>
         <ShopMainSection titleSidebar="Categorias" />
-        <Stack sx={{ mb: 3 }}>
+        {/* <Stack sx={{ mb: 3 }}>
           {!isDefault && (
             <>
               <Typography variant="body2" gutterBottom>
@@ -105,10 +113,14 @@ export default function Shop() {
               />
             </>
           )}
-        </Stack>
-
-        <ShopProductList products={filteredProducts} loading={productsData.isLoading && isDefault} />
-        {/* <CartWidget /> */}
+        </Stack> */}
+        <Typography variant="h4" component="h2" sx={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+          Productos mas vendidos
+          <Button color="primary" variant="outlined" size="small" sx={{ marginLeft: '1rem' }}>
+            Ver mas
+          </Button>
+        </Typography>
+        <ShopProductList products={someBestSellingProducts} loading={bestSellingProducts.isLoading} />
       </Container>
     </Page>
   );
