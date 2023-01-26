@@ -19,44 +19,55 @@ const SelectChipMemo = memo(
     };
 
     const itemName = (value) => {
-      const found = items.find((item) => item.idRol === value);
-      return found.nombreRol;
+      const found = items.find((item) => {
+        const valueObject = Object.values(item);
+        return valueObject[0] === value;
+      });
+      return Object.values(found)[1];
     };
 
     return (
       <Controller
         name={name}
         control={methods.control}
-        render={({ field }) => (
-          <FormControl sx={{ width: '100%' }} size="small">
-            <InputLabel id={name}>{label}</InputLabel>
-            <Select
-              multiple
-              labelId={name}
-              {...field}
-              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-              onChange={(event) => handleChange(event, field)}
-              value={field.value}
-              {...others}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={itemName(value)} />
-                  ))}
-                </Box>
-              )}
-            >
-              {items.map((item) => (
-                <MenuItem key={item.idRol} value={item.idRol}>
-                  {item.nombreRol}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText error={!!errorValue} color="error">
-              {errorValue?.message}
-            </FormHelperText>
-          </FormControl>
-        )}
+        render={({ field }) => {
+          return (
+            <FormControl sx={{ width: '100%' }} size="small">
+              <InputLabel id={name}>{label}</InputLabel>
+              <Select
+                multiple
+                labelId={name}
+                {...field}
+                id={`multiple-chip-${name}`}
+                input={<OutlinedInput id={`multiple-chip-${name}`} label={name} />}
+                onChange={(event) => handleChange(event, field)}
+                value={field.value ?? []}
+                {...others}
+                renderValue={(selected) => {
+                  return (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={itemName(value)} />
+                      ))}
+                    </Box>
+                  );
+                }}
+              >
+                {items.map((item) => {
+                  const value = Object.values(item);
+                  return (
+                    <MenuItem key={value?.[0]} value={value?.[0]}>
+                      {value?.[1]}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+              <FormHelperText error={!!errorValue} color="error">
+                {errorValue?.message}
+              </FormHelperText>
+            </FormControl>
+          );
+        }}
       />
     );
   },
@@ -71,7 +82,7 @@ export default SelectChipMemo;
 SelectChipMemo.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  items: PropTypes.arrayOf(PropTypes.object),
   methods: PropTypes.object,
   others: PropTypes.object,
   isArray: PropTypes.bool,
