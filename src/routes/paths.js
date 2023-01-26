@@ -5,6 +5,7 @@ function path(root, sublink) {
 }
 
 const ROOTS_DASHBOARD = '/dashboard';
+const ROOTS_SHOP = '/';
 
 // ----------------------------------------------------------------------
 
@@ -68,8 +69,11 @@ export const PATH_MODULES = {
     invoiceBatching: `${ROOTS_DASHBOARD}/administracion/dosificacion-facturas`,
   },
   shop: {
-    root: path('/shop'),
-    products: `/shop/productos`,
+    root: path(ROOTS_SHOP),
+    products: path(ROOTS_SHOP, `productos`),
+    bestSelling: path(ROOTS_SHOP, `productos/mas-vendidos`),
+    brands: path(ROOTS_SHOP, `marcas`),
+    categories: path(ROOTS_SHOP, `categorias`),
   },
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),

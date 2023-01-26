@@ -3,7 +3,6 @@ import Page from '~/components/Page';
 import ShopMainSection from '~/components/shop/ShopMainSection';
 import ShopProductList from '~/components/shop/ShopProductList';
 import ShopProductSearch from '~/components/shop/ShopProductSearch';
-import ShopTagFiltered from '~/components/shop/ShopTagFiltered';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,21 +10,21 @@ import { useGetBestSellingProductsQuery, useGetProductsQuery } from '~/redux/api
 import { setProducts } from '~/redux/slices/productsShop';
 import { useSnackbar } from 'notistack';
 import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
+import { Link } from 'react-router-dom';
+import { PATH_MODULES } from '~/routes/paths';
 
 export default function Shop() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const bestSellingProducts = useGetBestSellingProductsQuery();
   const productsData = useGetProductsQuery();
-  const someBestSellingProducts = bestSellingProducts.data?.slice(0, 4);
+  const someBestSellingProducts = bestSellingProducts.data?.slice(0, 5);
 
   useEffect(() => {
     if (!productsData.isError || !bestSellingProducts.isError) return;
-
     let msg = '';
 
     if (productsData.error.error) msg = productsData.error.error;
-
     if (bestSellingProducts.error.error) msg = bestSellingProducts.error.error;
 
     enqueueSnackbar(msg, {
@@ -116,7 +115,14 @@ export default function Shop() {
         </Stack> */}
         <Typography variant="h4" component="h2" sx={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
           Productos mas vendidos
-          <Button color="primary" variant="outlined" size="small" sx={{ marginLeft: '1rem' }}>
+          <Button
+            color="primary"
+            variant="outlined"
+            size="small"
+            sx={{ marginLeft: '1rem' }}
+            LinkComponent={Link}
+            to={PATH_MODULES.shop.bestSelling}
+          >
             Ver mas
           </Button>
         </Typography>

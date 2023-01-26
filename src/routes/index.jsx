@@ -2,13 +2,11 @@ import { lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import { DataTableProvider } from '~/contexts/DataTableContext';
-import Discounts from '~/pages/discounts/Discounts';
-import AddDiscountsForm from '~/pages/discounts/AddDiscountsForm';
-import ModifyDiscountsForm from '~/pages/discounts/ModifyDiscountsForm';
 import MainLayout from '~/layouts/main';
 import DashboardLayout from '~/layouts/dashboard';
 import LogoOnlyLayout from '~/layouts/LogoOnlyLayout';
 import Loadable from '~/components/Loadable';
+import { PATH_MODULES } from './paths';
 
 export default function Router() {
   return useRoutes([
@@ -160,14 +158,20 @@ export default function Router() {
     {
       path: '/',
       element: <MainLayout />,
-      children: [{ path: '/', element: <Shop /> }],
+      children: [
+        { path: '/', element: <Shop /> },
+        { path: PATH_MODULES.shop.bestSelling, element: <BestSelling /> },
+      ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
 
 // IMPORT COMPONENTS
-
+// discounts
+const Discounts = Loadable(lazy(() => import('~/pages/discounts/Discounts')));
+const AddDiscountsForm = Loadable(lazy(() => import('~/pages/discounts/AddDiscountsForm')));
+const ModifyDiscountsForm = Loadable(lazy(() => import('~/pages/discounts/ModifyDiscountsForm')));
 // customers
 const Customers = Loadable(lazy(() => import('~/pages/customers/Customers')));
 const AddCustomerForm = Loadable(lazy(() => import('~/pages/customers/AddCustomerForm')));
@@ -208,7 +212,9 @@ const InventoryReport = Loadable(lazy(() => import('~/pages/reports/InventoryRep
 // generalManagement
 const InvoiceBatchingForm = Loadable(lazy(() => import('~/pages/generalManagement/InvoiceBatchingForm')));
 const BusinessDataForm = Loadable(lazy(() => import('~/pages/generalManagement/BusinessDataForm')));
+// shop
 const Shop = Loadable(lazy(() => import('~/pages/shop/Shop')));
+const BestSelling = Loadable(lazy(() => import('~/pages/shop/BestSellingProducts')));
 
 const NotFound = Loadable(lazy(() => import('~/pages/Page404')));
 // Main
