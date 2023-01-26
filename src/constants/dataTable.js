@@ -4,7 +4,7 @@ const COLUMNS = {
     { field: 'apellido', header: 'apellido', type: '' },
     { field: 'CI/Nit', header: 'CI/Nit', type: '' },
     { field: 'celular', header: 'celular', type: '' },
-    { field: 'estado', header: 'estado', type: 'states' }
+    { field: 'estado', header: 'estado', type: 'states' },
   ],
   employees: [
     { field: 'nombre', header: 'nombre', type: '' },
@@ -12,16 +12,16 @@ const COLUMNS = {
     { field: 'CI/Nit', header: 'CI/Nit', type: '' },
     { field: 'celular', header: 'celular', type: '' },
     { field: 'estado', header: 'estado', type: 'states' },
-    { field: 'roles', header: 'roles', type: 'array' }
+    { field: 'roles', header: 'roles', type: 'array' },
   ],
   categories: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'descripcion', header: 'descripción', type: '' },
-    { field: 'estado', header: 'estado', type: 'states' }
+    { field: 'estado', header: 'estado', type: 'states' },
   ],
   brands: [
     { field: 'nombre', header: 'nombre', type: '' },
-    { field: 'estado', header: 'estado', type: 'states' }
+    { field: 'estado', header: 'estado', type: 'states' },
   ],
   products: [
     { field: 'nombre', header: 'nombre', type: '' },
@@ -30,20 +30,20 @@ const COLUMNS = {
     { field: 'marca', header: 'marca', type: '' },
     { field: 'categoria', header: 'categoría', type: '' },
     { field: 'stock', header: 'stock', type: 'stock' },
-    { field: 'estado', header: 'estado', type: 'states' }
+    { field: 'estado', header: 'estado', type: 'states' },
   ],
   providers: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'tel', header: 'teléfono', type: '' },
     { field: 'nombreEnc', header: 'nombre del encargado', type: '' },
     { field: 'apEnc', header: 'apellido del encargado', type: '' },
-    { field: 'estado', header: 'estado', type: 'states' }
+    { field: 'estado', header: 'estado', type: 'states' },
   ],
   subsidiaries: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'direccion', header: 'dirección', type: '' },
     { field: 'tel', header: 'teléfono', type: '' },
-    { field: 'estado', header: 'estado', type: 'states' }
+    { field: 'estado', header: 'estado', type: 'states' },
   ],
   sells: [
     { field: 'codVenta', header: 'código de venta', type: '' },
@@ -51,43 +51,43 @@ const COLUMNS = {
     { field: 'tipoVenta', header: 'tipo de venta', type: 'salesTypes' },
     { field: 'metodoPago', header: 'método de pago', type: 'paymentsMethods' },
     { field: 'cliente', header: 'cliente', type: '' },
-    { field: 'vendedor', header: 'vendedor', type: '' }
+    { field: 'vendedor', header: 'vendedor', type: '' },
   ],
   productsToSell: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'cantidad', header: 'cantidad', type: 'stock' },
-    { field: 'precio', header: 'precio uni.', type: 'currency' }
+    { field: 'precio', header: 'precio uni.', type: 'currency' },
   ],
   productsDiscounts: [
     { field: 'nombre', header: 'nombre', type: '' },
-    { field: 'precioVenta', header: 'precio uni.', type: 'currency' }
+    { field: 'precioVenta', header: 'precio uni.', type: 'currency' },
   ],
   defectiveProductsToSell: [
     { field: 'nombre', header: 'nombre', type: '' },
-    { field: 'stock', header: 'stock', type: '' }
+    { field: 'stock', header: 'stock', type: '' },
   ],
   discounts: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'fechaInicio', header: 'fecha de inicio', type: 'date' },
     { field: 'fechaFin', header: 'fecha de finalización', type: 'date' },
-    { field: 'estado', header: 'estado', type: 'states' }
-  ]
+    { field: 'estado', header: 'estado', type: 'states' },
+  ],
 };
 
 const TABLE_STATES = {
   active: [
     { name: 'Deshabilitado', variant: 'error' },
-    { name: 'Habilitado', variant: 'success' }
+    { name: 'Habilitado', variant: 'success' },
   ],
   salesTypes: [
     { name: 'Directa', variant: 'info' },
-    { name: 'Electrónica', variant: 'info' }
+    { name: 'Electrónica', variant: 'info' },
   ],
   paymentMethods: [
     { name: 'En efectivo', variant: 'info' },
     { name: 'Paypal', variant: 'info' },
-    { name: 'Stripe', variant: 'info' }
-  ]
+    { name: 'Stripe', variant: 'info' },
+  ],
 };
 
 const COLUMN_FORMAT = {
@@ -95,7 +95,7 @@ const COLUMN_FORMAT = {
   numeric: false,
   disablePadding: false,
   sorting: true,
-  label: ''
+  label: '',
 };
 
 export { COLUMNS, COLUMN_FORMAT, TABLE_STATES };
