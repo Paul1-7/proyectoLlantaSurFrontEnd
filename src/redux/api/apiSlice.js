@@ -4,6 +4,6 @@ import config from '~/config';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: config.BASE_URL }),
-  tagTypes: ['Products', 'Categories'],
+  tagTypes: ['Products', 'Categories', 'Brands'],
   endpoints: () => ({}),
 });
