@@ -5,6 +5,8 @@ import Dropzone from './container/Dropzone';
 import Select from './container/SelectContainer';
 import DatePicker from './container/DatePickerContainer';
 import Autocomplete from './container/AutocompleteContainer';
+import Checkbox from './container/CheckboxContainer';
+import Slider from './container/SliderContainer';
 
 const Controls = {
   Input,
@@ -14,6 +16,8 @@ const Controls = {
   Select,
   DatePicker,
   Autocomplete,
+  Checkbox,
+  Slider,
 };
 
 export default Controls;
