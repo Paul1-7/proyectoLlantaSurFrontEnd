@@ -1,21 +1,16 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { FormControl, FormLabel, FormControlLabel, FormHelperText, FormGroup, Checkbox } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { objectByString } from '~/utils/dataHandler';
 
 const CheckboxMemo = memo(
-  ({ name, label, isArray, methods, items, others }) => {
-    const [checkedValues, setCheckedValues] = useState([]);
+  ({ name, label, isArray, methods, items = [], others }) => {
     const error = methods.formState.errors;
     const errorValue = isArray ? objectByString(error, name) : error[name];
 
-    function handleSelect(idChecked) {
-      const newNames = checkedValues?.includes(idChecked)
-        ? checkedValues?.filter((id) => id !== idChecked)
-        : [...(checkedValues ?? []), idChecked];
-      setCheckedValues(newNames);
-
+    function handleSelect(idChecked, values = []) {
+      const newNames = values?.includes(idChecked) ? values?.filter((id) => id !== idChecked) : [...values, idChecked];
       return newNames;
     }
 
@@ -34,8 +29,8 @@ const CheckboxMemo = memo(
                     key={index}
                     control={
                       <Checkbox
-                        checked={checkedValues.includes(value[0])}
-                        onChange={() => field.onChange(handleSelect(value[0]))}
+                        checked={field.value.includes(value[0])}
+                        onChange={() => field.onChange(handleSelect(value[0], field.value))}
                         size="small"
                       />
                     }
@@ -64,7 +59,7 @@ export default CheckboxMemo;
 CheckboxMemo.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  items: PropTypes.arrayOf(PropTypes.object),
   methods: PropTypes.object,
   others: PropTypes.object,
   isArray: PropTypes.bool,
