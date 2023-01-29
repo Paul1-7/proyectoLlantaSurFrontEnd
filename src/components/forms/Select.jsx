@@ -54,9 +54,9 @@ SelectMemo.displayName = 'SelectMemo';
 export default SelectMemo;
 
 SelectMemo.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  name: PropTypes.string,
+  label: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.object),
   methods: PropTypes.object,
   others: PropTypes.object,
   isArray: PropTypes.bool,
