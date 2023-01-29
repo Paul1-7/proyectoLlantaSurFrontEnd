@@ -17,16 +17,15 @@ const SliderMemo = memo(
         control={methods.control}
         render={({ field }) => (
           <FormControl>
-            <FormLabel id={name}>{label}</FormLabel>
+            <FormLabel id={name} sx={{ mb: 4 }}>
+              {label}
+            </FormLabel>
             <Slider
-              id={name}
-              name={name}
-              getAriaLabel={() => 'Temperature range'}
               value={field.value}
-              onChange={field.handleChange}
+              onChange={field.onChange}
               valueLabelDisplay="auto"
+              getAriaValueText={() => `${name} ${field.value}`}
               {...others}
-              getAriaValueText={field.value}
             />
             <FormHelperText error={!!errorValue} color="error">
               {errorValue?.message ?? ' '}
@@ -47,7 +46,7 @@ export default SliderMemo;
 SliderMemo.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  items: PropTypes.arrayOf(PropTypes.object),
   methods: PropTypes.object,
   others: PropTypes.object,
   isArray: PropTypes.bool,
