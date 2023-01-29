@@ -29,7 +29,7 @@ function ShopSidebarMain({ title }) {
         }
       >
         {categories.isSuccess &&
-          categories.data.map(({ nombre }, index) => (
+          categories.data?.map(({ nombre }, index) => (
             <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }} key={index}>
               <ListItemButton LinkComponent={Link} to={`/shop/${nombre.toLowerCase()}`}>
                 <ListItemText primary={nombre} />

@@ -6,7 +6,7 @@ import { SkeletonProductItem } from '~/components/skeleton';
 //
 import ShopProductCard from './ShopProductCard';
 
-export default function ShopProductList({ products, loading }) {
+export default function ShopProductList({ products = [], loading }) {
   return (
     <Box
       sx={{

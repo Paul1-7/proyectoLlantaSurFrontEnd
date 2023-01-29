@@ -10,6 +10,7 @@ import invoiceBatching from './invoiceBatching';
 import businessData from './businessData';
 import inventaryReport from './inventaryReport';
 import discounts from './discounts';
+import productsFilter from './productsFilter';
 
 const schema = {
   customer,
@@ -23,7 +24,8 @@ const schema = {
   invoiceBatching,
   businessData,
   inventaryReport,
-  discounts
+  discounts,
+  productsFilter,
 };
 
 export default schema;

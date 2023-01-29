@@ -1,18 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isLoading: false,
-  error: null,
   products: [],
+  productsFiltered: [],
   product: null,
   sortBy: null,
-  filters: {
-    gender: [],
-    category: 'All',
-    colors: [],
-    priceRange: '',
-    rating: '',
-  },
   checkout: {
     activeStep: 0,
     cart: [],
@@ -31,8 +23,8 @@ const productsSlice = createSlice({
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
+      state.productsFiltered = action.payload;
     },
-
     addCart(state, action) {
       const product = action.payload;
       const { cart } = state.checkout;
@@ -66,50 +58,33 @@ const productsSlice = createSlice({
 
       state.checkout.totalQuantity = total;
     },
-    // START LOADING
-    //   startLoading(state) {
-    //     state.isLoading = true;
-    //   },
+    appyFilters: (state, action) => {
+      const filtersEntries = Object.entries(action.payload).filter(([, value]) => value.length !== 0);
 
-    //   // HAS ERROR
-    //   hasError(state, action) {
-    //     state.isLoading = false;
-    //     state.error = action.payload;
-    //   },
+      const filtersObject = Object.fromEntries(filtersEntries);
 
-    //   // GET PRODUCTS
-    //   getProductsSuccess(state, action) {
-    //     state.isLoading = false;
-    //     state.products = action.payload;
-    //   },
+      state.productsFiltered = state.products.filter((product) => {
+        const filtersName = Object.keys(filtersObject);
+        const PRICE = 'precioVenta';
+        return filtersName.every((filterKey) => {
+          if (PRICE === filterKey) {
+            const [min, max] = filtersObject[filterKey];
 
-    //   // GET PRODUCT
-    //   getProductSuccess(state, action) {
-    //     state.isLoading = false;
-    //     state.product = action.payload;
-    //   },
+            return product[filterKey] >= min && product[filterKey] <= max;
+          }
+          return filtersObject[filterKey].includes(product[filterKey]);
+        });
+      });
+    },
 
     //   //  SORT & FILTER PRODUCTS
     //   sortByProducts(state, action) {
     //     state.sortBy = action.payload;
     //   },
 
-    //   filterProducts(state, action) {
-    //     state.filters.gender = action.payload.gender;
-    //     state.filters.category = action.payload.category;
-    //     state.filters.colors = action.payload.colors;
-    //     state.filters.priceRange = action.payload.priceRange;
-    //     state.filters.rating = action.payload.rating;
-    //   },
-
     //   // CHECKOUT
     //   getCart(state, action) {
     //     const cart = action.payload;
-
-    //     const subtotal = sum(cart.map((cartItem) => cartItem.price * cartItem.quantity));
-    //     const discount = cart.length === 0 ? 0 : state.checkout.discount;
-    //     const shipping = cart.length === 0 ? 0 : state.checkout.shipping;
-    //     const billing = cart.length === 0 ? null : state.checkout.billing;
 
     //     state.checkout.cart = cart;
     //     state.checkout.discount = discount;
@@ -200,53 +175,4 @@ const productsSlice = createSlice({
 export default productsSlice.reducer;
 
 // Actions
-export const {
-  setProducts,
-  addCart,
-  getTotalQuantity,
-
-  // getCart,
-  // resetCart,
-  // onGotoStep,
-  // onBackStep,
-  // onNextStep,
-  // deleteCart,
-  // createBilling,
-  // applyShipping,
-  // applyDiscount,
-  // increaseQuantity,
-  // decreaseQuantity,
-  // sortByProducts,
-  // filterProducts
-} = productsSlice.actions;
-
-// ----------------------------------------------------------------------
-
-// export function getProducts() {
-//   return async () => {
-//     dispatch(productsSlice.actions.startLoading());
-//     try {
-//       const response = await axios.get('/api/products');
-//       dispatch(productsSlice.actions.getProductsSuccess(response.data.products));
-//     } catch (error) {
-//       dispatch(productsSlice.actions.hasError(error));
-//     }
-//   };
-// }
-
-// ----------------------------------------------------------------------
-
-// export function getProduct(name) {
-//   return async () => {
-//     dispatch(productsSlice.actions.startLoading());
-//     try {
-//       const response = await axios.get('/api/products/product', {
-//         params: { name }
-//       });
-//       dispatch(productsSlice.actions.getProductSuccess(response.data.product));
-//     } catch (error) {
-//       console.error(error);
-//       dispatch(productsSlice.actions.hasError(error));
-//     }
-//   };
-// }
+export const { setProducts, addCart, getTotalQuantity, appyFilters } = productsSlice.actions;
