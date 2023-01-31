@@ -4,7 +4,7 @@ import ShopMainSection from '~/components/shop/ShopMainSection';
 import ShopProductList from '~/components/shop/ShopProductList';
 import ShopProductSearch from '~/components/shop/ShopProductSearch';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetBestSellingProductsQuery, useGetProductsQuery } from '~/redux/api/productApi';
 import { setProducts } from '~/redux/slices/productsShop';
 import { useSnackbar } from 'notistack';
@@ -21,11 +21,12 @@ export default function Shop() {
   const someBestSellingProducts = bestSellingProducts.data?.slice(0, 5) ?? [];
 
   useEffect(() => {
-    if (!productsData.isError || !bestSellingProducts.isError)
-      enqueueSnackbar(ERRORS.FETCH_ERROR, {
-        ...DEFAULT_CONFIG_NOTISTACK,
-        variant: 'error',
-      });
+    if (!productsData.isError || !bestSellingProducts.isError) return;
+
+    enqueueSnackbar(ERRORS.FETCH_ERROR, {
+      ...DEFAULT_CONFIG_NOTISTACK,
+      variant: 'error',
+    });
   }, [productsData.isError, bestSellingProducts.isError]);
 
   useEffect(() => {

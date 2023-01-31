@@ -7,7 +7,6 @@ import schema from '~/schemas';
 import { appyFilters } from '~/redux/slices/productsShop';
 import { useDispatch } from 'react-redux';
 import Controls from '../forms/Control';
-import Scrollbar from '../Scrollbar';
 
 const initialForm = {
   categories: [],
@@ -58,13 +57,19 @@ function ShopFilter({ categories, brands, products = [], loading }) {
     dispatch(appyFilters(filterValues));
   };
   return (
-    <Card sx={{ maxHeight: '100vh', height: '100vh', overflowY: 'auto' }}>
+    <Card
+      sx={{
+        p: '2rem 2.5rem 2rem 2rem',
+        borderRadius: { xs: '0px', md: 2 },
+        boxShadow: 'none',
+      }}
+    >
       {loading ? (
         <Box sx={{ width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <CircularProgress color="primary" />
         </Box>
       ) : (
-        <Scrollbar sx={{ height: 1, p: 4 }}>
+        <>
           <Typography variant="subtitle2" textTransform="uppercase" align="center" gutterBottom>
             Filtros
           </Typography>
@@ -94,7 +99,7 @@ function ShopFilter({ categories, brands, products = [], loading }) {
               </Box>
             </form>
           </FormProvider>
-        </Scrollbar>
+        </>
       )}
     </Card>
   );
