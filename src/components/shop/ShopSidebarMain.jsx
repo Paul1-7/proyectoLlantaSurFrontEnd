@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem, ListItemButton, ListItemText, ListSubheader } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
 import { useSnackbar } from 'notistack';
 import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
+import { ERRORS } from '~/constants/handleError';
 
 function ShopSidebarMain({ title }) {
   const { enqueueSnackbar } = useSnackbar();
   const categories = useGetCategoriesQuery();
 
-  if (categories.isError) {
-    const msg = categories.error.error;
-
-    enqueueSnackbar(msg, {
+  useEffect(() => {
+    if (!categories.isError) return;
+    enqueueSnackbar(ERRORS.FETCH_ERROR, {
       ...DEFAULT_CONFIG_NOTISTACK,
       variant: 'error',
     });
-  }
+  }, [categories.isError]);
 
   return (
     <nav>
