@@ -26,3 +26,9 @@ export const CARDS_INFO = [
     icon: <Payment color="primary" sx={{ height: '50%', width: '50%' }} />,
   },
 ];
+
+export const ITEMS_ORDER_BY = [
+  { id: 'productName', title: 'Por nombre de producto' },
+  { id: 'priceHighToLow', title: 'Precio de mayor a menor' },
+  { id: 'priceLowToHigh', title: 'Precio de menor a mayor' },
+];
