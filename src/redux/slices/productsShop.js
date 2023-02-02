@@ -4,7 +4,6 @@ const initialState = {
   products: [],
   productsFiltered: [],
   product: null,
-  sortBy: null,
   checkout: {
     activeStep: 0,
     cart: [],
@@ -58,7 +57,7 @@ const productsSlice = createSlice({
 
       state.checkout.totalQuantity = total;
     },
-    appyFilters: (state, action) => {
+    applyFilters: (state, action) => {
       const filtersEntries = Object.entries(action.payload).filter(([, value]) => value.length !== 0);
 
       const filtersObject = Object.fromEntries(filtersEntries);
@@ -76,12 +75,20 @@ const productsSlice = createSlice({
         });
       });
     },
+    applyOrderBy: (state, action) => {
+      const orderBy = action.payload;
+      const { productsFiltered } = state;
 
-    //   //  SORT & FILTER PRODUCTS
-    //   sortByProducts(state, action) {
-    //     state.sortBy = action.payload;
-    //   },
-
+      if (orderBy === 'productName') {
+        state.productsFiltered = productsFiltered.sort((a, b) => (a.nombre > b.nombre ? 1 : -1));
+      }
+      if (orderBy === 'priceHighToLow') {
+        state.productsFiltered = productsFiltered.sort((a, b) => (a.precioVenta < b.precioVenta ? 1 : -1));
+      }
+      if (orderBy === 'priceLowToHigh') {
+        state.productsFiltered = productsFiltered.sort((a, b) => (a.precioVenta > b.precioVenta ? 1 : -1));
+      }
+    },
     //   // CHECKOUT
     //   getCart(state, action) {
     //     const cart = action.payload;
@@ -175,4 +182,4 @@ const productsSlice = createSlice({
 export default productsSlice.reducer;
 
 // Actions
-export const { setProducts, addCart, getTotalQuantity, appyFilters } = productsSlice.actions;
+export const { setProducts, addCart, getTotalQuantity, applyFilters, applyOrderBy } = productsSlice.actions;
