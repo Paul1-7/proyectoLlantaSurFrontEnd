@@ -4,14 +4,23 @@ import { Box, Button, Card, CircularProgress, Typography } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
-import { appyFilters } from '~/redux/slices/productsShop';
+import { applyFilters, applyOrderBy } from '~/redux/slices/productsShop';
 import { useDispatch } from 'react-redux';
+import { ITEMS_ORDER_BY } from '~/constants/shop';
 import Controls from '../forms/Control';
 
 const initialForm = {
   categories: [],
   brands: [],
   priceRange: [0, 1],
+  orderBy: ITEMS_ORDER_BY.at(0).id,
+};
+
+const options = {
+  categories: 'categories',
+  brands: 'brands',
+  priceRange: 'priceRange',
+  orderBy: 'orderBy',
 };
 
 const getMaxPriceRange = (products) => {
@@ -20,7 +29,7 @@ const getMaxPriceRange = (products) => {
   return Math.max(...productsPrice);
 };
 
-function ShopFilter({ categories, brands, products = [], loading }) {
+function ShopFilter({ categories, brands, products = [], loading, include = [] }) {
   const dispatch = useDispatch();
   const maxPrice = getMaxPriceRange(products);
   const methods = useForm({
@@ -30,6 +39,12 @@ function ShopFilter({ categories, brands, products = [], loading }) {
     criteriaMode: 'all',
   });
 
+  const orderBy = methods.watch('orderBy');
+
+  useEffect(() => {
+    dispatch(applyOrderBy(orderBy));
+  }, [orderBy]);
+
   const resetFilters = () => {
     methods.reset({ ...initialForm, priceRange: [0, maxPrice] });
 
@@ -38,7 +53,7 @@ function ShopFilter({ categories, brands, products = [], loading }) {
       idMarca: [],
       precioVenta: [],
     };
-    dispatch(appyFilters(filterValues));
+    dispatch(applyFilters(filterValues));
   };
 
   useEffect(() => {
@@ -54,7 +69,7 @@ function ShopFilter({ categories, brands, products = [], loading }) {
       precioVenta: priceRange,
     };
 
-    dispatch(appyFilters(filterValues));
+    dispatch(applyFilters(filterValues));
   };
   return (
     <Card
@@ -79,16 +94,38 @@ function ShopFilter({ categories, brands, products = [], loading }) {
               style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
               autoComplete="off"
             >
-              <Controls.Slider
-                name="priceRange"
-                label="Rango de precio"
-                valueLabelDisplay="on"
-                min={0}
-                max={maxPrice}
-                step={5}
-              />
-              <Controls.Checkbox name="categories" label="Categorias" items={categories} />
-              <Controls.Checkbox name="brands" label="Marcas" items={brands} />
+              {include.map((option) => {
+                if (option === options.brands) {
+                  return <Controls.Checkbox key={option} name="brands" label="Marcas" items={brands} />;
+                }
+                if (option === options.categories) {
+                  return <Controls.Checkbox key={option} name="categories" label="Categorias" items={categories} />;
+                }
+                if (option === options.priceRange) {
+                  return (
+                    <Controls.Slider
+                      key={option}
+                      name="priceRange"
+                      label="Rango de precio"
+                      valueLabelDisplay="on"
+                      min={0}
+                      max={maxPrice}
+                      step={5}
+                    />
+                  );
+                }
+                if (option === options.orderBy) {
+                  return (
+                    <>
+                      <Typography variant="subtitle2" textTransform="uppercase" align="center" gutterBottom>
+                        Ordenar
+                      </Typography>
+                      <Controls.RadioGroup name="orderBy" items={ITEMS_ORDER_BY} label="" />
+                    </>
+                  );
+                }
+                return null;
+              })}
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                 <Button variant="outlined" color="error" size="small" onClick={resetFilters}>
                   Limpiar
@@ -110,6 +147,7 @@ ShopFilter.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object),
   brands: PropTypes.arrayOf(PropTypes.object),
   products: PropTypes.arrayOf(PropTypes.object),
+  include: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default ShopFilter;
