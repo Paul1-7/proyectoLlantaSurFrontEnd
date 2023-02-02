@@ -50,7 +50,7 @@ function BestSellingProducts() {
   }, [bestSellingProducts.isError]);
   return (
     <Page title="Productos mas vendidos">
-      <Container sx={{ marginTop: '6rem', marginBottom: 4 }} maxWidth="xl">
+      <Container sx={{ margin: '6rem 4rem 2rem 4rem' }} maxWidth="xl">
         <Typography variant="h3">Productos mas vendidos</Typography>
         <MIconButton size="large" color="default" onClick={handleOpenFilter} sx={{ display: { sm: 'none' } }}>
           <FilterList />
@@ -71,6 +71,7 @@ function BestSellingProducts() {
                 categories={categories.data}
                 brands={brands.data}
                 products={bestSellingProducts.data}
+                include={['priceRange', 'brands', 'categories']}
               />
             </Scrollbar>
           </Drawer>
@@ -102,6 +103,7 @@ function BestSellingProducts() {
                 categories={categories.data}
                 brands={brands.data}
                 products={bestSellingProducts.data}
+                include={['priceRange', 'brands', 'categories']}
               />
             </Scrollbar>
           </Grid>
