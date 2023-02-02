@@ -145,7 +145,6 @@ export default function Router() {
         //       element: <Navigate to="/dashboard/reportes/ventas"
       ],
     },
-
     // Main Routes
     {
       path: '*',
@@ -160,6 +159,8 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Shop /> },
+        { path: `${PATH_MODULES.shop.categories}`, element: <Navigate to="/" /> },
+        { path: `${PATH_MODULES.shop.categories}/:url`, element: <ShopCategories /> },
         { path: PATH_MODULES.shop.bestSelling, element: <BestSelling /> },
       ],
     },
@@ -215,6 +216,7 @@ const BusinessDataForm = Loadable(lazy(() => import('~/pages/generalManagement/B
 // shop
 const Shop = Loadable(lazy(() => import('~/pages/shop/Shop')));
 const BestSelling = Loadable(lazy(() => import('~/pages/shop/BestSellingProducts')));
+const ShopCategories = Loadable(lazy(() => import('~/pages/shop/ShopCategories')));
 
 const NotFound = Loadable(lazy(() => import('~/pages/Page404')));
 // Main

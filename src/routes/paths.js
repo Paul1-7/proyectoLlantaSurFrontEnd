@@ -75,6 +75,7 @@ export const PATH_MODULES = {
     brands: path(ROOTS_SHOP, `marcas`),
     categories: path(ROOTS_SHOP, `categorias`),
   },
+  notFound: '/404',
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
   reseñas: path(ROOTS_DASHBOARD, '/reseñas'),

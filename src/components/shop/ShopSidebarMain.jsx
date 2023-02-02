@@ -6,6 +6,7 @@ import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
 import { useSnackbar } from 'notistack';
 import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
 import { ERRORS } from '~/constants/handleError';
+import { PATH_MODULES } from '~/routes/paths';
 
 function ShopSidebarMain({ title }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -29,11 +30,16 @@ function ShopSidebarMain({ title }) {
         }
       >
         {categories.isSuccess &&
-          categories.data?.map(({ nombre }, index) => (
+          categories.data?.map(({ nombre, url }, index) => (
             <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }} key={index}>
-              <ListItemButton LinkComponent={Link} to={`/shop/${nombre.toLowerCase()}`}>
-                <ListItemText primary={nombre} />
-              </ListItemButton>
+              <Link
+                to={`${PATH_MODULES.shop.categories}/${url}`}
+                style={{ width: '100%', textDecoration: 'none', color: 'inherit' }}
+              >
+                <ListItemButton>
+                  <ListItemText primary={nombre} />
+                </ListItemButton>
+              </Link>
             </ListItem>
           ))}
       </List>
