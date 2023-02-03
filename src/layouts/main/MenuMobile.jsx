@@ -164,7 +164,7 @@ export default function MenuMobile({ isOffset, isHome }) {
         onClick={handleDrawerOpen}
         sx={{
           ml: 1,
-          ...(isHome && { color: 'common.white' }),
+          ...(isHome && { color: 'text.primary' }),
           ...(isOffset && { color: 'text.primary' }),
         }}
       >

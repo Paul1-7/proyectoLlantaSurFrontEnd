@@ -1,8 +1,7 @@
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
 import Page from '~/components/Page';
 import ShopMainSection from '~/components/shop/ShopMainSection';
 import ShopProductList from '~/components/shop/ShopProductList';
-import ShopProductSearch from '~/components/shop/ShopProductSearch';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useGetBestSellingProductsQuery, useGetProductsQuery } from '~/redux/api/productApi';
@@ -37,16 +36,7 @@ export default function Shop() {
 
   return (
     <Page>
-      <Container>
-        <Stack
-          spacing={2}
-          direction={{ xs: 'column', sm: 'row' }}
-          alignItems={{ sm: 'center' }}
-          justifyContent="space-between"
-          sx={{ mb: 2, paddingTop: '5rem' }}
-        >
-          <ShopProductSearch />
-        </Stack>
+      <Container sx={{ marginTop: 12 }}>
         <ShopMainSection titleSidebar="Categorias" />
 
         <Typography variant="h4" component="h2" sx={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>

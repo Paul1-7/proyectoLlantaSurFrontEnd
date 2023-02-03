@@ -11,6 +11,7 @@ import useOffSetTop from '~/hooks/useOffSetTop';
 import Logo from '~/components/Logo';
 import { MHidden, MIconButton } from '~/components/@material-extend';
 //
+import ShopProductSearch from '~/components/shop/ShopProductSearch';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
@@ -61,7 +62,7 @@ export default function MainNavbar() {
         disableGutters
         sx={{
           bgcolor: 'background.default',
-          height: { md: APP_BAR_DESKTOP - 16 },
+          height: { xs: 120, sm: APP_BAR_DESKTOP - 16 },
           borderBottom: '1px solid rgba(255, 255, 255,0.10)',
         }}
       >
@@ -69,27 +70,30 @@ export default function MainNavbar() {
           maxWidth="lg"
           sx={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: 'column',
           }}
         >
-          <RouterLink to="/">
-            <Logo />
-          </RouterLink>
-
-          <Box sx={{ flexGrow: 1 }} />
-
-          <MHidden width="mdDown">
-            <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
-          </MHidden>
-          <MIconButton size="large" color="default">
-            <Badge badgeContent={checkout.totalQuantity} color="error">
-              <ShoppingCart />
-            </Badge>
-          </MIconButton>
-          <MHidden width="mdUp">
-            <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
-          </MHidden>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <RouterLink to="/">
+              <Logo sx={{ height: { xs: 40, sm: 60 } }} />
+            </RouterLink>
+            <ShopProductSearch
+              sx={{ display: { xs: 'none', sm: 'block' }, width: { xs: '100vw' }, paddingLeft: 4, paddingRight: 4 }}
+            />
+            <Box sx={{ flexGrow: 1 }} />
+            <MHidden width="mdDown">
+              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+            </MHidden>
+            <MIconButton size="large" color="default">
+              <Badge badgeContent={checkout.totalQuantity} color="error">
+                <ShoppingCart />
+              </Badge>
+            </MIconButton>
+            <MHidden width="mdUp">
+              <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+            </MHidden>
+          </Box>
+          <ShopProductSearch sx={{ display: { xs: 'block', sm: 'none' } }} />
         </Container>
       </ToolbarStyle>
 

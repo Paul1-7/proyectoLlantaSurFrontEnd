@@ -1,3 +1,4 @@
+import { alpha } from '@mui/material';
 import { withStyles } from '@mui/styles';
 
 const GlobalStyles = withStyles((theme) => ({
@@ -14,6 +15,24 @@ const GlobalStyles = withStyles((theme) => ({
       '-webkit-overflow-scrolling': 'touch',
     },
     body: {
+      '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+        width: 6,
+        backgroundColor: alpha(theme.palette.background.default, 0.48),
+      },
+      '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+        backgroundColor: alpha(theme.palette.grey[500], 0.48),
+        borderRadius: 4,
+        height: 80,
+      },
+      '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
+        backgroundColor: alpha(theme.palette.grey[600], 0.48),
+      },
+      '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
+        backgroundColor: alpha(theme.palette.grey[600], 0.48),
+      },
+      '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+        backgroundColor: alpha(theme.palette.grey[600], 0.48),
+      },
       width: '100%',
       height: '100%',
     },

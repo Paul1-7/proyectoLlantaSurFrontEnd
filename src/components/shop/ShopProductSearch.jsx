@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-
+import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Link, Typography, Autocomplete, InputAdornment, Popper } from '@mui/material';
-// hooks
-import useIsMountedRef from '~/hooks/useIsMountedRef';
-// utils
-import axios from '~/apis/apis';
+
 // routes
 import { PATH_MODULES } from '~/routes/paths';
 // components
@@ -16,35 +13,28 @@ import Iconify from '~/components/Iconify';
 import InputStyle from '~/components/forms/InputStyle';
 import SearchNotFound from '~/components/SearchNotFound';
 import { useNavigate } from 'react-router';
+import { useGetProductsQuery } from '~/redux/api/productApi';
 
 const PopperStyle = styled((props) => <Popper placement="bottom-start" {...props} />)({
   width: '280px !important',
 });
 
-export default function ShopProductSearch() {
+export default function ShopProductSearch({ sx = {} }) {
   const navigate = useNavigate();
-
-  const isMountedRef = useIsMountedRef();
+  const products = useGetProductsQuery();
+  // const classes = styles();
 
   const [searchQuery, setSearchQuery] = useState('');
-
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleChangeSearch = async (value) => {
-    try {
-      setSearchQuery(value);
-      if (value) {
-        const response = await axios.get('/api/products/search', {
-          params: { query: value },
-        });
+  const handleChangeSearch = (value) => {
+    const productsMatched = products.data
+      ?.filter(({ nombre }) => nombre.toLowerCase().includes(value.toLowerCase()))
+      .map(({ id, nombre, imagen }) => ({ id, nombre, imagen }));
 
-        if (isMountedRef.current) {
-          setSearchResults(response.data.results);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    setSearchResults(productsMatched);
+
+    setSearchQuery(value);
   };
 
   const handleClick = (name) => {
@@ -59,20 +49,21 @@ export default function ShopProductSearch() {
 
   return (
     <Autocomplete
+      sx={sx}
       size="small"
       autoHighlight
       popupIcon={null}
       PopperComponent={PopperStyle}
       options={searchResults}
-      onInputChange={(event, value) => handleChangeSearch(value)}
-      getOptionLabel={(product) => product.name}
+      onInputChange={(_, value) => handleChangeSearch(value)}
+      getOptionLabel={(product) => product.nombre}
       noOptionsText={<SearchNotFound searchQuery={searchQuery} />}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       renderInput={(params) => (
         <InputStyle
+          size="small"
           {...params}
-          stretchStart={200}
-          placeholder="Search product..."
+          placeholder="Buscar producto..."
           onKeyUp={handleKeyUp}
           InputProps={{
             ...params.InputProps,
@@ -85,14 +76,13 @@ export default function ShopProductSearch() {
         />
       )}
       renderOption={(props, product, { inputValue }) => {
-        const { name, cover } = product;
-        const matches = match(name, inputValue);
-        const parts = parse(name, matches);
-
+        const { nombre, imagen } = product;
+        const matches = match(nombre, inputValue);
+        const parts = parse(nombre, matches);
         return (
           <li {...props}>
-            <Image alt={cover} src={cover} sx={{ width: 48, height: 48, borderRadius: 1, flexShrink: 0, mr: 1.5 }} />
-            <Link underline="none" onClick={() => handleClick(name)}>
+            <Image alt={imagen} src={imagen} sx={{ width: 48, height: 48, borderRadius: 1, flexShrink: 0, mr: 1.5 }} />
+            <Link underline="none" onClick={() => handleClick(nombre)}>
               {parts.map((part, index) => (
                 <Typography
                   key={index}
@@ -110,3 +100,7 @@ export default function ShopProductSearch() {
     />
   );
 }
+
+ShopProductSearch.propTypes = {
+  sx: PropTypes.object,
+};
