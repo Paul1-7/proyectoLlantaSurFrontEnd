@@ -16,13 +16,12 @@ import { useNavigate } from 'react-router';
 import { useGetProductsQuery } from '~/redux/api/productApi';
 
 const PopperStyle = styled((props) => <Popper placement="bottom-start" {...props} />)({
-  width: '280px !important',
+  width: { xs: '100%', sm: '280px' },
 });
 
 export default function ShopProductSearch({ sx = {} }) {
   const navigate = useNavigate();
   const products = useGetProductsQuery();
-  // const classes = styles();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
