@@ -3,9 +3,10 @@
     "module": "commonJS",
     "target": "es2017",
     "jsx": "react",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./src/*"],
+      "static/*":["./public/static/*"]
     }
   }
 }

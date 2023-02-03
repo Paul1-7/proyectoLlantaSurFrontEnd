@@ -19,6 +19,7 @@ module.exports = {
         map: [
           ['~', './src'],
           ['~', './src'],
+          ['static', './public/static'],
         ],
       },
     },
