@@ -50,7 +50,7 @@ function BestSellingProducts() {
   }, [bestSellingProducts.isError]);
   return (
     <Page title="Productos mas vendidos">
-      <Container sx={{ margin: '6rem 4rem 2rem 4rem' }} maxWidth="xl">
+      <Container sx={{ margin: { xs: '8rem 0rem 2rem 0rem', xl: '6rem 4rem 2rem 4rem' } }} maxWidth="xl">
         <Typography variant="h3">Productos mas vendidos</Typography>
         <MIconButton size="large" color="default" onClick={handleOpenFilter} sx={{ display: { sm: 'none' } }}>
           <FilterList />

@@ -59,7 +59,7 @@ function ShopCategories() {
 
   return (
     <Page title={categoryProducts.data?.nombre ?? ''}>
-      <Container sx={{ margin: '6rem 4rem 2rem 4rem' }} maxWidth="xl">
+      <Container sx={{ margin: { xs: '8rem 0rem 2rem 0rem', xl: '6rem 4rem 2rem 4rem' } }} maxWidth="xl">
         <Typography variant="h3">{categoryProducts.data?.nombre}</Typography>
         <MIconButton size="large" color="default" onClick={handleOpenFilter} sx={{ display: { sm: 'none' } }}>
           <FilterList />
@@ -79,7 +79,6 @@ function ShopCategories() {
             </Scrollbar>
           </Drawer>
         </MHidden>
-
         <Grid container wrap="nowrap" gap={3}>
           <Grid
             item
