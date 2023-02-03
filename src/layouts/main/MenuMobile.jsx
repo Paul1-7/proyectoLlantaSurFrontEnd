@@ -23,10 +23,6 @@ import Logo from '~/components/Logo';
 import NavSection from '~/components/NavSection';
 import Scrollbar from '~/components/Scrollbar';
 import { MIconButton } from '~/components/@material-extend';
-//
-import menuConfig from './MenuConfig';
-
-// ----------------------------------------------------------------------
 
 const ICON_SIZE = 22;
 const ITEM_SIZE = 48;
@@ -62,15 +58,10 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
             <NavSection
-              navConfig={menuConfig[2].children}
+              navConfig={children}
               sx={{
                 '& .MuiList-root:last-of-type .MuiListItemButton-root': {
-                  height: 200,
                   backgroundSize: '92%',
-                  backgroundPosition: 'center',
-                  bgcolor: 'background.neutral',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundImage: 'url(/static/illustrations/illustration_dashboard.png)',
                   '& > *:not(.MuiTouchRipple-root)': { display: 'none' },
                 },
                 '& .MuiListSubheader-root': {
@@ -136,7 +127,7 @@ MenuMobileItem.propTypes = {
   onOpen: PropTypes.func,
 };
 
-export default function MenuMobile({ isOffset, isHome }) {
+export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -183,7 +174,7 @@ export default function MenuMobile({ isOffset, isHome }) {
           </Link>
 
           <List disablePadding>
-            {menuConfig.map((link) => (
+            {navConfig.map((link) => (
               <MenuMobileItem
                 key={link.title}
                 item={link}
@@ -202,4 +193,5 @@ export default function MenuMobile({ isOffset, isHome }) {
 MenuMobile.propTypes = {
   isOffset: PropTypes.bool,
   isHome: PropTypes.bool,
+  navConfig: PropTypes.array,
 };

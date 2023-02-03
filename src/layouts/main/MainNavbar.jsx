@@ -12,11 +12,11 @@ import Logo from '~/components/Logo';
 import { MHidden, MIconButton } from '~/components/@material-extend';
 //
 import ShopProductSearch from '~/components/shop/ShopProductSearch';
+import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
+import { PATH_MODULES } from '~/routes/paths';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
-
-// ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -45,8 +45,25 @@ const ToolbarShadowStyle = styled('div')(({ theme }) => ({
   boxShadow: theme.customShadows.z8,
 }));
 
+const mergeCategoriesIntoMenu = (categories, menu) => {
+  const categoriesMenu = categories?.map(({ nombre, url }) => ({
+    title: nombre,
+    path: `${PATH_MODULES.shop.categories}/${url}`,
+  }));
+  return menu.map((item) =>
+    item.title === 'Categorias'
+      ? {
+          ...item,
+          children: categoriesMenu,
+        }
+      : item,
+  );
+};
+
 export default function MainNavbar() {
   const { checkout } = useSelector(({ products }) => products);
+  const categories = useGetCategoriesQuery();
+  const newMenuItems = mergeCategoriesIntoMenu(categories.data, navConfig);
   const dispatch = useDispatch();
   const isOffset = useOffSetTop(100);
   const { pathname } = useLocation();
@@ -62,7 +79,7 @@ export default function MainNavbar() {
         disableGutters
         sx={{
           bgcolor: 'background.default',
-          height: { xs: 120, sm: APP_BAR_DESKTOP - 16 },
+          height: { xs: 115, sm: APP_BAR_DESKTOP - 16 },
           borderBottom: '1px solid rgba(255, 255, 255,0.10)',
         }}
       >
@@ -75,14 +92,14 @@ export default function MainNavbar() {
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <RouterLink to="/">
-              <Logo sx={{ height: { xs: 40, sm: 60 } }} />
+              <Logo sx={{ height: { xs: 35, sm: 60 } }} />
             </RouterLink>
             <ShopProductSearch
               sx={{ display: { xs: 'none', sm: 'block' }, width: { xs: '100vw' }, paddingLeft: 4, paddingRight: 4 }}
             />
             <Box sx={{ flexGrow: 1 }} />
             <MHidden width="mdDown">
-              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={newMenuItems} />
             </MHidden>
             <MIconButton size="large" color="default">
               <Badge badgeContent={checkout.totalQuantity} color="error">
@@ -90,10 +107,10 @@ export default function MainNavbar() {
               </Badge>
             </MIconButton>
             <MHidden width="mdUp">
-              <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+              <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={newMenuItems} />
             </MHidden>
           </Box>
-          <ShopProductSearch sx={{ display: { xs: 'block', sm: 'none' } }} />
+          <ShopProductSearch sx={{ paddingTop: 0.5, display: { xs: 'block', sm: 'none' } }} />
         </Container>
       </ToolbarStyle>
 
