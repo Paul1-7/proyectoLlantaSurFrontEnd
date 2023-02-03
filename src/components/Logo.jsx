@@ -10,7 +10,7 @@ export default function Logo({ sx }) {
 
   return (
     <Box sx={{ width: 150, height: 80, display: 'flex', alignItems: 'center', ...sx }}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height={sx?.height ?? '50px'} viewBox="0 0 194.73 71.7">
+      <svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 194.73 71.7">
         <defs>
           <path id="b" d="M-2.67 14.56h41.3v11.59h-41.3z" />
           <path id="a" d="M42.79 24.36H161.2v17.6H42.79z" />

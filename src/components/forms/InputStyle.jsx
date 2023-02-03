@@ -8,6 +8,7 @@ const InputStyle = styled(TextField, {
   shouldForwardProp: (prop) => prop !== 'stretchStart',
 })(({ stretchStart, theme }) => ({
   '& .MuiOutlinedInput-root': {
+    padding: 0,
     transition: theme.transitions.create(['box-shadow', 'width'], {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.shorter,
