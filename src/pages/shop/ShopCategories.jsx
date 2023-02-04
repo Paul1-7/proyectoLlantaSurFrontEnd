@@ -1,20 +1,18 @@
 import { FilterList } from '@mui/icons-material';
-import { Container, Drawer, Grid, Typography, useTheme } from '@mui/material';
+import { Drawer, Grid, useTheme } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MHidden, MIconButton } from '~/components/@material-extend';
-import Page from '~/components/Page';
-import Scrollbar from '~/components/Scrollbar';
-import ShopFilter from '~/components/shop/ShopFilter';
-import ShopProductList from '~/components/shop/ShopProductList';
 import { ERRORS } from '~/constants/handleError';
 import { useGetBrandsQuery } from '~/redux/api/brandsApi';
 import { useGetCategoryByURLQuery } from '~/redux/api/categoriesApi';
 import { setProducts } from '~/redux/slices/productsShop';
 import { PATH_MODULES } from '~/routes/paths';
 import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
+import { ShopContainerListProducts, ShopFilter, ShopNotFound, ShopProductList } from '~/components/shop';
+import { Scrollbar } from '~/components';
 
 function ShopCategories() {
   const { url } = useParams();
@@ -58,62 +56,73 @@ function ShopCategories() {
   }, [categoryProducts.isError]);
 
   return (
-    <Page title={categoryProducts.data?.nombre ?? ''}>
-      <Container sx={{ margin: { xs: '8rem 0rem 2rem 0rem', xl: '6rem 4rem 2rem 4rem' } }} maxWidth="xl">
-        <Typography variant="h3">{categoryProducts.data?.nombre}</Typography>
-        <MIconButton size="large" color="default" onClick={handleOpenFilter} sx={{ display: { sm: 'none' } }}>
-          <FilterList />
-        </MIconButton>
-        <MHidden width="mdUp">
-          <Drawer
-            anchor="right"
-            ModalProps={{
-              keepMounted: true,
-            }}
-            onClose={handleCloseFilter}
-            PaperProps={{ sx: { width: 260 } }}
-            open={openFilter}
-          >
-            <Scrollbar sx={{ height: 1 }}>
-              <ShopFilter loading={brands.isLoading || categoryProducts.isLoading} brands={brands.data} />
-            </Scrollbar>
-          </Drawer>
-        </MHidden>
-        <Grid container wrap="nowrap" gap={3}>
-          <Grid
-            item
-            sm={4}
-            md={3}
-            lg={2}
-            sx={{
-              display: { xs: 'none', sm: 'block' },
-              height: 'calc(100vh - 4rem)',
-              maxHeight: 'calc(100vh - 4rem)',
-
-              boxShadow: BOX_SHADOW,
-              borderRadius: 2,
-              overflow: 'hidden',
-            }}
-          >
-            <Scrollbar
+    <ShopContainerListProducts
+      title={categoryProducts.data?.nombre}
+      loading={categoryProducts.isLoading || brands.isLoading}
+      error={categoryProducts.isError || brands.isError}
+    >
+      {categoryProducts.data?.productos.length && !categoryProducts.isLoading ? (
+        <>
+          <MIconButton size="large" color="default" onClick={handleOpenFilter} sx={{ display: { sm: 'none' } }}>
+            <FilterList />
+          </MIconButton>
+          <MHidden width="mdUp">
+            <Drawer
+              anchor="right"
+              ModalProps={{
+                keepMounted: true,
+              }}
+              onClose={handleCloseFilter}
+              PaperProps={{ sx: { width: 260 } }}
+              open={openFilter}
+            >
+              <Scrollbar sx={{ height: 1 }}>
+                <ShopFilter
+                  loading={brands.isLoading || categoryProducts.isLoading}
+                  brands={brands.data}
+                  include={['priceRange', 'brands', 'orderBy']}
+                />
+              </Scrollbar>
+            </Drawer>
+          </MHidden>
+          <Grid container wrap="nowrap" gap={3}>
+            <Grid
+              item
+              sm={4}
+              md={3}
+              lg={2}
               sx={{
-                height: 1,
+                display: { xs: 'none', sm: 'block' },
+                height: 'calc(100vh - 4rem)',
+                maxHeight: 'calc(100vh - 4rem)',
+
+                boxShadow: BOX_SHADOW,
+                borderRadius: 2,
+                overflow: 'hidden',
               }}
             >
-              <ShopFilter
-                loading={brands.isLoading || categoryProducts.isLoading}
-                brands={brands.data}
-                products={categoryProducts.data?.productos}
-                include={['priceRange', 'brands', 'orderBy']}
-              />
-            </Scrollbar>
+              <Scrollbar
+                sx={{
+                  height: 1,
+                }}
+              >
+                <ShopFilter
+                  loading={brands.isLoading || categoryProducts.isLoading}
+                  brands={brands.data}
+                  products={categoryProducts.data?.productos}
+                  include={['priceRange', 'brands', 'orderBy']}
+                />
+              </Scrollbar>
+            </Grid>
+            <Grid item xs={12} sm={8} md={9} lg={10}>
+              <ShopProductList products={productsFiltered} loading={categoryProducts.isLoading} />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={8} md={9} lg={10}>
-            <ShopProductList products={productsFiltered} loading={categoryProducts.isLoading} />
-          </Grid>
-        </Grid>
-      </Container>
-    </Page>
+        </>
+      ) : (
+        <ShopNotFound />
+      )}
+    </ShopContainerListProducts>
   );
 }
 
