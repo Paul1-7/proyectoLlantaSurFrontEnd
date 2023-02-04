@@ -3,133 +3,18 @@ import { Icon } from '@iconify/react';
 import { useState, useEffect } from 'react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import { NavLink as RouterLink, useLocation } from 'react-router-dom';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import {
-  Box,
-  List,
-  Drawer,
-  Link,
-  Collapse,
-  ListItemButton,
-  ListItemText,
-  ListItemIcon,
-  alpha,
-  styled,
-} from '@mui/material';
+import { Drawer, Link } from '@mui/material';
 // components
 import Logo from '~/components/Logo';
 import NavSection from '~/components/NavSection';
 import Scrollbar from '~/components/Scrollbar';
 import { MIconButton } from '~/components/@material-extend';
 
-const ICON_SIZE = 22;
-const ITEM_SIZE = 48;
 const PADDING = 2.5;
-
-const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
-  ...theme.typography.body2,
-  height: ITEM_SIZE,
-  textTransform: 'capitalize',
-  paddingLeft: theme.spacing(PADDING),
-  paddingRight: theme.spacing(2.5),
-  color: theme.palette.text.secondary,
-}));
-
-// ----------------------------------------------------------------------
-
-function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
-  const { title, path, icon, children } = item;
-
-  if (children) {
-    return (
-      <div key={title}>
-        <ListItemStyle onClick={onOpen}>
-          <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText disableTypography primary={title} />
-          <Box
-            component={Icon}
-            icon={isOpen ? arrowIosDownwardFill : arrowIosForwardFill}
-            sx={{ width: 16, height: 16, ml: 1 }}
-          />
-        </ListItemStyle>
-
-        <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <NavSection
-              navConfig={children}
-              sx={{
-                '& .MuiList-root:last-of-type .MuiListItemButton-root': {
-                  backgroundSize: '92%',
-                  '& > *:not(.MuiTouchRipple-root)': { display: 'none' },
-                },
-                '& .MuiListSubheader-root': {
-                  pl: PADDING,
-                  display: 'flex',
-                  alignItems: 'center',
-                  '&:before': {
-                    ml: '6px',
-                    mr: '22px',
-                    width: 8,
-                    height: 2,
-                    content: "''",
-                    borderRadius: 2,
-                    bgcolor: 'currentColor',
-                  },
-                },
-                '& .MuiListItem-root': {
-                  pl: PADDING,
-                  '&:before': { display: 'none' },
-                  '&.active': { color: 'primary.main', bgcolor: 'transparent' },
-                },
-                '& .MuiListItemIcon-root': {
-                  width: ICON_SIZE,
-                  height: ICON_SIZE,
-                  '&:before': {
-                    width: 4,
-                    height: 4,
-                    content: "''",
-                    borderRadius: '50%',
-                    bgcolor: 'currentColor',
-                  },
-                },
-              }}
-            />
-          </Box>
-        </Collapse>
-      </div>
-    );
-  }
-
-  return (
-    <ListItemStyle
-      key={title}
-      to={path}
-      component={RouterLink}
-      sx={{
-        ...(isActive && {
-          color: 'primary.main',
-          fontWeight: 'fontWeightMedium',
-          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-        }),
-      }}
-    >
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText disableTypography primary={title} />
-    </ListItemStyle>
-  );
-}
-MenuMobileItem.propTypes = {
-  item: PropTypes.object,
-  isOpen: PropTypes.bool,
-  isActive: PropTypes.bool,
-  onOpen: PropTypes.func,
-};
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
-  const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -140,9 +25,6 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
     setMobileOpen(false);
   };
 
-  const handleOpen = () => {
-    setOpen(!open);
-  };
   useEffect(() => {
     if (mobileOpen) {
       handleDrawerClose();
@@ -172,18 +54,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
           <Link component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
             <Logo sx={{ mx: PADDING, my: 3 }} />
           </Link>
-
-          <List disablePadding>
-            {navConfig.map((link) => (
-              <MenuMobileItem
-                key={link.title}
-                item={link}
-                isOpen={open}
-                onOpen={handleOpen}
-                isActive={pathname === link.path}
-              />
-            ))}
-          </List>
+          <NavSection navConfig={navConfig} sx={{ paddingBottom: '2rem', pr: 1 }} />
         </Scrollbar>
       </Drawer>
     </>

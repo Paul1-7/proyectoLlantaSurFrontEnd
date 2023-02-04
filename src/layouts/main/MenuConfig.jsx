@@ -22,7 +22,7 @@ const menuConfig = [
     title: 'Categorias',
     path: PATH_MODULES.shop.categories,
     icon: <Icon icon={cubeFill} {...ICON_SIZE} />,
-    children: [{ title: 'Categorias', path: PATH_MODULES.shop }],
+    children: [],
   },
 ];
 
