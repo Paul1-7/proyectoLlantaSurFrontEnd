@@ -80,7 +80,9 @@ function ShopCategories() {
                 <ShopFilter
                   loading={brands.isLoading || categoryProducts.isLoading}
                   brands={brands.data}
+                  products={categoryProducts.data?.productos}
                   include={['priceRange', 'brands', 'orderBy']}
+                  handleCloseFilterMobile={handleCloseFilter}
                 />
               </Scrollbar>
             </Drawer>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, Card, CircularProgress, Typography } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -29,7 +29,7 @@ const getMaxPriceRange = (products) => {
   return Math.max(...productsPrice);
 };
 
-function ShopFilter({ categories, brands, products = [], loading, include = [] }) {
+function ShopFilter({ categories, brands, products = [], loading, include = [], handleCloseFilterMobile = () => {} }) {
   const dispatch = useDispatch();
   const maxPrice = getMaxPriceRange(products);
   const methods = useForm({
@@ -54,6 +54,7 @@ function ShopFilter({ categories, brands, products = [], loading, include = [] }
       precioVenta: [],
     };
     dispatch(applyFilters(filterValues));
+    handleCloseFilterMobile();
   };
 
   useEffect(() => {
@@ -70,6 +71,7 @@ function ShopFilter({ categories, brands, products = [], loading, include = [] }
     };
 
     dispatch(applyFilters(filterValues));
+    handleCloseFilterMobile();
   };
   return (
     <Card
@@ -116,12 +118,12 @@ function ShopFilter({ categories, brands, products = [], loading, include = [] }
                 }
                 if (option === options.orderBy) {
                   return (
-                    <>
+                    <Fragment key={option}>
                       <Typography variant="subtitle2" textTransform="uppercase" align="center" gutterBottom>
                         Ordenar
                       </Typography>
                       <Controls.RadioGroup name="orderBy" items={ITEMS_ORDER_BY} label="" />
-                    </>
+                    </Fragment>
                   );
                 }
                 return null;
@@ -148,6 +150,7 @@ ShopFilter.propTypes = {
   brands: PropTypes.arrayOf(PropTypes.object),
   products: PropTypes.arrayOf(PropTypes.object),
   include: PropTypes.arrayOf(PropTypes.string),
+  handleCloseFilterMobile: PropTypes.func,
 };
 
 export default ShopFilter;
