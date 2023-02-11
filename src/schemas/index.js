@@ -11,6 +11,7 @@ import businessData from './businessData';
 import inventaryReport from './inventaryReport';
 import discounts from './discounts';
 import productsFilter from './productsFilter';
+import amountValidation from './amountValidation';
 
 const schema = {
   customer,
@@ -26,6 +27,7 @@ const schema = {
   inventaryReport,
   discounts,
   productsFilter,
+  amountValidation,
 };
 
 export default schema;
