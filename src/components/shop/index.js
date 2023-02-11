@@ -7,4 +7,5 @@ export { default as ShopProductList } from './ShopProductList';
 export { default as ShopProductSearch } from './ShopProductSearch';
 export { default as ShopSidebarMain } from './ShopSidebarMain';
 export { default as ShopTagFiltered } from './ShopTagFiltered';
+export { default as ShopCardReview } from './ShopCardReview';
 export { default as ShopContainerListProducts } from './ShopContainerLIstProducts';

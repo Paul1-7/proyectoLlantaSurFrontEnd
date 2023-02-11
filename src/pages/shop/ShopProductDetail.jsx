@@ -1,0 +1,145 @@
+import { useParams } from 'react-router-dom';
+import { Stack, Box, Typography, Divider, Button, Tab, TextField } from '@mui/material';
+import { Image } from '~/components';
+import { useGetProductQuery } from '~/redux/api/productApi';
+import { ShopContainerListProducts, ShopCardReview } from '~/components/shop';
+import { getBOBCurrency } from '~/utils/dataHandler';
+import { AddShoppingCart, LocalMall } from '@mui/icons-material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import schema from '~/schemas';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const productAmount = (product) => {
+  const sucursales = product?.sucursales ?? [];
+  let totalStock = 0;
+  sucursales.forEach(({ Sucursales_Productos: suc }) => {
+    totalStock += suc.stock;
+  });
+
+  return totalStock;
+};
+
+export default function EcommerceProductDetails() {
+  const { id } = useParams();
+  const product = useGetProductQuery(id);
+
+  const [tabs, setTabs] = useState('1');
+  const { register, formState } = useForm({
+    resolver: yupResolver(schema.amountValidation(productAmount(product.data))),
+    mode: 'all',
+    criteriaMode: 'all',
+    defaultValues: { amount: 1 },
+  });
+
+  const handleChangeTabs = (_, newValue) => {
+    setTabs(() => newValue);
+  };
+
+  const example = [
+    {
+      id: 1,
+      user: 'un sor',
+      rating: 3,
+      title: 'Great product',
+      description: 'Great product description',
+      date: '11-12-2023',
+    },
+    {
+      id: 2,
+      user: 'un sor',
+      rating: 5,
+      title: 'nice product',
+      description: 'nice product description',
+      date: '11-12-2023',
+    },
+  ];
+
+  return (
+    <ShopContainerListProducts title={product.data?.nombre} error={product.isError} loading={product.isLoading}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ flexGrow: 1, p: 2 }}>
+        <Box>
+          <Image
+            src={product.data?.imagen}
+            alt="image of product"
+            sx={{ width: { xs: '100%', sm: '50vw', md: '30rem', lg: '35rem' } }}
+            ratio="1/1"
+          />
+        </Box>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }} justifyContent="center">
+          <Typography variant="h3" component="h1">
+            {product.data?.nombre}
+          </Typography>
+          <Divider />
+
+          <Stack spacing={2}>
+            <Typography variant="h3" component="p">
+              <span style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>Precio: </span>
+              {getBOBCurrency(product.data?.precioVenta)}
+            </Typography>
+            <Typography variant="h6" component="p">
+              Marca:
+              <span style={{ fontWeight: 'normal' }}> {product.data?.marca?.nombre} </span>
+            </Typography>
+            <Typography variant="h6" component="p">
+              Categoria:
+              <span style={{ fontWeight: 'normal' }}> {product.data?.categoria?.nombre}</span>
+            </Typography>
+            <Stack direction="row" gap={1} alignItems="center">
+              <Typography variant="h6" component="p">
+                Cantidad:
+              </Typography>
+              <TextField
+                type="number"
+                size="small"
+                sx={{ width: '5rem' }}
+                error={!!formState.errors?.amount}
+                helperText={formState.errors?.amount?.message}
+                {...register('amount')}
+                FormHelperTextProps={{
+                  sx: { position: 'absolute', width: '15rem', left: '-6.5rem', bottom: '-1rem' },
+                }}
+              />
+              <Typography variant="caption" component="p">
+                {productAmount(product.data)} Disponibles
+              </Typography>
+            </Stack>
+            <Typography variant="h6" component="p">
+              Precio total:
+              <span style={{ fontWeight: 'normal' }}> {getBOBCurrency(product.data?.precioVenta)} </span>
+            </Typography>
+          </Stack>
+          <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', sm: 'start' }}>
+            <Button variant="outlined" color="primary" startIcon={<AddShoppingCart />}>
+              Agregar al carrito
+            </Button>
+            <Button variant="outlined" color="primary" startIcon={<LocalMall />}>
+              Compralo Ahora
+            </Button>
+          </Stack>
+        </Box>
+      </Stack>
+      <Box sx={{ width: '100%', px: 2 }}>
+        <TabContext value={tabs}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={handleChangeTabs} aria-label="tabs description and reviews">
+              <Tab label="Descripcion" value="1" sx={{ typography: 'h6' }} />
+              <Tab label="Reviews" value="2" sx={{ typography: 'h6' }} />
+            </TabList>
+          </Box>
+          <TabPanel value="1">Item One</TabPanel>
+          <TabPanel value="2" sx={{ pt: 2 }}>
+            <Button variant="outlined" sx={{ mb: 1 }}>
+              Valora este producto
+            </Button>
+            {!example.length && <Typography align="center">No hay valoraciones de este producto</Typography>}
+            {example.map((review) => (
+              <ShopCardReview data={review} key={review.id} />
+            ))}
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </ShopContainerListProducts>
+  );
+}

@@ -1,4 +1,6 @@
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
+const optionsDate = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+
 const objectByString = (o, s) => {
   s = s.replace(/\[(\w+)\]/g, '?.$1'); // convert indexes to properties
   s = s.replace(/^\./, ''); // strip a leading dot
@@ -22,4 +24,6 @@ const DEFAULT_CONFIG_NOTISTACK = {
   autoHideDuration: 4000,
 };
 
-export { objectByString, getBOBCurrency, DEFAULT_CONFIG_NOTISTACK };
+const formatDateToLocal = (date) => new Date(date).toLocaleDateString('bo-ES', optionsDate);
+
+export { objectByString, getBOBCurrency, formatDateToLocal, DEFAULT_CONFIG_NOTISTACK };
