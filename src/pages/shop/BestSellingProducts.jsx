@@ -48,6 +48,7 @@ function BestSellingProducts() {
   }, [bestSellingProducts.isError]);
   return (
     <ShopContainerListProducts
+      titleContainer="Productos mas vendidos"
       title="Productos mas vendidos"
       loading={bestSellingProducts.isLoading || brands.isLoading || categories.isLoading}
       error={bestSellingProducts.isError || categories.isError || brands.isError}

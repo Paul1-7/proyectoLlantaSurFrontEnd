@@ -58,6 +58,7 @@ function ShopCategories() {
   return (
     <ShopContainerListProducts
       title={categoryProducts.data?.nombre}
+      titleContainer={categoryProducts.data?.nombre}
       loading={categoryProducts.isLoading || brands.isLoading}
       error={categoryProducts.isError || brands.isError}
     >

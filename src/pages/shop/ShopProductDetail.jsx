@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Stack, Box, Typography, Divider, Button, Tab, TextField } from '@mui/material';
 import { Image } from '~/components';
 import { useGetProductQuery } from '~/redux/api/productApi';
-import { ShopContainerListProducts, ShopCardReview } from '~/components/shop';
+import { ShopContainerListProducts, ShopCardReview, ShopReviewForm } from '~/components/shop';
 import { getBOBCurrency } from '~/utils/dataHandler';
 import { AddShoppingCart, LocalMall } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -22,6 +22,15 @@ const productAmount = (product) => {
 };
 
 export default function EcommerceProductDetails() {
+  const [openModalReview, setOpenModalReview] = useState(false);
+
+  const handleOpenModalReview = () => {
+    setOpenModalReview(() => true);
+  };
+  const handleCloseModalReview = () => {
+    setOpenModalReview(() => false);
+  };
+
   const { id } = useParams();
   const product = useGetProductQuery(id);
 
@@ -58,6 +67,7 @@ export default function EcommerceProductDetails() {
 
   return (
     <ShopContainerListProducts title={product.data?.nombre} error={product.isError} loading={product.isLoading}>
+      <ShopReviewForm handleOpen={openModalReview} handleClose={handleCloseModalReview} />
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ flexGrow: 1, p: 2 }}>
         <Box>
           <Image
@@ -130,7 +140,7 @@ export default function EcommerceProductDetails() {
           </Box>
           <TabPanel value="1">Item One</TabPanel>
           <TabPanel value="2" sx={{ pt: 2 }}>
-            <Button variant="outlined" sx={{ mb: 1 }}>
+            <Button variant="outlined" sx={{ mb: 1 }} onClick={handleOpenModalReview}>
               Valora este producto
             </Button>
             {!example.length && <Typography align="center">No hay valoraciones de este producto</Typography>}
