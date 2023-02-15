@@ -10,12 +10,7 @@ function ShopCardReview({ data }) {
 
   return (
     <Box sx={{ mb: 3 }}>
-      <Stack
-        direction={{ xs: 'column-reverse', xsm: 'row' }}
-        gap={{ xs: 0.2, xsm: 1, md: 1.4 }}
-        alignItems={{ xs: 'start', xsm: 'center' }}
-        flexWrap="wrap"
-      >
+      <Stack direction={{ xs: 'row' }} gap={{ xs: 0.2, xsm: 1, md: 1.4 }} alignItems={{ xs: 'center' }} flexWrap="wrap">
         <Typography variant="caption">{user}</Typography>
         <Typography variant="caption">{formatDateToLocal(date)}</Typography>
         <Stack direction="row" alignItems="center" gap={0.2}>

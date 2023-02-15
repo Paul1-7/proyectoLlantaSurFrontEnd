@@ -12,6 +12,7 @@ import inventaryReport from './inventaryReport';
 import discounts from './discounts';
 import productsFilter from './productsFilter';
 import amountValidation from './amountValidation';
+import reviews from './reviews';
 
 const schema = {
   customer,
@@ -28,6 +29,7 @@ const schema = {
   discounts,
   productsFilter,
   amountValidation,
+  reviews,
 };
 
 export default schema;
