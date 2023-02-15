@@ -7,6 +7,7 @@ import DatePicker from './container/DatePickerContainer';
 import Autocomplete from './container/AutocompleteContainer';
 import Checkbox from './container/CheckboxContainer';
 import Slider from './container/SliderContainer';
+import Rating from './container/RatingContainer';
 
 const Controls = {
   Input,
@@ -18,6 +19,7 @@ const Controls = {
   Autocomplete,
   Checkbox,
   Slider,
+  Rating,
 };
 
 export default Controls;
