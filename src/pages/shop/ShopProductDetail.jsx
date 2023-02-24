@@ -3,23 +3,13 @@ import { Stack, Box, Typography, Divider, Button, Tab, TextField } from '@mui/ma
 import { Image } from '~/components';
 import { useGetProductQuery } from '~/redux/api/productApi';
 import { ShopContainerListProducts, ShopCardReview, ShopReviewForm } from '~/components/shop';
-import { getBOBCurrency } from '~/utils/dataHandler';
+import { getBOBCurrency, productAmount } from '~/utils/dataHandler';
 import { AddShoppingCart, LocalMall } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import schema from '~/schemas';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-const productAmount = (product) => {
-  const sucursales = product?.sucursales ?? [];
-  let totalStock = 0;
-  sucursales.forEach(({ Sucursales_Productos: suc }) => {
-    totalStock += suc.stock;
-  });
-
-  return totalStock;
-};
 
 export default function EcommerceProductDetails() {
   const [openModalReview, setOpenModalReview] = useState(false);

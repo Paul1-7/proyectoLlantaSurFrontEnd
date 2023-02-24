@@ -47,6 +47,16 @@ const productsSlice = createSlice({
         state.checkout.cart = [...state.checkout.cart, { ...product, quantity: 1 }];
       }
     },
+    getSubTotal: (state) => {
+      const { cart } = state.checkout;
+      let total = 0;
+
+      cart.forEach(({ quantity, precioVenta }) => {
+        total += quantity * precioVenta;
+      });
+
+      state.checkout.subtotal = total;
+    },
     getTotalQuantity: (state) => {
       const { cart } = state.checkout;
       let total = 0;
@@ -101,64 +111,63 @@ const productsSlice = createSlice({
     //     state.checkout.total = subtotal - discount;
     //   },
 
-    //   deleteCart(state, action) {
-    //     const updateCart = state.checkout.cart.filter((item) => item.id !== action.payload);
+    deleteCart(state, action) {
+      const updateCart = state.checkout.cart.filter((item) => item.id !== action.payload);
 
-    //     state.checkout.cart = updateCart;
-    //   },
+      state.checkout.cart = updateCart;
+    },
 
-    //   resetCart(state) {
-    //     state.checkout.activeStep = 0;
-    //     state.checkout.cart = [];
-    //     state.checkout.total = 0;
-    //     state.checkout.subtotal = 0;
-    //     state.checkout.discount = 0;
-    //     state.checkout.shipping = 0;
-    //     state.checkout.billing = null;
-    //   },
+    resetCart(state) {
+      state.checkout.activeStep = 0;
+      state.checkout.cart = [];
+      state.checkout.total = 0;
+      state.checkout.subtotal = 0;
+      state.checkout.discount = 0;
+      state.checkout.shipping = 0;
+      state.checkout.billing = null;
+    },
 
-    //   onBackStep(state) {
-    //     state.checkout.activeStep -= 1;
-    //   },
+    onBackStep(state) {
+      state.checkout.activeStep -= 1;
+    },
 
-    //   onNextStep(state) {
-    //     state.checkout.activeStep += 1;
-    //   },
+    onNextStep(state) {
+      state.checkout.activeStep += 1;
+    },
 
-    //   onGotoStep(state, action) {
-    //     const goToStep = action.payload;
-    //     state.checkout.activeStep = goToStep;
-    //   },
+    onGotoStep(state, action) {
+      const goToStep = action.payload;
+      state.checkout.activeStep = goToStep;
+    },
 
-    //   increaseQuantity(state, action) {
-    //     const productId = action.payload;
-    //     const updateCart = state.checkout.cart.map((product) => {
-    //       if (product.id === productId) {
-    //         return {
-    //           ...product,
-    //           quantity: product.quantity + 1
-    //         };
-    //       }
-    //       return product;
-    //     });
+    increaseQuantity(state, action) {
+      const productId = action.payload;
+      const updateCart = state.checkout.cart.map((product) => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            quantity: product.quantity + 1,
+          };
+        }
+        return product;
+      });
 
-    //     state.checkout.cart = updateCart;
-    //   },
+      state.checkout.cart = updateCart;
+    },
+    decreaseQuantity(state, action) {
+      const productId = action.payload;
+      const updateCart = state.checkout.cart.map((product) => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            quantity: product.quantity - 1,
+          };
+        }
+        return product;
+      });
 
-    //   decreaseQuantity(state, action) {
-    //     const productId = action.payload;
-    //     const updateCart = state.checkout.cart.map((product) => {
-    //       if (product.id === productId) {
-    //         return {
-    //           ...product,
-    //           quantity: product.quantity - 1
-    //         };
-    //       }
-    //       return product;
-    //     });
-
-    //     state.checkout.cart = updateCart;
-    //   },
+      state.checkout.cart = updateCart;
+    },
 
     //   createBilling(state, action) {
     //     state.checkout.billing = action.payload;
@@ -182,4 +191,18 @@ const productsSlice = createSlice({
 export default productsSlice.reducer;
 
 // Actions
-export const { setProducts, addCart, getTotalQuantity, applyFilters, applyOrderBy } = productsSlice.actions;
+export const {
+  setProducts,
+  addCart,
+  getTotalQuantity,
+  applyFilters,
+  applyOrderBy,
+  deleteCart,
+  resetCart,
+  onBackStep,
+  onNextStep,
+  onGotoStep,
+  increaseQuantity,
+  decreaseQuantity,
+  getSubTotal,
+} = productsSlice.actions;
