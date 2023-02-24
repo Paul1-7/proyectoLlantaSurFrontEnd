@@ -1,4 +1,3 @@
-import { Link as ScrollLink, animateScroll } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { Grid, Link, Divider, Container, Typography, IconButton, Stack, styled, Box } from '@mui/material';
