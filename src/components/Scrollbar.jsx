@@ -23,7 +23,7 @@ const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
     width: 10,
   },
   '& .simplebar-track.simplebar-horizontal .simplebar-scrollbar': {
-    height: 6,
+    height: 10,
   },
   '& .simplebar-mask': {
     zIndex: 'inherit',
