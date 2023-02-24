@@ -26,4 +26,14 @@ const DEFAULT_CONFIG_NOTISTACK = {
 
 const formatDateToLocal = (date) => new Date(date).toLocaleDateString('bo-ES', optionsDate);
 
-export { objectByString, getBOBCurrency, formatDateToLocal, DEFAULT_CONFIG_NOTISTACK };
+const productAmount = (product) => {
+  const sucursales = product?.sucursales ?? [];
+  let totalStock = 0;
+  sucursales.forEach(({ Sucursales_Productos: suc }) => {
+    totalStock += suc.stock;
+  });
+
+  return totalStock;
+};
+
+export { objectByString, getBOBCurrency, formatDateToLocal, DEFAULT_CONFIG_NOTISTACK, productAmount };
