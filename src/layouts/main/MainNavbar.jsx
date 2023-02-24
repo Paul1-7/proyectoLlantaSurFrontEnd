@@ -1,4 +1,4 @@
-import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { Link, NavLink as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { Box, AppBar, Toolbar, Container, Badge, styled } from '@mui/material';
 // hooks
@@ -101,7 +101,7 @@ export default function MainNavbar() {
             <MHidden width="mdDown">
               <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={newMenuItems} />
             </MHidden>
-            <MIconButton size="large" color="default">
+            <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
               <Badge badgeContent={checkout.totalQuantity} color="error">
                 <ShoppingCart />
               </Badge>
