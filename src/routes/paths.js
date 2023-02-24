@@ -74,6 +74,7 @@ export const PATH_MODULES = {
     bestSelling: path(ROOTS_SHOP, `productos/mas-vendidos`),
     brands: path(ROOTS_SHOP, `marcas`),
     categories: path(ROOTS_SHOP, `categorias`),
+    checkout: path(ROOTS_SHOP, `carro-de-compras`),
   },
   notFound: '/404',
   compras: path(ROOTS_DASHBOARD, '/compras'),

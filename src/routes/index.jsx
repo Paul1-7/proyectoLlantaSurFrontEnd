@@ -163,6 +163,7 @@ export default function Router() {
         { path: `${PATH_MODULES.shop.categories}/:url`, element: <ShopCategories /> },
         { path: PATH_MODULES.shop.bestSelling, element: <BestSelling /> },
         { path: `${PATH_MODULES.shop.products}/:id`, element: <ShopProductDetail /> },
+        { path: `${PATH_MODULES.shop.checkout}`, element: <ShopCheckout /> },
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
@@ -219,6 +220,7 @@ const Shop = Loadable(lazy(() => import('~/pages/shop/Shop')));
 const BestSelling = Loadable(lazy(() => import('~/pages/shop/BestSellingProducts')));
 const ShopCategories = Loadable(lazy(() => import('~/pages/shop/ShopCategories')));
 const ShopProductDetail = Loadable(lazy(() => import('~/pages/shop/ShopProductDetail')));
+const ShopCheckout = Loadable(lazy(() => import('~/pages/shop/ShopCheckout')));
 
 const NotFound = Loadable(lazy(() => import('~/pages/Page404')));
 // Main
