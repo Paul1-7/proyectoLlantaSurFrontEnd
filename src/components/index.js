@@ -43,3 +43,4 @@ export { default as SelectChipContainer } from './forms/container/SelectChipCont
 export { default as SelectContainer } from './forms/container/SelectContainer';
 export { default as SliderContainer } from './forms/container/SliderContainer';
 export { default as settings } from './settings';
+export { default as DefectivesProductsHistory } from './sales/DefectivesProductsHistory';

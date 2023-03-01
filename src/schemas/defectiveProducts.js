@@ -2,7 +2,14 @@ import { msg, regex } from '~/constants/validations';
 import * as yup from 'yup';
 
 const data = yup.object().shape({
-  descripcion: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
+  descripcion: yup
+    .string()
+    .when('cantidad', {
+      is: (val) => Number(val) >= 1,
+      then: yup.string().required(),
+      otherwise: yup.string(),
+    })
+    .matches(regex.alphaNumeric, msg.alphaNumeric),
   cantidad: yup.string().required().matches(regex.number, msg.number),
   fecha: yup.date().required(),
   idProd: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),

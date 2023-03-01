@@ -65,17 +65,20 @@ function DefectiveProductsSell({ data = [] }) {
       <Grid container wrap="wrap" spacing={1}>
         {fields.map((item, index) => (
           <Fragment key={item.id}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <Controls.Input label="Producto" disabled name={`data.${index}.producto`} isArray />
             </Grid>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={1}>
               <Controls.Input label="Cantidad vendida" disabled name={`data.${index}.cantidadVendida`} isArray />
             </Grid>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12} sm={1}>
               <Controls.Input label="Stock disponible" disabled name={`data.${index}.stock`} isArray />
             </Grid>
-            <Grid item xs={12} sm={2} sx={{ mb: { xs: 3, sm: 0 } }}>
+            <Grid item xs={12} sm={1}>
               <Controls.Input label="Cantidad a cambiar" name={`data.${index}.cantidad`} isArray type="number" />
+            </Grid>
+            <Grid item xs={12} sm={5} sx={{ mb: { xs: 3, sm: 0 } }}>
+              <Controls.Input label="Descripcion" name={`data.${index}.descripcion`} isArray />
             </Grid>
           </Fragment>
         ))}
