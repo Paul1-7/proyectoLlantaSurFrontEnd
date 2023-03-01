@@ -1,91 +1,90 @@
 import { Box, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import Controls from '~/components/forms/Control';
-import { MIconButton } from '~/components/@material-extend';
-import { Clear } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 
-const initialForm = {
-  idProd: '',
-  nombre: '',
-  cantidad: '1',
-  precio: '',
+const customData = (sale) => {
+  const data = sale.map(({ idVenta, idProd, stock, producto, cantidad }) => ({
+    idVenta,
+    idProd,
+    producto: producto.nombre,
+    fecha: new Date(),
+    cantidadVendida: cantidad,
+    cantidad: 0,
+    descripcion: '',
+    stock,
+  }));
+
+  return data;
 };
 
-function DefectiveProductsSell() {
+function DefectiveProductsSell({ data = [] }) {
   const { control } = useFormContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { fields, remove, update } = useFieldArray({
+  const { fields, update, append } = useFieldArray({
     control,
-    name: 'productos',
+    name: 'data',
   });
-  const watch = useWatch({ name: 'productos' }) ?? [];
+
+  const watch = useWatch({ name: 'data' }) ?? [];
 
   useEffect(() => {
     if (watch.length <= 0) return;
 
     watch.forEach((item, index) => {
-      if (item.cantidad > item.stock) {
-        const msg = `la cantidad del producto ${item.nombre} excede el stock disponible`;
+      if (item.cantidad > item.stock || item.cantidad > item.cantidadVendida) {
+        const msg = `la cantidad del producto ${item.producto} excede el stock disponible o la cantidad vendida`;
         enqueueSnackbar(msg, {
           anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
           autoHideDuration: 4000,
           variant: 'error',
         });
-        update(index, { ...item, cantidad: 1 });
+        update(index, { ...item, cantidad: 0 });
       }
     });
   }, [watch]);
 
-  // useEffect(() => {
-  //   if (resGet.length > 0) {
-  //     const idSucArray = data.map(({ idSuc }) => idSuc);
-  //     resGet.forEach(({ nombre, id: idSuc }, index) => {
-  //       if (idSucArray.includes(idSuc)) append(data[index]);
-  //       else append({ ...initialForm, nombre, idSuc });
-  //     });
-  //   }
-  //
-  // }, [resGet]);
+  useEffect(() => {
+    if (!data.length || fields.length) return;
+
+    const dataTransformed = customData(data);
+    append(dataTransformed);
+  }, [data]);
 
   return (
     <>
       <Box>
         <Typography variant="subtitle1" gutterBottom align="center">
-          Detalle
+          Detalle de la venta
         </Typography>
       </Box>
-      <Box sx={{ marginTop: '16px' }}>
-        {fields.map((item, index) => (
-          <Grid container wrap="wrap" spacing={1} key={item.id}>
-            <Grid item xs={12} md={6}>
-              <Controls.Input label="Producto" disabled name={`productos.${index}.nombre`} isArray />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <Controls.Input label="Cantidad" name={`productos.${index}.cantidad`} isArray type="number" />
-            </Grid>
 
-            <Grid item xs={12} md={1}>
-              <MIconButton
-                aria-label="eliminar"
-                onClick={() => {
-                  remove(index);
-                }}
-              >
-                <Clear color="error" />
-              </MIconButton>
+      <Grid container wrap="wrap" spacing={1}>
+        {fields.map((item, index) => (
+          <Fragment key={item.id}>
+            <Grid item xs={12} sm={6}>
+              <Controls.Input label="Producto" disabled name={`data.${index}.producto`} isArray />
             </Grid>
-          </Grid>
+            <Grid item xs={12} sm={2}>
+              <Controls.Input label="Cantidad vendida" disabled name={`data.${index}.cantidadVendida`} isArray />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <Controls.Input label="Stock disponible" disabled name={`data.${index}.stock`} isArray />
+            </Grid>
+            <Grid item xs={12} sm={2} sx={{ mb: { xs: 3, sm: 0 } }}>
+              <Controls.Input label="Cantidad a cambiar" name={`data.${index}.cantidad`} isArray type="number" />
+            </Grid>
+          </Fragment>
         ))}
-      </Box>
+      </Grid>
     </>
   );
 }
 export default DefectiveProductsSell;
 
-// DefectiveProductsSell.propTypes = {
-//   data: PropTypes.object,
-// };
+DefectiveProductsSell.propTypes = {
+  data: PropTypes.array,
+};

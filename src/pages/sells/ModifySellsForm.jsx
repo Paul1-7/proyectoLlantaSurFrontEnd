@@ -1,25 +1,12 @@
 import { useEffect } from 'react';
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  Container,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Backdrop, Button, CircularProgress, Container, Grid, Stack, Typography } from '@mui/material';
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
 import axios from '~/apis/apis';
 
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
-import { useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { TABLE_STATES } from '~/constants/dataTable';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,6 +14,10 @@ import schema from '~/schemas';
 import Fieldset from '~/components/forms/Fieldset';
 import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
+import { PATH_MODULES } from '~/routes/paths';
+import { Clear, Save } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 import DefectiveProductsSell from './DefectiveProductsSell';
 
 const { paymentMethods, salesTypes } = TABLE_STATES;
@@ -34,7 +25,7 @@ const { paymentMethods, salesTypes } = TABLE_STATES;
 const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
 
 const initialForm = {
-  idSucursal: idSucursalBorrar,
+  data: [],
 };
 
 const currentSubsidiaryStock = (idSuc, subsidiaries) => {
@@ -46,10 +37,7 @@ const currentSubsidiaryStock = (idSuc, subsidiaries) => {
 const salesCustomData = ({ data }) => {
   const newData = data.detalle.map((item) => ({
     ...item,
-    productos: {
-      ...item.productos,
-      stock: currentSubsidiaryStock(idSucursalBorrar, item.productos.sucursales),
-    },
+    stock: currentSubsidiaryStock(idSucursalBorrar, item.producto.sucursales),
   }));
   return { data: { ...data, detalle: newData } };
 };
@@ -60,6 +48,14 @@ export default function ModifySell() {
   const { enqueueSnackbar } = useSnackbar();
 
   const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios(salesCustomData);
+  const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
+
+  const methods = useForm({
+    resolver: yupResolver(schema.defectiveProducts),
+    defaultValues: initialForm,
+    mode: 'all',
+    criteriaMode: 'all',
+  });
 
   const id = location.pathname.split('/').pop();
 
@@ -89,15 +85,18 @@ export default function ModifySell() {
     }
   }, [errorGetSale]);
 
-  const methods = useForm({
-    resolver: yupResolver(schema.sells),
-    defaultValues: initialForm,
-    mode: 'all',
-    criteriaMode: 'all',
-  });
-
-  const onSubmit = (data) => {
-    console.log('TCL: onSubmit -> data', data);
+  const onSubmit = ({ data }) => {
+    const filteredData = data
+      .map((value) => ({ ...value, idSuc: idSucursalBorrar }))
+      .filter(({ cantidad }) => cantidad <= 0);
+    axiosFetchPost({
+      axiosInstance: axios,
+      method: 'POST',
+      url: `/api/v1/productos-defectuosos`,
+      requestConfig: {
+        data: filteredData,
+      },
+    });
   };
 
   return (
@@ -148,45 +147,33 @@ export default function ModifySell() {
           </Grid>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Grid container spacing={2} direction={{ md: 'row-reverse' }}>
-                <Grid item xs={12} md={6} sx={{ marginTop: '16px' }}>
-                  <div>
-                    <Box>
-                      <Typography variant="subtitle1" gutterBottom align="center">
-                        Lista de productos
-                      </Typography>
-                    </Box>
-                    <TableContainer>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>PRODUCTO</TableCell>
-                            <TableCell align="center">STOCK</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        {!Array.isArray(resGetSale) && !errorGetSale && (
-                          <TableBody>
-                            {resGetSale.detalle.map(({ productos }, index) => (
-                              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell component="th" scope="row">
-                                  {productos.nombre}
-                                </TableCell>
-                                <TableCell align="center">{productos.stock}</TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        )}
-                      </Table>
-                    </TableContainer>
-                  </div>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ marginTop: '16px' }}>
-                  {!Array.isArray(resGetSale) && !errorGetSale && <DefectiveProductsSell data={resGetSale.detalle} />}
-                </Grid>
-              </Grid>
+              {!Array.isArray(resGetSale) && !errorGetSale && <DefectiveProductsSell data={resGetSale?.detalle} />}
+              <Stack flexDirection="row" gap={2} justifyContent="center">
+                <Button
+                  startIcon={<Clear />}
+                  variant="outlined"
+                  color="error"
+                  LinkComponent={Link}
+                  to={PATH_MODULES.sells.root}
+                >
+                  Cancelar
+                </Button>
+                <LoadingButton
+                  loading={loadingPost}
+                  type="submit"
+                  loadingPosition="start"
+                  startIcon={<Save />}
+                  variant="outlined"
+                >
+                  Guardar
+                </LoadingButton>
+              </Stack>
             </form>
           </FormProvider>
         </Fieldset>
+        {!loadingPost && !errorPost && !Array.isArray(resPost) && (
+          <Navigate to={PATH_MODULES.sells.root} replace state={resPost} />
+        )}
       </Container>
     </Page>
   );
