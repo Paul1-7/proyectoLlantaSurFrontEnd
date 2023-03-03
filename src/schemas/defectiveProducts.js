@@ -10,8 +10,19 @@ const data = yup.object().shape({
       otherwise: yup.string(),
     })
     .matches(regex.alphaNumeric, msg.alphaNumeric),
-  cantidad: yup.string().required().matches(regex.number, msg.number),
-  fecha: yup.date().required(),
+  cantidad: yup
+    .string()
+    .required()
+    .matches(regex.number, msg.number)
+    .test('stockCheck', 'La cantidad no puede ser mayor al stock', (val, e) => {
+      const stock = e.parent.stock ? Number(e.parent.stock) : null;
+      const cantidad = val ? Number(val) : null;
+      if (cantidad && stock && cantidad > stock) {
+        return false; // validation failed
+      }
+      return true; // validation passed
+    }),
+  fecha: yup.date(),
   idProd: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
   idVenta: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   cantidadVendida: yup.string().matches(regex.number, msg.number),

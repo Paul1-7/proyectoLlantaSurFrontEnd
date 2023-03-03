@@ -76,6 +76,10 @@ export const PATH_MODULES = {
     categories: path(ROOTS_SHOP, `categorias`),
     checkout: path(ROOTS_SHOP, `carro-de-compras`),
   },
+  defectiveProducts: {
+    root: path(ROOTS_DASHBOARD, '/productos-defectuosos'),
+    new: `${ROOTS_DASHBOARD}/productos-defectuosos/nuevo`,
+  },
   notFound: '/404',
   compras: path(ROOTS_DASHBOARD, '/compras'),
   pedidos: path(ROOTS_DASHBOARD, '/pedidos'),

@@ -18,14 +18,25 @@ import { useSnackbar } from 'notistack';
 import { LibraryAdd } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
 
-const buttonsActions = { edit: true, remove: true, detail: false };
+const buttonsActions = { remove: true, detail: false };
+
+const customData = ({ data }) => {
+  const newData = data.map((value) => ({
+    ...value,
+    codVenta: value.venta?.codVenta ?? 'no aplica',
+    producto: value.producto.nombre,
+    sucursal: value.sucursal.nombre,
+  }));
+
+  return { data: newData };
+};
 
 export default function Categories() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
-  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios();
+  const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios(customData);
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
   const location = useLocation();
 
@@ -33,7 +44,7 @@ export default function Categories() {
     axiosFetchDelete({
       axiosInstance: axios,
       method: 'DELETE',
-      url: `/api/v1/categorias/${id}`,
+      url: `/api/v1/productos-defectuosos/${id}`,
     });
   };
 
@@ -70,12 +81,12 @@ export default function Categories() {
     axiosFetchGet({
       axiosInstance: axios,
       method: 'GET',
-      url: '/api/v1/categorias',
+      url: '/api/v1/productos-defectuosos',
     });
   }, []);
 
   return (
-    <Page title="Categorias" sx={{ position: 'relative' }}>
+    <Page title="Productos defectuosos" sx={{ position: 'relative' }}>
       <DialogConfirmation
         open={openDialog}
         setOpen={setOpenDialog}
@@ -88,30 +99,31 @@ export default function Categories() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
-          Categorias
+          Productos defectuosos
         </Typography>
-        <Typography gutterBottom>Administra la informacion de las categorias</Typography>
+        <Typography gutterBottom>Administra la informacion de los productos que tienen algún problema</Typography>
         <Grid container justifyContent="flex-end">
           <Grid item>
             <Button
               size="medium"
               variant="outlined"
               LinkComponent={Link}
-              to={PATH_MODULES.categories.new}
+              to={PATH_MODULES.defectiveProducts.new}
               startIcon={<LibraryAdd />}
             >
-              Nueva categoria
+              Nuevo producto defectuoso
             </Button>
           </Grid>
         </Grid>
         <DataTable
-          columns={COLUMNS.categories}
+          columns={COLUMNS.defectivesProducts}
           rows={resGet}
           error={errorGet}
           loading={loadingGet}
           numeration
           btnActions={buttonsActions}
-          orderByDefault="nombre"
+          orderByDefault="fecha"
+          orderDesc
         />
       </Container>
     </Page>

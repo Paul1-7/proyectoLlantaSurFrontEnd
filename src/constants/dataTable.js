@@ -72,6 +72,14 @@ const COLUMNS = {
     { field: 'fechaFin', header: 'fecha de finalización', type: 'date' },
     { field: 'estado', header: 'estado', type: 'states' },
   ],
+  defectivesProducts: [
+    { field: 'producto', header: 'producto', type: '' },
+    { field: 'fecha', header: 'fecha', type: 'date' },
+    { field: 'codVenta', header: 'código de venta', type: '' },
+    { field: 'sucursal', header: 'sucursal', type: '' },
+    { field: 'cantidad', header: 'cantidad', type: '' },
+    { field: 'descripcion', header: 'descripcion', type: '' },
+  ],
 };
 
 const TABLE_STATES = {
