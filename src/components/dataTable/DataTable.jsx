@@ -67,9 +67,10 @@ function DataTable({
   minStock = null,
   collapse = null,
   width = null,
+  orderDesc = false,
   ...others
 }) {
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState(orderDesc ? 'desc' : 'asc');
   const [orderBy, setOrderBy] = useState(orderByDefault);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -263,4 +264,5 @@ DataTable.propTypes = {
   collapse: PropTypes.string,
   width: PropTypes.string,
   minStock: PropTypes.number,
+  orderDesc: PropTypes.bool,
 };
