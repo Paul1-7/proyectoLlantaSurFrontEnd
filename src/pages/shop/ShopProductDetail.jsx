@@ -74,10 +74,17 @@ export default function EcommerceProductDetails() {
           <Divider />
 
           <Stack spacing={2}>
-            <Typography variant="h3" component="p">
-              <span style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>Precio: </span>
-              {getBOBCurrency(product.data?.precioVenta)}
-            </Typography>
+            <Stack direction="row" gap={2} alignItems="end">
+              <Typography variant="h3" component="p">
+                <span style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>Precio: </span>
+                {getBOBCurrency(product.data?.precioVenta)}
+              </Typography>
+              {!!product.data?.descuentos?.length && (
+                <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
+                  {getBOBCurrency(product.data?.descuentos?.at(0)?.precioDesc)}
+                </Typography>
+              )}
+            </Stack>
             <Typography variant="h6" component="p">
               Marca:
               <span style={{ fontWeight: 'normal' }}> {product.data?.marca?.nombre} </span>
@@ -102,9 +109,10 @@ export default function EcommerceProductDetails() {
                 }}
               />
               <Typography variant="caption" component="p">
-                {productAmount(product.data)} Disponibles
+                {product.data?.descuentos?.at(0)?.cantMax ?? productAmount(product.data)} Disponibles
               </Typography>
             </Stack>
+
             <Typography variant="h6" component="p">
               Precio total:
               <span style={{ fontWeight: 'normal' }}> {getBOBCurrency(product.data?.precioVenta)} </span>
@@ -128,7 +136,9 @@ export default function EcommerceProductDetails() {
               <Tab label="Reviews" value="2" sx={{ typography: 'h6' }} />
             </TabList>
           </Box>
-          <TabPanel value="1">Item One</TabPanel>
+          <TabPanel value="1" sx={{ pt: 2 }}>
+            {product.data?.descripcion}
+          </TabPanel>
           <TabPanel value="2" sx={{ pt: 2 }}>
             <Button variant="outlined" sx={{ mb: 1 }} onClick={handleOpenModalReview}>
               Valora este producto

@@ -133,7 +133,6 @@ export default function Router() {
         { path: 'ventas/detalle/:id', element: <DetailSells /> },
         // reports
         { path: 'reportes/inventario', element: <InventoryReport /> },
-        // { path: 'reportes/datos-negocio', element: <BusinessDataForm /> }
         // generalManagement
         { path: 'administracion/dosificacion-facturas', element: <InvoiceBatchingForm /> },
         { path: 'administracion/datos-negocio', element: <BusinessDataForm /> },
@@ -166,6 +165,7 @@ export default function Router() {
         { path: `${PATH_MODULES.shop.categories}`, element: <Navigate to="/" /> },
         { path: `${PATH_MODULES.shop.categories}/:url`, element: <ShopCategories /> },
         { path: PATH_MODULES.shop.bestSelling, element: <BestSelling /> },
+        { path: `${PATH_MODULES.shop.discounts}/:id`, element: <ShopDiscounts /> },
         { path: `${PATH_MODULES.shop.products}/:id`, element: <ShopProductDetail /> },
         { path: `${PATH_MODULES.shop.checkout}`, element: <ShopCheckout /> },
       ],
@@ -219,13 +219,12 @@ const AddDefectiveProductsForm = Loadable(lazy(() => import('~/pages/defectivePr
 
 // reports
 const InventoryReport = Loadable(lazy(() => import('~/pages/reports/InventoryReport')));
-// const BusinessDataForm = Loadable(lazy(() => import('~/pages/generalManagement/BusinessDataForm')));
-// generalManagement
 const InvoiceBatchingForm = Loadable(lazy(() => import('~/pages/generalManagement/InvoiceBatchingForm')));
 const BusinessDataForm = Loadable(lazy(() => import('~/pages/generalManagement/BusinessDataForm')));
 // shop
 const Shop = Loadable(lazy(() => import('~/pages/shop/Shop')));
 const BestSelling = Loadable(lazy(() => import('~/pages/shop/BestSellingProducts')));
+const ShopDiscounts = Loadable(lazy(() => import('~/pages/shop/ShopDiscounts')));
 const ShopCategories = Loadable(lazy(() => import('~/pages/shop/ShopCategories')));
 const ShopProductDetail = Loadable(lazy(() => import('~/pages/shop/ShopProductDetail')));
 const ShopCheckout = Loadable(lazy(() => import('~/pages/shop/ShopCheckout')));

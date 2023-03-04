@@ -36,4 +36,16 @@ const productAmount = (product) => {
   return totalStock;
 };
 
-export { objectByString, getBOBCurrency, formatDateToLocal, DEFAULT_CONFIG_NOTISTACK, productAmount };
+function isCurrentDateInRange(fechaInicio, fechaFin) {
+  const currentDate = new Date();
+  return currentDate >= new Date(fechaInicio) && currentDate <= new Date(fechaFin);
+}
+
+export {
+  objectByString,
+  getBOBCurrency,
+  formatDateToLocal,
+  DEFAULT_CONFIG_NOTISTACK,
+  productAmount,
+  isCurrentDateInRange,
+};

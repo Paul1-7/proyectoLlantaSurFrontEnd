@@ -71,6 +71,7 @@ export const PATH_MODULES = {
   shop: {
     root: path(ROOTS_SHOP),
     products: path(ROOTS_SHOP, `productos`),
+    discounts: path(ROOTS_SHOP, `descuentos`),
     bestSelling: path(ROOTS_SHOP, `productos/mas-vendidos`),
     brands: path(ROOTS_SHOP, `marcas`),
     categories: path(ROOTS_SHOP, `categorias`),

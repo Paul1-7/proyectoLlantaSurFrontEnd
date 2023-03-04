@@ -15,18 +15,18 @@ import { getBOBCurrency } from '~/utils/dataHandler';
 
 export default function ShopProductCard({ product }) {
   const dispatch = useDispatch();
-  const { id, nombre, imagen, descuento = null, precioVenta } = product;
-  const status = 'sale';
+  const { id, nombre, imagen, precio: descuento = null, precioVenta } = product;
+  const status = 'oferta';
 
   const linkTo = `${PATH_MODULES.shop.products}/${id}`;
 
   return (
     <Card>
       <Link sx={{ position: 'relative', display: 'block' }} to={linkTo} style={{ textDecoration: 'none' }}>
-        {status && (
+        {descuento && (
           <Label
             variant="filled"
-            color={(status === 'sale' && 'error') || 'info'}
+            color={(status === 'oferta' && 'error') || 'info'}
             sx={{
               top: 16,
               right: 16,
@@ -48,10 +48,10 @@ export default function ShopProductCard({ product }) {
           </Typography>
         </Link>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap">
           <Stack direction="row" justifyContent="space-evenly" alignItems="center">
             {descuento && (
-              <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
+              <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
                 {getBOBCurrency(descuento)}
               </Typography>
             )}
