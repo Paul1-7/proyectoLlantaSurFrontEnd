@@ -3,9 +3,23 @@ import * as yup from 'yup';
 
 const products = yup.object().shape({
   idProd: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  cantMax: yup.string().matches(regex.number, msg.number).required(),
+  cantMax: yup
+    .string()
+    .matches(regex.number, msg.number)
+    .required()
+    .test('is-less-than-maxStock', 'la cantidad tiene que ser menor o igual al maximo stock', (value, context) => {
+      return Number(value) <= context.parent.maxStock;
+    }),
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  precio: yup.string().matches(regex.float, msg.float).required(),
+  precio: yup
+    .string()
+    .matches(regex.float, msg.float)
+    .required()
+    .test('is-less-than-precioVenta', 'el precio tiene que ser menor al precio original', (value, context) => {
+      return parseFloat(value) < context.parent.precioVenta;
+    }),
+  precioVenta: yup.number(),
+  maxStock: yup.number(),
 });
 
 const discounts = yup.object().shape({

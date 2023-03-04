@@ -38,6 +38,7 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
       nombre: dataRow.nombre,
       idProd: dataRow.id,
       maxStock,
+      precioVenta: dataRow.precioVenta,
     });
     resetDataRow();
   }, [dataRow, dataLoaded]);
@@ -48,27 +49,11 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
     data.forEach(({ idProd, cantMax, precio, producto }) => {
       const productFounded = products.find(({ id }) => id === idProd);
       productsFounds.push(productFounded);
-      append({ idProd, cantMax, precio, nombre: producto.nombre });
+      append({ idProd, cantMax, precio, nombre: producto.nombre, precioVenta: producto.precioVenta });
     });
     setDataToDisabledButton(productsFounds);
     setDataLoaded(true);
   }, [data]);
-
-  useEffect(() => {
-    if (watch.length <= 0) return;
-
-    watch.forEach((item, index) => {
-      if (item.cantMax > item.maxStock) {
-        const msg = `la cantidad del producto ${item.nombre} excede el stock maximo permitido`;
-        enqueueSnackbar(msg, {
-          anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-          autoHideDuration: 4000,
-          variant: 'error',
-        });
-        update(index, { ...item, cantMax: 1 });
-      }
-    });
-  }, [watch]);
 
   return (
     <>
