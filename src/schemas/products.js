@@ -9,6 +9,7 @@ const subsidiaries = yup.object().shape({
 
 const products = yup.object().shape({
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
+  descripcion: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   precioCompra: yup.number().typeError('El precio de compra debe ser un número').required(),
   precioVenta: yup
     .number()

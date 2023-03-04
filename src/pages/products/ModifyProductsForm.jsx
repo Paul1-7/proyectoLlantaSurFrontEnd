@@ -23,6 +23,7 @@ import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
   nombre: '',
+  descripcion: '',
   precioCompra: '',
   precioVenta: '',
   fecha: new Date(),
@@ -200,6 +201,15 @@ export default function ModifyProductForm() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Controls.Input
+                    name="descripcion"
+                    label="Descripción"
+                    multiline
+                    rows={4}
+                    helperText="*Se visualizara en la descripción del producto de la tienda"
+                  />
                 </Grid>
                 {!Array.isArray(resGet) && <ProductsSubsidiaries data={resGet.sucursales} />}
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />

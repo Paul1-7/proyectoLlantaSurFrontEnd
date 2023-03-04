@@ -23,6 +23,7 @@ import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
   nombre: '',
+  descripcion: '',
   precioCompra: '',
   precioVenta: '',
   fecha: new Date(),
@@ -126,6 +127,7 @@ export default function AddBrandForm() {
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="nombre" label="Nombre" />
                 </Grid>
+
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="precioCompra" label="Precio de compra" />
                 </Grid>
@@ -146,6 +148,15 @@ export default function AddBrandForm() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Controls.Input
+                    name="descripcion"
+                    label="Descripción"
+                    multiline
+                    rows={4}
+                    helperText="*Se visualizara en la descripción del producto de la tienda"
+                  />
                 </Grid>
                 <ProductsSubsidiaries />
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
