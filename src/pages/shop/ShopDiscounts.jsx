@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MHidden, MIconButton } from '~/components/@material-extend';
 import Scrollbar from '~/components/Scrollbar';
-import { ShopFilter, ShopProductList, ShopContainerListProducts } from '~/components/shop';
+import { ShopFilter, ShopProductList, ShopContainerListProducts, ShopNotMatch } from '~/components/shop';
 import { ERRORS } from '~/constants/handleError';
 import { useGetBrandsQuery } from '~/redux/api/brandsApi';
 import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
@@ -75,7 +75,7 @@ function ShopDiscounts() {
                   loading={categories.isLoading || brands.isLoading || discountData.isLoading}
                   categories={categories.data}
                   brands={brands.data}
-                  products={discountData.data}
+                  products={discountData.data.productos}
                   include={['priceRange', 'brands', 'categories']}
                 />
               </Scrollbar>
@@ -113,7 +113,11 @@ function ShopDiscounts() {
               </Scrollbar>
             </Grid>
             <Grid item xs={12} sm={8} md={9} lg={10}>
-              <ShopProductList products={productsFiltered} loading={discountData.isLoading} />
+              {!productsFiltered.length ? (
+                <ShopNotMatch />
+              ) : (
+                <ShopProductList products={productsFiltered} loading={discountData.isLoading} />
+              )}
             </Grid>
           </Grid>
         </>

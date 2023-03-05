@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MHidden, MIconButton } from '~/components/@material-extend';
 import Scrollbar from '~/components/Scrollbar';
-import { ShopFilter, ShopProductList, ShopContainerListProducts } from '~/components/shop';
+import { ShopFilter, ShopProductList, ShopContainerListProducts, ShopNotMatch } from '~/components/shop';
 import { ERRORS } from '~/constants/handleError';
 import { useGetBrandsQuery } from '~/redux/api/brandsApi';
 import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
@@ -111,7 +111,11 @@ function BestSellingProducts() {
               </Scrollbar>
             </Grid>
             <Grid item xs={12} sm={8} md={9} lg={10}>
-              <ShopProductList products={productsFiltered} loading={bestSellingProducts.isLoading} />
+              {!productsFiltered.length ? (
+                <ShopNotMatch />
+              ) : (
+                <ShopProductList products={productsFiltered} loading={bestSellingProducts.isLoading} />
+              )}
             </Grid>
           </Grid>
         </>

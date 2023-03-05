@@ -10,3 +10,4 @@ export { default as ShopTagFiltered } from './ShopTagFiltered';
 export { default as ShopCardReview } from './ShopCardReview';
 export { default as ShopReviewForm } from './ShopReviewForm';
 export { default as ShopContainerListProducts } from './ShopContainerLIstProducts';
+export { default as ShopNotMatch } from './ShopNotMatch';
