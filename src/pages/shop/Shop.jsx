@@ -38,7 +38,7 @@ export default function Shop() {
 
   return (
     <Page>
-      <Container sx={{ marginTop: 12 }}>
+      <Container sx={{ marginTop: 18 }}>
         <ShopMainSection titleSidebar="Categorias" />
 
         <Typography variant="h4" component="h2" sx={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>

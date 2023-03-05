@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { alpha, styled } from '@mui/material';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, IconButton, alpha, styled } from '@mui/material';
 // hooks
 import useCollapseDrawer from '~/hooks/useCollapseDrawer';
 // components
@@ -40,10 +39,6 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-DashboardNavbar.propTypes = {
-  onOpenSidebar: PropTypes.func,
-};
-
 export default function DashboardNavbar({ onOpenSidebar }) {
   const { isCollapse } = useCollapseDrawer();
 
@@ -76,3 +71,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
     </RootStyle>
   );
 }
+
+DashboardNavbar.propTypes = {
+  onOpenSidebar: PropTypes.func,
+};

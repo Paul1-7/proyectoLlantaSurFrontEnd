@@ -79,7 +79,7 @@ export default function MainNavbar() {
         disableGutters
         sx={{
           bgcolor: 'background.default',
-          height: { xs: 115, sm: APP_BAR_DESKTOP - 16 },
+          height: { xs: 120 },
           borderBottom: '1px solid rgba(255, 255, 255,0.10)',
         }}
       >
@@ -92,14 +92,12 @@ export default function MainNavbar() {
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <RouterLink to="/">
-              <Logo sx={{ height: { xs: 35, sm: 60 } }} />
+              <Logo sx={{ height: { xs: 30, sm: 50 }, mb: { xs: 0.5 } }} />
             </RouterLink>
-            <ShopProductSearch
-              sx={{ display: { xs: 'none', sm: 'block' }, width: { xs: '100vw' }, paddingLeft: 4, paddingRight: 4 }}
-            />
+
             <Box sx={{ flexGrow: 1 }} />
             <MHidden width="mdDown">
-              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={newMenuItems} />
+              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems]} />
             </MHidden>
             <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
               <Badge badgeContent={checkout.totalQuantity} color="error">
@@ -107,10 +105,16 @@ export default function MainNavbar() {
               </Badge>
             </MIconButton>
             <MHidden width="mdUp">
-              <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={newMenuItems} />
+              <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems.reverse()]} />
             </MHidden>
           </Box>
-          <ShopProductSearch sx={{ paddingTop: 0.5, display: { xs: 'block', sm: 'none' } }} />
+          <ShopProductSearch
+            sx={{
+              paddingTop: 0.5,
+              width: { xs: '100vw' },
+              paddingRight: { xs: 4, sm: 6 },
+            }}
+          />
         </Container>
       </ToolbarStyle>
 

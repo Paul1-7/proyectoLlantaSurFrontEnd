@@ -8,7 +8,7 @@ function ShopContainerListProducts({ loading, error, children, title = '', title
     <Page title={title}>
       {loading && !error && <LoadingScreen />}
       {!loading && (
-        <Container sx={{ margin: { xs: '8rem 0rem 2rem 0rem', xl: '6rem 4rem 2rem 4rem' } }} maxWidth="xl">
+        <Container sx={{ margin: { xs: '9rem 0rem 2rem 0rem', xl: '9rem 4rem 2rem 4rem' } }} maxWidth="xl">
           {titleContainer && <Typography variant="h3">{titleContainer}</Typography>}
           {children}
         </Container>

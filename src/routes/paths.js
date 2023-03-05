@@ -68,6 +68,10 @@ export const PATH_MODULES = {
     businessData: `${ROOTS_DASHBOARD}/administracion/datos-negocio`,
     invoiceBatching: `${ROOTS_DASHBOARD}/administracion/dosificacion-facturas`,
   },
+  defectiveProducts: {
+    root: path(ROOTS_DASHBOARD, '/productos-defectuosos'),
+    new: `${ROOTS_DASHBOARD}/productos-defectuosos/nuevo`,
+  },
   shop: {
     root: path(ROOTS_SHOP),
     products: path(ROOTS_SHOP, `productos`),
@@ -77,9 +81,9 @@ export const PATH_MODULES = {
     categories: path(ROOTS_SHOP, `categorias`),
     checkout: path(ROOTS_SHOP, `carro-de-compras`),
   },
-  defectiveProducts: {
-    root: path(ROOTS_DASHBOARD, '/productos-defectuosos'),
-    new: `${ROOTS_DASHBOARD}/productos-defectuosos/nuevo`,
+  auth: {
+    signUp: path(ROOTS_SHOP, 'registrarse'),
+    signIn: path(ROOTS_SHOP, 'iniciar-sesion'),
   },
   notFound: '/404',
   compras: path(ROOTS_DASHBOARD, '/compras'),
