@@ -1,31 +1,27 @@
 import { FilterList } from '@mui/icons-material';
 import { Drawer, Grid, useTheme } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import { MHidden, MIconButton } from '~/components/@material-extend';
-import { ERRORS } from '~/constants/handleError';
 import { useGetBrandsQuery } from '~/redux/api/brandsApi';
-import { useGetCategoryByURLQuery } from '~/redux/api/categoriesApi';
+import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
 import { setProducts } from '~/redux/slices/productsShop';
-import { PATH_MODULES } from '~/routes/paths';
-import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
 import { ShopContainerListProducts, ShopFilter, ShopNotFound, ShopNotMatch, ShopProductList } from '~/components/shop';
 import { Scrollbar } from '~/components';
+import { useGetProductsQuery } from '~/redux/api/productApi';
+import useErrorMessage from '~/hooks/useErrorMessage';
 
-function ShopCategories() {
-  const { url } = useParams();
-  const navigate = useNavigate();
+function ShopProducts() {
   const theme = useTheme();
   const BOX_SHADOW = theme.palette.type === 'light' ? theme.shadows[1] : theme.shadows[10];
 
   const [openFilter, setOpenFilter] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const { productsFiltered } = useSelector(({ products }) => products);
-  const categoryProducts = useGetCategoryByURLQuery(url);
+  const products = useGetProductsQuery();
+  const categories = useGetCategoriesQuery();
   const brands = useGetBrandsQuery();
+  useErrorMessage({ errors: [products.error, categories.error, brands.error] });
 
   const handleOpenFilter = () => {
     setOpenFilter((openFilter) => !openFilter);
@@ -36,33 +32,18 @@ function ShopCategories() {
   };
 
   useEffect(() => {
-    const products = categoryProducts.data?.productos;
-    if (!products) return;
-    dispatch(setProducts(products));
-  }, [categoryProducts.data]);
-
-  useEffect(() => {
-    if (!categoryProducts.isError) return;
-
-    if (categoryProducts.error?.status === 404) {
-      navigate(PATH_MODULES.notFound);
-      return;
-    }
-
-    enqueueSnackbar(ERRORS.FETCH_ERROR, {
-      ...DEFAULT_CONFIG_NOTISTACK,
-      variant: 'error',
-    });
-  }, [categoryProducts.isError]);
+    if (!products.data) return;
+    dispatch(setProducts(products.data));
+  }, [products.data]);
 
   return (
     <ShopContainerListProducts
-      title={categoryProducts.data?.nombre}
-      titleContainer={categoryProducts.data?.nombre}
-      loading={categoryProducts.isLoading || brands.isLoading}
-      error={categoryProducts.isError || brands.isError}
+      title="Productos"
+      titleContainer="Productos"
+      loading={categories.isLoading || brands.isLoading}
+      error={categories.isError || brands.isError || products.isError}
     >
-      {categoryProducts.data?.productos.length && !categoryProducts.isLoading ? (
+      {products.data?.length && !products.isLoading ? (
         <>
           <MIconButton size="large" color="default" onClick={handleOpenFilter} sx={{ display: { sm: 'none' } }}>
             <FilterList />
@@ -79,10 +60,11 @@ function ShopCategories() {
             >
               <Scrollbar sx={{ height: 1 }}>
                 <ShopFilter
-                  loading={brands.isLoading || categoryProducts.isLoading}
+                  loading={brands.isLoading || categories.isLoading || products.isLoading}
                   brands={brands.data}
-                  products={categoryProducts.data?.productos}
-                  include={['priceRange', 'brands', 'orderBy']}
+                  categories={categories.data}
+                  products={products.data}
+                  include={['priceRange', 'brands', 'categories', 'orderBy']}
                   handleCloseFilterMobile={handleCloseFilter}
                 />
               </Scrollbar>
@@ -110,10 +92,11 @@ function ShopCategories() {
                 }}
               >
                 <ShopFilter
-                  loading={brands.isLoading || categoryProducts.isLoading}
+                  loading={brands.isLoading || categories.isLoading || products.isLoading}
                   brands={brands.data}
-                  products={categoryProducts.data?.productos}
-                  include={['priceRange', 'brands', 'orderBy']}
+                  categories={categories.data}
+                  products={products.data}
+                  include={['priceRange', 'brands', 'categories', 'orderBy']}
                 />
               </Scrollbar>
             </Grid>
@@ -121,7 +104,7 @@ function ShopCategories() {
               {!productsFiltered.length ? (
                 <ShopNotMatch />
               ) : (
-                <ShopProductList products={productsFiltered} loading={categoryProducts.isLoading} />
+                <ShopProductList products={productsFiltered} loading={products.isLoading} />
               )}
             </Grid>
           </Grid>
@@ -133,4 +116,4 @@ function ShopCategories() {
   );
 }
 
-export default ShopCategories;
+export default ShopProducts;
