@@ -44,3 +44,4 @@ export { default as SelectContainer } from './forms/container/SelectContainer';
 export { default as SliderContainer } from './forms/container/SliderContainer';
 export { default as settings } from './settings';
 export { default as DefectivesProductsHistory } from './sales/DefectivesProductsHistory';
+export { default as AccountUserCard } from './AccountUserCard';

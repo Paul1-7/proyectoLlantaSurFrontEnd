@@ -10,6 +10,7 @@ import Logo from '~/components/Logo';
 import NavSection from '~/components/NavSection';
 import Scrollbar from '~/components/Scrollbar';
 import { MIconButton } from '~/components/@material-extend';
+import { AccountUserCard } from '~/components';
 
 const PADDING = 2.5;
 
@@ -54,6 +55,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
           <Link component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
             <Logo sx={{ mx: PADDING, my: 3 }} />
           </Link>
+          <AccountUserCard data={{ name: 'user', role: 'admin' }} sx={{ mx: 2 }} />
           <NavSection navConfig={navConfig} sx={{ paddingBottom: '2rem', pr: 1 }} />
         </Scrollbar>
       </Drawer>

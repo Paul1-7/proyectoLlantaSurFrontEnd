@@ -17,6 +17,7 @@ import { PATH_MODULES } from '~/routes/paths';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
+import AccountPopover from '../dashboard/AccountPopover';
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -96,14 +97,16 @@ export default function MainNavbar() {
             </RouterLink>
 
             <Box sx={{ flexGrow: 1 }} />
+
             <MHidden width="mdDown">
-              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems]} />
+              <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems]} isAuthenticated />
             </MHidden>
             <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
               <Badge badgeContent={checkout.totalQuantity} color="error">
                 <ShoppingCart />
               </Badge>
             </MIconButton>
+            <AccountPopover />
             <MHidden width="mdUp">
               <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems.reverse()]} />
             </MHidden>

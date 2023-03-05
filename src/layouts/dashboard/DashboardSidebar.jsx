@@ -2,15 +2,12 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
-import { Box, Link, Stack, Avatar, Drawer, Tooltip, Typography, CardActionArea, alpha, styled } from '@mui/material';
+import { Box, Stack, Avatar, Drawer, Tooltip, CardActionArea, alpha, styled } from '@mui/material';
 // hooks
 import useCollapseDrawer from '~/hooks/useCollapseDrawer';
-// components
-import Logo from '~/components/Logo';
-import Scrollbar from '~/components/Scrollbar';
-import NavSection from '~/components/NavSection';
-//
+
 import { MHidden } from '~/components/@material-extend';
+import { AccountUserCard, NavSection, Scrollbar, Logo } from '~/components';
 import sidebarConfig from './SidebarConfig';
 
 // ----------------------------------------------------------------------
@@ -26,16 +23,6 @@ const RootStyle = styled('div')(({ theme }) => ({
     }),
   },
 }));
-
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: theme.shape.borderRadiusSm,
-  backgroundColor: theme.palette.grey[500_12],
-}));
-
-// ----------------------------------------------------------------------
 
 function IconCollapse({ onToggleCollapse, collapseClick }) {
   return (
@@ -127,19 +114,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         {isCollapse ? (
           <Avatar alt="My Avatar" src="/static/mock-images/avatars/avatar_default.jpg" sx={{ mx: 'auto', mb: 2 }} />
         ) : (
-          <Link underline="none" component={RouterLink} to="#">
-            <AccountStyle>
-              <Avatar alt="My Avatar" src="/static/mock-images/avatars/avatar_default.jpg" />
-              <Box sx={{ ml: 2 }}>
-                <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                  displayName
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  role
-                </Typography>
-              </Box>
-            </AccountStyle>
-          </Link>
+          <AccountUserCard data={{ name: 'user', role: 'admin' }} />
         )}
       </Stack>
 
