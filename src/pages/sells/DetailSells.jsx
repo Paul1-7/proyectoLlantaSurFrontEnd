@@ -45,6 +45,7 @@ export default function DetailSeel() {
   const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({
     fileName: `Factura-${resGetSale?.cliente?.nombre ?? ''}`,
   });
+  console.log('TCL: DetailSeel -> [resGetSale', resGetSale);
   const [
     resGetBusinessData,
     errorGetBusinessData,
@@ -224,9 +225,9 @@ export default function DetailSeel() {
                     <TableCell align="center">SUBTOTAL</TableCell>
                   </TableRow>
                 </TableHead>
-                {!Array.isArray(resGetSale) && (
+                {!Array.isArray(resGetSale) && !loadingGetSale && (
                   <TableBody>
-                    {resGetSale.detalle.map(({ productos, cantidad, precioUni }, index) => (
+                    {resGetSale.detalle.map(({ producto, cantidad, precioUni }, index) => (
                       <TableRow
                         key={index}
                         sx={{
@@ -234,7 +235,7 @@ export default function DetailSeel() {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          {productos.nombre}
+                          {producto.nombre}
                         </TableCell>
                         <TableCell align="center">{cantidad}</TableCell>
                         <TableCell align="center">{precioUni}</TableCell>
