@@ -45,7 +45,6 @@ export default function DetailSeel() {
   const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({
     fileName: `Factura-${resGetSale?.cliente?.nombre ?? ''}`,
   });
-  console.log('TCL: DetailSeel -> [resGetSale', resGetSale);
   const [
     resGetBusinessData,
     errorGetBusinessData,
