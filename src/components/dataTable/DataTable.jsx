@@ -241,6 +241,7 @@ function DataTable({
         count={dataFiltered.length}
         rowsPerPage={rowsPerPage}
         page={page}
+        labelRowsPerPage="Filas por página"
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
