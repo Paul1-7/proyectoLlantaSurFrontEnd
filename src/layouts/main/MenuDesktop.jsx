@@ -59,7 +59,7 @@ function MenuDesktopItem({ item: value, pathname, isHome, isOpen, isOffset, onOp
             display: 'flex',
             cursor: 'pointer',
             alignItems: 'center',
-            ...(isHome && { color: 'common.white' }),
+            ...(isHome && { color: 'text.primary' }),
             ...(isOffset && { color: 'text.primary' }),
             ...(isOpen && { opacity: 0.7 }),
           }}
@@ -122,8 +122,8 @@ function MenuDesktopItem({ item: value, pathname, isHome, isOpen, isOffset, onOp
       to={path}
       component={RouterLink}
       sx={{
-        ...(isHome && { color: 'common.white' }),
-        ...(isOffset && { color: 'text.primary' }),
+        ...(isHome && { color: 'text.primary' }),
+        ...(isOffset && { color: 'primary.main' }),
         ...(isActive && { color: 'primary.main' }),
       }}
     >
