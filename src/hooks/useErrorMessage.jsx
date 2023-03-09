@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { SnackBar } from '~/components';
 import { ERRORS } from '~/constants/handleError';
 
-const useErrorMessage = ({ errors = [] }) => {
+const useErrorMessage = ({ errors = [], setErrors = [] }) => {
   const severity = 'error';
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    errors.some((error) => {
+    errors.some((error, index) => {
       const isErrorFetch = error?.status === 'FETCH_ERROR';
       let msg = error?.message;
 
@@ -20,7 +20,7 @@ const useErrorMessage = ({ errors = [] }) => {
           autoHideDuration: 5000,
           content: (key, message) => <SnackBar id={key} message={message} severity={severity} />,
         });
-
+      setErrors?.[index]('');
       return isErrorFetch;
     });
   }, errors);
