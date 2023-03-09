@@ -107,8 +107,8 @@ export default function CheckoutPayment() {
               formik={formik}
               onApplyShipping={handleApplyShipping}
               deliveryOptions={DELIVERY_OPTIONS}
-            />
-            <CheckoutPaymentMethods formik={formik} cardOptions={CARDS_OPTIONS} paymentOptions={PAYMENT_OPTIONS} /> */}
+            /> */}
+          {/* <CheckoutPaymentMethods  cardOptions={CARDS_OPTIONS} paymentOptions={PAYMENT_OPTIONS} /> */}
           <Button
             type="button"
             size="small"

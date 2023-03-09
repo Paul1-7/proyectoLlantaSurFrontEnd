@@ -56,6 +56,7 @@ export const PATH_MODULES = {
     root: path(ROOTS_DASHBOARD, '/descuentos'),
     new: `${ROOTS_DASHBOARD}/descuentos/nuevo`,
     modify: `${ROOTS_DASHBOARD}/descuentos/modificar`,
+    detail: `${ROOTS_DASHBOARD}/descuentos/detalle`,
   },
   reports: {
     root: path(ROOTS_DASHBOARD, '/reportes'),

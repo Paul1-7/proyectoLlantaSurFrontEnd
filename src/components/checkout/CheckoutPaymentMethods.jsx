@@ -31,14 +31,14 @@ const OptionStyle = styled('div')(({ theme }) => ({
   border: `solid 1px ${theme.palette.grey[500_32]}`,
 }));
 
-export default function CheckoutPaymentMethods({ paymentOptions, cardOptions, formik }) {
-  const { errors, touched, values, getFieldProps } = formik;
+export default function CheckoutPaymentMethods({ paymentOptions, cardOptions }) {
+  // const { errors, touched, values, getFieldProps } = formik;
 
   return (
     <Card sx={{ my: 3 }}>
       <CardHeader title="Payment options" />
       <CardContent>
-        <RadioGroup row {...getFieldProps('payment')}>
+        <RadioGroup row>
           <Grid container spacing={2}>
             {paymentOptions.map((method) => {
               const { value, title, icons, description } = method;
@@ -48,9 +48,9 @@ export default function CheckoutPaymentMethods({ paymentOptions, cardOptions, fo
                 <Grid key={title} item xs={12}>
                   <OptionStyle
                     sx={{
-                      ...(values.payment === value && {
-                        boxShadow: (theme) => theme.customShadows.z8,
-                      }),
+                      // ...(values.payment === value && {
+                      //   boxShadow: (theme) => theme.customShadows.z8,
+                      // }),
                       ...(hasChildren && { flexWrap: 'wrap' }),
                     }}
                   >

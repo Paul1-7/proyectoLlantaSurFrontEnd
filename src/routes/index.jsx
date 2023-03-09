@@ -119,6 +119,10 @@ export default function Router() {
             </DataTableProvider>
           ),
         },
+        {
+          path: `${PATH_MODULES.discounts.detail}/:id`,
+          element: <DetailDiscounts />,
+        },
         // Sells
         {
           path: 'ventas',
@@ -180,6 +184,7 @@ export default function Router() {
 const Discounts = Loadable(lazy(() => import('~/pages/discounts/Discounts')));
 const AddDiscountsForm = Loadable(lazy(() => import('~/pages/discounts/AddDiscountsForm')));
 const ModifyDiscountsForm = Loadable(lazy(() => import('~/pages/discounts/ModifyDiscountsForm')));
+const DetailDiscounts = Loadable(lazy(() => import('~/pages/discounts/DetailDiscounts')));
 // customers
 const Customers = Loadable(lazy(() => import('~/pages/customers/Customers')));
 const AddCustomerForm = Loadable(lazy(() => import('~/pages/customers/AddCustomerForm')));
