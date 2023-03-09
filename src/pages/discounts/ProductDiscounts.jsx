@@ -6,7 +6,6 @@ import Controls from '~/components/forms/Control';
 import { MIconButton } from '~/components/@material-extend';
 import { Clear } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
-import { useSnackbar } from 'notistack';
 
 const initialForm = {
   idProd: '',
@@ -18,21 +17,30 @@ const initialForm = {
 function ProductsDiscounts({ data = null, products = [], existDataToLoad = false }) {
   const [dataLoaded, setDataLoaded] = useState(!existDataToLoad);
   const { control } = useFormContext();
-  const { enqueueSnackbar } = useSnackbar();
 
   const { dataRow, enableButton, setDataToDisabledButton, resetDataRow } = useContext(DataTableContext);
-  const { fields, append, remove, update } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'productos',
   });
-  const watch = useWatch({ name: 'productos' });
+  const watchProducts = useWatch({ name: 'productos' });
+
+  function getMaxStockSubsidiaries(data) {
+    const product = { ...data };
+
+    delete product.id;
+    delete product.nombre;
+    delete product.precioVenta;
+    const subsidiaries = Object.entries(product);
+    const stockSubsidiaries = subsidiaries.map(([, stock]) => stock);
+    return Math.max(...stockSubsidiaries);
+  }
 
   useEffect(() => {
     if (!dataRow || !dataLoaded) return;
 
-    const subsidiaries = Object.entries(dataRow).slice(3);
-    const stockSubsidiaries = subsidiaries.map(([, stock]) => stock);
-    const maxStock = Math.max(...stockSubsidiaries);
+    const maxStock = getMaxStockSubsidiaries(dataRow);
+
     append({
       ...initialForm,
       nombre: dataRow.nombre,
@@ -49,7 +57,8 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
     data.forEach(({ idProd, cantMax, precio, producto }) => {
       const productFounded = products.find(({ id }) => id === idProd);
       productsFounds.push(productFounded);
-      append({ idProd, cantMax, precio, nombre: producto.nombre, precioVenta: producto.precioVenta });
+      const maxStock = getMaxStockSubsidiaries(productFounded);
+      append({ idProd, cantMax, precio, nombre: producto.nombre, precioVenta: producto.precioVenta, maxStock });
     });
     setDataToDisabledButton(productsFounds);
     setDataLoaded(true);
@@ -72,7 +81,7 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
                   aria-label="eliminar"
                   color="error"
                   onClick={() => {
-                    const id = watch?.[index].idProd;
+                    const id = watchProducts?.[index].idProd;
                     remove(index);
                     enableButton(id);
                   }}
