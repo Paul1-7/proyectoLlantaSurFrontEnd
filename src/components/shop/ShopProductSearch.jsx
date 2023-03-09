@@ -36,13 +36,14 @@ export default function ShopProductSearch({ sx = {} }) {
     setSearchQuery(value);
   };
 
-  const handleClick = (name) => {
-    navigate(`${PATH_MODULES.shop.products}/${name}`);
+  const handleClick = (id) => {
+    navigate(`${PATH_MODULES.shop.products}/${id}`);
   };
 
   const handleKeyUp = (event) => {
+    const { id } = searchResults.at(0);
     if (event.key === 'Enter') {
-      handleClick(searchQuery);
+      handleClick(id);
     }
   };
 
@@ -75,13 +76,13 @@ export default function ShopProductSearch({ sx = {} }) {
         />
       )}
       renderOption={(props, product, { inputValue }) => {
-        const { nombre, imagen } = product;
+        const { nombre, imagen, id } = product;
         const matches = match(nombre, inputValue);
         const parts = parse(nombre, matches);
         return (
           <li {...props}>
             <Image alt={imagen} src={imagen} sx={{ width: 48, height: 48, borderRadius: 1, flexShrink: 0, mr: 1.5 }} />
-            <Link underline="none" onClick={() => handleClick(nombre)}>
+            <Link underline="none" onClick={() => handleClick(id)}>
               {parts.map((part, index) => (
                 <Typography
                   key={index}
