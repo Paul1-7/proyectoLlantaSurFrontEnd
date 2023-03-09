@@ -26,7 +26,26 @@ const DEFAULT_CONFIG_NOTISTACK = {
 
 const formatDateToLocal = (date) => new Date(date).toLocaleDateString('bo-ES', optionsDate);
 
+function isCurrentDateInRange(fechaInicio, fechaFin) {
+  const currentDate = new Date();
+  return currentDate >= new Date(fechaInicio) && currentDate <= new Date(fechaFin);
+}
+
+function isValidDiscount(value) {
+  if (!Array.isArray(value)) {
+    const { fechaFin, fechaInicio, estado } = value;
+    return isCurrentDateInRange(fechaInicio, fechaFin) && estado === 1;
+  }
+
+  return value.every(
+    ({ fechaFin, fechaInicio, estado }) => isCurrentDateInRange(fechaInicio, fechaFin) && estado === 1,
+  );
+}
+
 const productAmount = (product) => {
+  const { descuentos = [] } = product || {};
+  if (isValidDiscount(descuentos.at(0))) return product.descuentos.at(0).cantMax;
+
   const sucursales = product?.sucursales ?? [];
   let totalStock = 0;
   sucursales.forEach(({ Sucursales_Productos: suc }) => {
@@ -36,11 +55,6 @@ const productAmount = (product) => {
   return totalStock;
 };
 
-function isCurrentDateInRange(fechaInicio, fechaFin) {
-  const currentDate = new Date();
-  return currentDate >= new Date(fechaInicio) && currentDate <= new Date(fechaFin);
-}
-
 export {
   objectByString,
   getBOBCurrency,
@@ -48,4 +62,5 @@ export {
   DEFAULT_CONFIG_NOTISTACK,
   productAmount,
   isCurrentDateInRange,
+  isValidDiscount,
 };

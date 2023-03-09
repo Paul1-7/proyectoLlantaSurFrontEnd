@@ -5,7 +5,7 @@ import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { CheckoutBillingAddress, CheckoutCart, CheckoutOrderComplete } from '~/components/checkout';
+import { CheckoutBillingAddress, CheckoutCart, CheckoutOrderComplete, CheckoutPayment } from '~/components/checkout';
 import { withStyles } from '@mui/styles';
 
 const STEPS = ['Cart', 'Billing & address', 'Payment'];
@@ -94,7 +94,7 @@ function ShopCheckout() {
         <>
           {activeStep === 0 && <CheckoutCart />}
           {activeStep === 1 && <CheckoutBillingAddress />}
-          {/* {activeStep === 2 && billing && <CheckoutPayment />} */}
+          {activeStep === 2 && <CheckoutPayment />}
         </>
       ) : (
         <CheckoutOrderComplete open={isComplete} />

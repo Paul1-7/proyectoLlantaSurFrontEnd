@@ -26,16 +26,19 @@ const productsSlice = createSlice({
     },
     addCart(state, action) {
       const product = action.payload;
+      const { addQuantity } = product ?? {};
+
       const { cart } = state.checkout;
       const productFound = cart.find(({ id }) => id === product.id);
 
       if (productFound) {
         state.checkout.cart = cart.map((_product) => {
-          const productExists = _product.id === product.id;
+          const { id, quantity } = _product || {};
+          const productExists = id === product.id;
           if (productExists) {
             return {
               ..._product,
-              quantity: _product.quantity + 1,
+              quantity: addQuantity ? quantity + Number(addQuantity) : quantity + 1,
             };
           }
           return _product;
@@ -44,7 +47,7 @@ const productsSlice = createSlice({
       }
 
       if (!productFound) {
-        state.checkout.cart = [...state.checkout.cart, { ...product, quantity: 1 }];
+        state.checkout.cart = [...state.checkout.cart, { ...product, quantity: Number(addQuantity ?? 1) }];
       }
     },
     getSubTotal: (state) => {

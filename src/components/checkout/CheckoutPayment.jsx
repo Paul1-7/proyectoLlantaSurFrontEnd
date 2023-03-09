@@ -6,12 +6,12 @@ import { Grid, Button } from '@mui/material';
 // redux
 import { onGotoStep, onBackStep, onNextStep } from '~/redux/slices/productsShop';
 //
+import { useDispatch, useSelector } from 'react-redux';
+import { LoadingButton } from '@mui/lab';
 import CheckoutSummary from './CheckoutSummary';
 import CheckoutDelivery from './CheckoutDelivery';
 import CheckoutBillingInfo from './CheckoutBillingInfo';
 import CheckoutPaymentMethods from './CheckoutPaymentMethods';
-import { useDispatch, useSelector } from 'react-redux';
-import { LoadingButton } from '@mui/lab';
 
 // ----------------------------------------------------------------------
 
@@ -99,46 +99,42 @@ export default function CheckoutPayment() {
   //   },
   // });
 
-  const { isSubmitting, handleSubmit } = formik;
-
   return (
-    <FormProvider>
-      <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          {/* <Grid item xs={12} md={8}>
-            <CheckoutDelivery
+    <form autoComplete="off" noValidate>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={8}>
+          {/* <CheckoutDelivery
               formik={formik}
               onApplyShipping={handleApplyShipping}
               deliveryOptions={DELIVERY_OPTIONS}
             />
-            <CheckoutPaymentMethods formik={formik} cardOptions={CARDS_OPTIONS} paymentOptions={PAYMENT_OPTIONS} />
-            <Button
-              type="button"
-              size="small"
-              color="inherit"
-              onClick={handleBackStep}
-              startIcon={<Icon icon={arrowIosBackFill} />}
-            >
-              Back
-            </Button>
-          </Grid> */}
-
-          <Grid item xs={12} md={4}>
-            <CheckoutBillingInfo onBackStep={handleBackStep} />
-            <CheckoutSummary
-              enableEdit
-              total={total}
-              subtotal={subtotal}
-              discount={discount}
-              shipping={shipping}
-              onEdit={() => handleGotoStep(0)}
-            />
-            <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-              Complete Order
-            </LoadingButton>
-          </Grid>
+            <CheckoutPaymentMethods formik={formik} cardOptions={CARDS_OPTIONS} paymentOptions={PAYMENT_OPTIONS} /> */}
+          <Button
+            type="button"
+            size="small"
+            color="inherit"
+            onClick={handleBackStep}
+            startIcon={<Icon icon={arrowIosBackFill} />}
+          >
+            Atras
+          </Button>
         </Grid>
-      </form>
-    </FormProvider>
+
+        <Grid item xs={12} md={4}>
+          {/* <CheckoutBillingInfo onBackStep={handleBackStep} /> */}
+          <CheckoutSummary
+            enableEdit
+            total={total}
+            subtotal={subtotal}
+            discount={discount}
+            shipping={shipping}
+            onEdit={() => handleGotoStep(0)}
+          />
+          <LoadingButton fullWidth size="large" type="submit" variant="contained">
+            Complete Order
+          </LoadingButton>
+        </Grid>
+      </Grid>
+    </form>
   );
 }

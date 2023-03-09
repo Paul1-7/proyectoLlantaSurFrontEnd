@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useGetBestSellingProductsQuery, useGetProductsQuery } from '~/redux/api/productApi';
 import { setProducts } from '~/redux/slices/productsShop';
 import { useSnackbar } from 'notistack';
-import { DEFAULT_CONFIG_NOTISTACK } from '~/utils/dataHandler';
+import { DEFAULT_CONFIG_NOTISTACK, isValidDiscount } from '~/utils/dataHandler';
 import { Link } from 'react-router-dom';
 import { PATH_MODULES } from '~/routes/paths';
 import { ERRORS } from '~/constants/handleError';
@@ -57,24 +57,28 @@ export default function Shop() {
         <ShopProductList products={someBestSellingProducts} loading={bestSellingProducts.isLoading} />
         {!productsDiscounts.isLoading &&
           !productsDiscounts.isError &&
-          productsDiscounts.data.map(({ nombre, id, productos }) => (
-            <Fragment key={id}>
-              <Typography variant="h4" component="h2" sx={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                {nombre}
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                  sx={{ marginLeft: '1rem' }}
-                  LinkComponent={Link}
-                  to={`${PATH_MODULES.shop.discounts}/${id}`}
-                >
-                  Ver mas
-                </Button>
-              </Typography>
-              <ShopProductList products={productos} loading={productsDiscounts.isLoading} />
-            </Fragment>
-          ))}
+          productsDiscounts.data
+            .filter((product) => isValidDiscount(product))
+            .map(({ nombre, id, productos }) => {
+              return (
+                <Fragment key={id}>
+                  <Typography variant="h4" component="h2" sx={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                    {nombre}
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      size="small"
+                      sx={{ marginLeft: '1rem' }}
+                      LinkComponent={Link}
+                      to={`${PATH_MODULES.shop.discounts}/${id}`}
+                    >
+                      Ver mas
+                    </Button>
+                  </Typography>
+                  <ShopProductList products={productos} loading={productsDiscounts.isLoading} />
+                </Fragment>
+              );
+            })}
       </Container>
     </Page>
   );

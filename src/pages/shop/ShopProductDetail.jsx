@@ -1,17 +1,21 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Stack, Box, Typography, Divider, Button, Tab, TextField } from '@mui/material';
 import { Image } from '~/components';
 import { useGetProductQuery } from '~/redux/api/productApi';
 import { ShopContainerListProducts, ShopCardReview, ShopReviewForm } from '~/components/shop';
-import { getBOBCurrency, productAmount } from '~/utils/dataHandler';
+import { getBOBCurrency, isValidDiscount, productAmount } from '~/utils/dataHandler';
 import { AddShoppingCart, LocalMall } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import schema from '~/schemas';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { PATH_MODULES } from '~/routes/paths';
+import { useDispatch } from 'react-redux';
+import { addCart } from '~/redux/slices/productsShop';
 
-export default function EcommerceProductDetails() {
+export default function ShopProductDetails() {
+  const dispatch = useDispatch();
   const [openModalReview, setOpenModalReview] = useState(false);
 
   const handleOpenModalReview = () => {
@@ -25,7 +29,7 @@ export default function EcommerceProductDetails() {
   const product = useGetProductQuery(id);
 
   const [tabs, setTabs] = useState('1');
-  const { register, formState } = useForm({
+  const { register, formState, watch } = useForm({
     resolver: yupResolver(schema.amountValidation(productAmount(product.data))),
     mode: 'all',
     criteriaMode: 'all',
@@ -79,11 +83,12 @@ export default function EcommerceProductDetails() {
                 <span style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>Precio: </span>
                 {getBOBCurrency(product.data?.precioVenta)}
               </Typography>
-              {!!product.data?.descuentos?.length && (
-                <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
-                  {getBOBCurrency(product.data?.descuentos?.at(0)?.precioDesc)}
-                </Typography>
-              )}
+              {!!product.data?.descuentos?.length &&
+                isValidDiscount(product.data?.descuentos)(
+                  <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
+                    {getBOBCurrency(product.data?.descuentos?.at(0)?.precioDesc)}
+                  </Typography>,
+                )}
             </Stack>
             <Typography variant="h6" component="p">
               Marca:
@@ -119,10 +124,21 @@ export default function EcommerceProductDetails() {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', sm: 'start' }}>
-            <Button variant="outlined" color="primary" startIcon={<AddShoppingCart />}>
+            <Button
+              variant="outlined"
+              onClick={() => dispatch(addCart({ ...product.data, addQuantity: watch('amount') }))}
+              color="primary"
+              startIcon={<AddShoppingCart />}
+            >
               Agregar al carrito
             </Button>
-            <Button variant="outlined" color="primary" startIcon={<LocalMall />}>
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<LocalMall />}
+              LinkComponent={Link}
+              to={PATH_MODULES.shop.checkout}
+            >
               Compralo Ahora
             </Button>
           </Stack>
