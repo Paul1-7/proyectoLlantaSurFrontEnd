@@ -115,7 +115,7 @@ export default function MainNavbar() {
             sx={{
               paddingTop: 0.5,
               width: { xs: '100vw' },
-              paddingRight: { xs: 4, sm: 6 },
+              paddingRight: { xs: 4, sm: 6, md: 16, lg: 22, xl: 56 },
             }}
           />
         </Container>
