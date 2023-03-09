@@ -16,7 +16,7 @@ import { getBOBCurrency } from '~/utils/dataHandler';
 export default function ShopProductCard({ product }) {
   const dispatch = useDispatch();
   const { id, nombre, imagen, precio: descuento = null, precioVenta } = product;
-  const status = 'oferta';
+  const status = 'descuento';
 
   const linkTo = `${PATH_MODULES.shop.products}/${id}`;
 
@@ -26,7 +26,7 @@ export default function ShopProductCard({ product }) {
         {descuento && (
           <Label
             variant="filled"
-            color={(status === 'oferta' && 'error') || 'info'}
+            color={(status === 'descuento' && 'error') || 'info'}
             sx={{
               top: 16,
               right: 16,
