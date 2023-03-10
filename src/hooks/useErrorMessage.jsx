@@ -20,7 +20,8 @@ const useErrorMessage = ({ errors = [], setErrors = [] }) => {
           autoHideDuration: 5000,
           content: (key, message) => <SnackBar id={key} message={message} severity={severity} />,
         });
-      setErrors?.[index]('');
+
+      if (setErrors.length) setErrors?.[index]('');
       return isErrorFetch;
     });
   }, errors);
