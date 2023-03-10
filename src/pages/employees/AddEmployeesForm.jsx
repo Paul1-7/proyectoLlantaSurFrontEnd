@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
 import axios from '~/apis/apis';
@@ -15,10 +15,9 @@ import schema from '~/schemas';
 import { Navigate } from 'react-router';
 import { PATH_MODULES } from '~/routes/paths';
 import { useEffect } from 'react';
-import { useSnackbar } from 'notistack';
-import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from '~/constants/items';
 import { Link } from 'react-router-dom';
+import useErrorMessage from '~/hooks/useErrorMessage';
 
 const initialForm = {
   usuario: '',
@@ -31,20 +30,37 @@ const initialForm = {
   direccion: '',
   celular: '',
   ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
+  idSuc: '0',
   roles: [ITEMS_SELECTS[1].idRol],
 };
 
+function SubsidiariesCustomData({ data }) {
+  const newData = data.filter(({ estado }) => estado === 1).map(({ id: idSuc, nombre }) => ({ idSuc, nombre }));
+
+  return { data: newData };
+}
+
 export default function AddEmployeesForm() {
   const { themeStretch } = useSettings();
-  const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
+  const [resGetSubsidiaries, errorGetSubsidiaries, loadingGetSubsidiaries, axiosFetchGetSubsidiaries] =
+    useAxios(SubsidiariesCustomData);
+
+  useErrorMessage({ errors: [errorPost, errorGetSubsidiaries] });
   const methods = useForm({
     resolver: yupResolver(schema.employees),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all',
   });
+
+  useEffect(() => {
+    axiosFetchGetSubsidiaries({
+      axiosInstance: axios,
+      method: 'GET',
+      url: `/api/v1/sucursales/`,
+    });
+  }, []);
 
   const onSubmit = (data) => {
     axiosFetchPost({
@@ -57,20 +73,11 @@ export default function AddEmployeesForm() {
     });
   };
 
-  useEffect(() => {
-    if (Array.isArray(resPost) && errorPost) {
-      const severity = 'error';
-
-      enqueueSnackbar(errorPost?.message, {
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-        autoHideDuration: 5000,
-        content: (key, message) => <SnackBar id={key} message={message} severity={severity} />,
-      });
-    }
-  }, [errorPost]);
-
   return (
     <Page title="nuevo empleado">
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGetSubsidiaries}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
@@ -103,7 +110,7 @@ export default function AddEmployeesForm() {
                   <Controls.Input name="ciNit" label="CI / NIT" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Input name="idSuc" label="Sucursal" disabled />
+                  <Controls.Select name="idSuc" label="Sucursal" items={resGetSubsidiaries} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
