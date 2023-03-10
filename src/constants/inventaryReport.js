@@ -1,8 +1,8 @@
 export const ITEM_INVENTORY_REPORT_SUBSIDIARIES = [
   {
     id: '1',
-    name: 'Todas las sucursales'
-  }
+    name: 'Todas las sucursales',
+  },
 ];
 
 export const COLUMN_INVENTORY_REPORT_BY_DEFAULT = [
@@ -13,26 +13,26 @@ export const COLUMN_INVENTORY_REPORT_BY_DEFAULT = [
   'Fecha',
   'Categoria',
   'Marca',
-  'Proveedor'
+  'Proveedor',
 ];
 
 export const ITEM_INVENTORY_REPORT_CRITERIA = [
   {
     id: '2',
-    name: 'por orden alfabético'
+    name: 'por orden alfabético',
   },
   {
     id: '3',
-    name: 'por cantidad de stock'
+    name: 'por cantidad de stock',
   },
   {
     id: '4',
-    name: 'por categoría'
+    name: 'por categoría',
   },
   {
     id: '5',
-    name: 'por proveedores'
-  }
+    name: 'por proveedores',
+  },
 ];
 
 export const COLUMNS_CSV = [
@@ -42,7 +42,7 @@ export const COLUMNS_CSV = [
   { id: 'fecha', displayName: 'Fecha' },
   { id: 'categoria', displayName: 'Categoría' },
   { id: 'marca', displayName: 'Marca' },
-  { id: 'proveedor', displayName: 'Proveedor' }
+  { id: 'proveedor', displayName: 'Proveedor' },
 ];
 
 export const ID_CSV_PRODUCT = 'suc';

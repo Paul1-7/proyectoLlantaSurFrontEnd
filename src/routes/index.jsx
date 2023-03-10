@@ -136,7 +136,8 @@ export default function Router() {
         { path: 'ventas/modificar/:id', element: <ModifySellsForm /> },
         { path: 'ventas/detalle/:id', element: <DetailSells /> },
         // reports
-        { path: 'reportes/inventario', element: <InventoryReport /> },
+        { path: PATH_MODULES.reports.products, element: <InventoryReport /> },
+        { path: PATH_MODULES.reports.sales, element: <SalesReport /> },
         // generalManagement
         { path: 'administracion/dosificacion-facturas', element: <InvoiceBatchingForm /> },
         { path: 'administracion/datos-negocio', element: <BusinessDataForm /> },
@@ -225,6 +226,8 @@ const AddDefectiveProductsForm = Loadable(lazy(() => import('~/pages/defectivePr
 
 // reports
 const InventoryReport = Loadable(lazy(() => import('~/pages/reports/InventoryReport')));
+const SalesReport = Loadable(lazy(() => import('~/pages/reports/SalesReport')));
+// general options
 const InvoiceBatchingForm = Loadable(lazy(() => import('~/pages/generalManagement/InvoiceBatchingForm')));
 const BusinessDataForm = Loadable(lazy(() => import('~/pages/generalManagement/BusinessDataForm')));
 // shop
