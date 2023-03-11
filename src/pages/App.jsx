@@ -1,61 +1,117 @@
 // material
-import { Container, Typography } from '@mui/material';
-// hooks
-// components
+import { Backdrop, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import axios from '~/apis/apis';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { useSnackbar } from 'notistack';
+
 import Page from '~/components/Page';
 import useSettings from '~/hooks/useSettings';
+import { AppWelcome } from '~/components/dashboard';
+import { ChartBar } from '~/components/charts';
+import useErrorMessage from '~/hooks/useErrorMessage';
+import useAxios from '~/hooks/useAxios';
 
-// ----------------------------------------------------------------------
+const getStockFromSubsidiaries = (subsidiaries) => {
+  return subsidiaries
+    .filter(({ estado }) => estado === 1)
+    .map((subsidiary) => ({
+      nombre: subsidiary.nombre,
+      stock: subsidiary.Sucursales_Productos.stock,
+    }));
+};
+
+const productCustomData = ({ data }) => {
+  const newData = data.map(({ id, nombre, sucursales }) => ({
+    id,
+    nombre,
+    sucursales: getStockFromSubsidiaries(sucursales),
+    // sucursales,
+  }));
+  return { data: newData };
+};
+
+function getDataToBestSellingProducts(products = []) {
+  const columns = products.map(({ nombre }) => nombre);
+
+  const dataRows = products.map(({ cantidadVendida }) => cantidadVendida);
+
+  return { columnsBestSelling: columns, dataBestSelling: [{ name: 'cantidad vendida', data: dataRows }] };
+}
+
+function getStockLowProducts(products, minStockAvailable) {
+  if (!products.length || !minStockAvailable) return {};
+
+  const productsWithLowStock = [];
+  const columns = [];
+  products.forEach((product) => {
+    const productFounded = product.sucursales.find(({ stock }) => stock <= minStockAvailable);
+
+    if (productFounded && productsWithLowStock.length < 8) {
+      productsWithLowStock.push(productFounded);
+      columns.push(product.nombre);
+    }
+  });
+
+  const rows = productsWithLowStock.map((sucursales) => sucursales.stock);
+
+  return { columnsProductsLowStock: columns, dataProductsLowStock: [{ name: 'cantidad', data: rows }] };
+}
 
 export default function App() {
   const { themeStretch } = useSettings();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const { enqueueSnackbar } = useSnackbar();
+  const [resGetBestSellingProd, errorGetBestSellingProd, loadingGetBestSellingProd, axiosFetchGetBestSellingProd] =
+    useAxios();
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(productCustomData);
+  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
 
   useEffect(() => {
-    let message = null;
-    const severity = 'success';
-    if (location.state?.message) {
-      message = location.state.message;
-      navigate(location.pathname, { replace: true });
-    }
+    axiosFetchGetBestSellingProd({
+      axiosInstance: axios,
+      method: 'GET',
+      url: '/api/v1/productos/best-selling',
+    });
+    axiosFetchGetBusinessData({
+      axiosInstance: axios,
+      method: 'GET',
+      url: '/api/v1/datos-negocio',
+    });
+    axiosFetchGetProducts({
+      axiosInstance: axios,
+      method: 'GET',
+      url: '/api/v1/productos',
+    });
+  }, []);
 
-    if (message) {
-      enqueueSnackbar(message, {
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-        autoHideDuration: 4000,
-        variant: severity,
-      });
-      message = null;
-    }
-  }, [location]);
+  useErrorMessage({ errors: [errorGetBestSellingProd, errorGetProducts, errorGetBusinessData] });
 
+  const { columnsBestSelling, dataBestSelling } = getDataToBestSellingProducts(resGetBestSellingProd);
+  const { columnsProductsLowStock, dataProductsLowStock } = getStockLowProducts(
+    resGetProducts,
+    resGetBusinessData?.cantMinProd,
+  );
   return (
-    <Page title="Page Two | Minimal-UI">
+    <Page title="Dashboard">
       <Container maxWidth={themeStretch ? false : 'xl'}>
-        <Typography variant="h3" component="h1" paragraph>
-          Page Two
-        </Typography>
-
-        <Typography gutterBottom>
-          Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod
-          ligula urna in dolor. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Phasellus blandit leo
-          ut odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id
-          purus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. In consectetuer turpis ut velit.
-          Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus.
-          Vestibulum suscipit nulla quis orci. Nam commodo suscipit quam. Sed a libero.
-        </Typography>
-        <Typography>
-          Praesent ac sem eget est egestas volutpat. Phasellus viverra nulla ut metus varius laoreet. Curabitur
-          ullamcorper ultricies nisi. Ut non enim eleifend felis pretium feugiat. Donec mi odio, faucibus at,
-          scelerisque quis, convallis in, nisi. Fusce vel dui. Quisque libero metus, condimentum nec, tempor a, commodo
-          mollis, magna. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Cras dapibus.
-        </Typography>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
+          open={loadingGetProducts || loadingGetBusinessData || loadingGetBestSellingProd}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <AppWelcome displayName="aas" />
+        <Grid container spacing={2} sx={{ pt: 4 }}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="subtitle1" align="center">
+              Productos mas vendidos
+            </Typography>
+            <ChartBar columns={columnsBestSelling} rows={dataBestSelling} />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="subtitle1" align="center">
+              Productos con bajo stock
+            </Typography>
+            <ChartBar columns={columnsProductsLowStock} rows={dataProductsLowStock} />
+          </Grid>
+        </Grid>
       </Container>
     </Page>
   );
