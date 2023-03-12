@@ -82,6 +82,12 @@ export const PATH_MODULES = {
     categories: path(ROOTS_SHOP, `categorias`),
     checkout: path(ROOTS_SHOP, `carro-de-compras`),
   },
+  purchases: {
+    root: path(ROOTS_DASHBOARD, '/compras'),
+    new: `${ROOTS_DASHBOARD}/compras/nuevo`,
+    modify: `${ROOTS_DASHBOARD}/compras/modificar`,
+    detail: `${ROOTS_DASHBOARD}/compras/detalle`,
+  },
   auth: {
     signUp: path(ROOTS_SHOP, 'registrarse'),
     signIn: path(ROOTS_SHOP, 'iniciar-sesion'),

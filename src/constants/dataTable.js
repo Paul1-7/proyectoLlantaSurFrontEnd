@@ -45,6 +45,13 @@ const COLUMNS = {
     { field: 'tel', header: 'teléfono', type: '' },
     { field: 'estado', header: 'estado', type: 'states' },
   ],
+  purchases: [
+    { field: 'codCompra', header: 'código de compra', type: '' },
+    { field: 'fecha', header: 'fecha', type: 'date' },
+    { field: 'total', header: 'total', type: 'currency' },
+    { field: 'usuario', header: 'usuario', type: '' },
+    { field: 'proveedor', header: 'proveedor', type: '' },
+  ],
   sells: [
     { field: 'codVenta', header: 'código de venta', type: '' },
     { field: 'fecha', header: 'fecha', type: 'date' },

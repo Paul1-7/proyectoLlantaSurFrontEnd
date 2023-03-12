@@ -25,10 +25,12 @@ const ICONS = {
   sell: getIcon('ic_sell'),
   discount: getIcon('ic_discount'),
   report: getIcon('ic_analytics'),
+  purchase: getIcon('ic_purchase'),
 };
 
 const sidebarConfig = [
   { title: 'App', path: PATH_MODULES.app, icon: ICONS.dashboard },
+  { title: 'Compras', path: PATH_MODULES.purchases.root, icon: ICONS.purchase },
   { title: 'Clientes', path: PATH_MODULES.customers.root, icon: ICONS.user },
   { title: 'Empleados', path: PATH_MODULES.employees.root, icon: ICONS.employee },
   { title: 'Categorias', path: PATH_MODULES.categories.root, icon: ICONS.category },

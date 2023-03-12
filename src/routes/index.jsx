@@ -135,6 +135,18 @@ export default function Router() {
         { path: 'ventas/nuevo', element: <AddSellsForm /> },
         { path: 'ventas/modificar/:id', element: <ModifySellsForm /> },
         { path: 'ventas/detalle/:id', element: <DetailSells /> },
+        // Purchases
+        {
+          path: PATH_MODULES.purchases.root,
+          element: (
+            <DataTableProvider>
+              <Purchases />
+            </DataTableProvider>
+          ),
+        },
+        { path: PATH_MODULES.purchases.new, element: <AddPurchasesForm /> },
+        { path: `${PATH_MODULES.purchases.modify}/:id`, element: <ModifyPurchasesForm /> },
+        { path: `${PATH_MODULES.purchases.detail}/:id`, element: <DetailPurchases /> },
         // reports
         { path: PATH_MODULES.reports.products, element: <InventoryReport /> },
         { path: PATH_MODULES.reports.sales, element: <SalesReport /> },
@@ -220,6 +232,11 @@ const Sells = Loadable(lazy(() => import('~/pages/sells/Sells')));
 const AddSellsForm = Loadable(lazy(() => import('~/pages/sells/AddSellsForm')));
 const ModifySellsForm = Loadable(lazy(() => import('~/pages/sells/ModifySellsForm')));
 const DetailSells = Loadable(lazy(() => import('~/pages/sells/DetailSells')));
+// purchases
+const Purchases = Loadable(lazy(() => import('~/pages/purchases/Purchases')));
+const AddPurchasesForm = Loadable(lazy(() => import('~/pages/purchases/AddPurchasesForm')));
+const ModifyPurchasesForm = Loadable(lazy(() => import('~/pages/purchases/ModifyPurchasesForm')));
+const DetailPurchases = Loadable(lazy(() => import('~/pages/purchases/DetailPurchases')));
 // defectiveProducts
 const DefectiveProducts = Loadable(lazy(() => import('~/pages/defectiveProducts/DefectiveProducts')));
 const AddDefectiveProductsForm = Loadable(lazy(() => import('~/pages/defectiveProducts/AddDefectiveProductsForm')));
