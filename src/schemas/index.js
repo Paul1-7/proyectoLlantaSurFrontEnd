@@ -15,6 +15,7 @@ import amountValidation from './amountValidation';
 import reviews from './reviews';
 import defectiveProducts from './defectiveProducts';
 import salesReport from './salesReport';
+import purchases from './purchases';
 
 const schema = {
   customer,
@@ -34,6 +35,7 @@ const schema = {
   reviews,
   defectiveProducts,
   salesReport,
+  purchases,
 };
 
 export default schema;

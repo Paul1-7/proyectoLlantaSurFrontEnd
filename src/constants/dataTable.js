@@ -65,6 +65,11 @@ const COLUMNS = {
     { field: 'cantidad', header: 'cantidad', type: 'stock' },
     { field: 'precio', header: 'precio uni.', type: 'currency' },
   ],
+  productsToPurchase: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'precioVenta', header: 'precio de venta.', type: 'currency' },
+    { field: 'precioCompra', header: 'precio de compra', type: 'currency' },
+  ],
   productsDiscounts: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'precioVenta', header: 'precio uni.', type: 'currency' },

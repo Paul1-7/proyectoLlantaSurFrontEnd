@@ -1,31 +1,27 @@
-import { Box, Divider, Grid, TextField, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, Fragment, useContext } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import Controls from '~/components/forms/Control';
 import { MIconButton } from '~/components/@material-extend';
 import { Clear } from '@mui/icons-material';
-import { getBOBCurrency } from '~/utils/dataHandler';
 import DataTableContext from '~/contexts/DataTableContext';
 import { useSnackbar } from 'notistack';
 
 const initialForm = {
-  idProd: '',
-  nombre: '',
   cantidad: '1',
-  precio: '',
 };
 
-function ProductsSell({ data = null }) {
+function ProductsPurchases({ data = null }) {
   const { control } = useFormContext();
   const { enqueueSnackbar } = useSnackbar();
 
   const { dataRow, enableButton } = useContext(DataTableContext);
   const { fields, append, remove, update } = useFieldArray({
     control,
-    name: 'productos',
+    name: 'detalle',
   });
-  const watch = useWatch({ name: 'productos' });
+  const watch = useWatch({ name: 'detalle' });
 
   useEffect(() => {
     if (dataRow)
@@ -33,8 +29,8 @@ function ProductsSell({ data = null }) {
         ...initialForm,
         nombre: dataRow.nombre,
         idProd: dataRow.id,
-        precio: dataRow.precio,
-        stock: dataRow.cantidad,
+        precioVenta: dataRow.precioVenta,
+        precioCompra: dataRow.precioCompra,
       });
   }, [data, dataRow]);
 
@@ -64,7 +60,7 @@ function ProductsSell({ data = null }) {
       <Box sx={{ marginTop: '16px' }}>
         {fields.map((item, index) => (
           <Grid container wrap="wrap" spacing={1} key={item.id}>
-            <Grid item xs={12} md={1} sx={{ textAlign: 'center' }}>
+            <Grid item xs={12} sm={12} sx={{ textAlign: 'center' }}>
               <MIconButton
                 aria-label="eliminar"
                 color="error"
@@ -77,41 +73,31 @@ function ProductsSell({ data = null }) {
                 <Clear color="error" />
               </MIconButton>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Controls.Input label="Producto" disabled name={`productos.${index}.nombre`} isArray />
+            <Grid item xs={12} sm={6}>
+              <Controls.Input label="Producto" disabled name={`detalle.${index}.nombre`} isArray />
             </Grid>
-            <Grid item xs={12} md={2}>
-              <Controls.Input label="Cantidad" name={`productos.${index}.cantidad`} isArray type="number" />
+            <Grid item xs={12} sm={6}>
+              <Controls.Input label="Cantidad" name={`detalle.${index}.cantidad`} isArray type="number" />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField
-                fullWidth
-                value={watch[index] ? getBOBCurrency(watch[index].cantidad * watch[index].precio) : 0}
-                label="Subtotal"
-                size="small"
-                disabled
-              />
+            <Grid item xs={12} sm={6}>
+              <Controls.Input label="Precio de compra" name={`detalle.${index}.precioCompra`} isArray type="number" />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controls.Input label="Precio de venta" name={`detalle.${index}.precioVenta`} isArray type="number" />
             </Grid>
           </Grid>
         ))}
-        <Divider />
-        {fields.length ? (
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem', marginRight: '1rem' }}>
-            <Typography variant="subtitle1">
-              Total: {getBOBCurrency(watch.reduce((prev, current) => prev + current.precio * current.cantidad, 0))}
-            </Typography>
-          </Box>
-        ) : (
-          <Typography variant="subtitle2" align="center" pt={2}>
-            No hay productos seleccionados
+        {fields.length === 0 && (
+          <Typography variant="subtitle2" align="center" pt={3}>
+            No hay detalle seleccionados
           </Typography>
         )}
       </Box>
     </>
   );
 }
-export default ProductsSell;
+export default ProductsPurchases;
 
-ProductsSell.propTypes = {
+ProductsPurchases.propTypes = {
   data: PropTypes.object,
 };
