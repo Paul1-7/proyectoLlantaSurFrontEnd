@@ -3,6 +3,7 @@ import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 import { objectByString } from '~/utils/dataHandler';
+import compare from 'just-compare';
 
 const InputMemo = memo(
   ({ name, label, isArray, helperText, methods, variant = null, ...others }) => {
@@ -30,10 +31,13 @@ const InputMemo = memo(
       />
     );
   },
-  (prevProps, nextProps) =>
-    prevProps.methods.formState.isDirty === nextProps.methods.formState.isDirty &&
-    prevProps.methods.formState.errors !== nextProps.methods.formState.errors &&
-    prevProps.methods.formState.submitCount === nextProps.methods.formState.submitCount,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.methods.formState.isDirty === nextProps.methods.formState.isDirty &&
+      compare(prevProps.methods.formState.errors, nextProps.methods.formState.errors) &&
+      prevProps.methods.formState.submitCount === nextProps.methods.formState.submitCount
+    );
+  },
 );
 InputMemo.displayName = 'InputMemo';
 export default InputMemo;
