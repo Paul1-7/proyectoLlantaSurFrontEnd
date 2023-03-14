@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import AutocompleteMemo from '../Autocomplete';
 
-function Autocomplete({ name, loading, label, isArray, items, ...others }) {
+function Autocomplete({ name, loading, label, isArray, items, HelperTextProps, ...others }) {
   const methods = useFormContext();
   return (
     <AutocompleteMemo
@@ -13,6 +13,7 @@ function Autocomplete({ name, loading, label, isArray, items, ...others }) {
       items={items}
       isArray={isArray}
       loading={loading}
+      HelperTextProps={HelperTextProps}
     />
   );
 }
@@ -26,4 +27,5 @@ Autocomplete.propTypes = {
   others: PropTypes.object,
   isArray: PropTypes.bool,
   loading: PropTypes.bool,
+  HelperTextProps: PropTypes.object,
 };

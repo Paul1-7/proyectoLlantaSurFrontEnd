@@ -7,7 +7,7 @@ import { objectByString } from '~/utils/dataHandler';
 import { Autocomplete, CircularProgress, FormHelperText, TextField } from '@mui/material';
 
 const AutocompleteMemo = memo(
-  ({ name, label, isArray, loading, methods, items, ...others }) => {
+  ({ name, label, isArray, loading, methods, items, HelperTextProps, ...others }) => {
     const [inputValue, setInputValue] = useState('');
     const defaultValue = { nombre: 'Ninguno', id: '0' };
     items = [...items, ...[defaultValue]];
@@ -58,7 +58,7 @@ const AutocompleteMemo = memo(
                 />
               )}
             />
-            <FormHelperText error={!!errorValue} color="error">
+            <FormHelperText error={!!errorValue} color="error" {...HelperTextProps}>
               {errorValue?.message ?? ' '}
             </FormHelperText>
           </>
@@ -82,4 +82,5 @@ AutocompleteMemo.propTypes = {
   methods: PropTypes.object,
   others: PropTypes.object,
   isArray: PropTypes.bool,
+  HelperTextProps: PropTypes.object,
 };
