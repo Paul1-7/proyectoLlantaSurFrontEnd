@@ -196,7 +196,11 @@ export default function InventoryReport() {
             )}
           </form>
         </FormProvider>
-
+        {!resGet.length && (
+          <Typography align="center" variant="body2" sx={{ pt: 2 }}>
+            No hay registros con los criterios definidos
+          </Typography>
+        )}
         {!!resGet.length && (
           <Grid
             ref={componentToPrintRef}

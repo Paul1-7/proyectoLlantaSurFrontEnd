@@ -190,7 +190,11 @@ export default function SalesReport() {
                 </Grid>
               )}
             </Grid>
-
+            {!resGetSale.length && (
+              <Typography align="center" variant="body2" sx={{ pt: 2 }}>
+                No hay registros con los criterios definidos
+              </Typography>
+            )}
             {!!resGetSale.length && (
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem', ...sxNoPrint }}>
                 <Button type="button" startIcon={<PictureAsPdf />} variant="outlined" onClick={handlePrint}>
