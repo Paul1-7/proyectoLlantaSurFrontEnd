@@ -91,6 +91,7 @@ export const PATH_MODULES = {
   auth: {
     signUp: path(ROOTS_SHOP, 'registrarse'),
     signIn: path(ROOTS_SHOP, 'iniciar-sesion'),
+    resetPassword: path(ROOTS_SHOP, 'recuperar-contraseña'),
   },
   notFound: '/404',
   compras: path(ROOTS_DASHBOARD, '/compras'),

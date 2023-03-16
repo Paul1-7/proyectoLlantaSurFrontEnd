@@ -187,6 +187,8 @@ export default function Router() {
         { path: `${PATH_MODULES.shop.products}/:id`, element: <ShopProductDetail /> },
         { path: `${PATH_MODULES.shop.products}`, element: <ShopProducts /> },
         { path: `${PATH_MODULES.shop.checkout}`, element: <ShopCheckout /> },
+        // auth
+        { path: `${PATH_MODULES.auth.signIn}`, element: <Login /> },
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
@@ -257,6 +259,8 @@ const ShopCategories = Loadable(lazy(() => import('~/pages/shop/ShopCategories')
 const ShopProductDetail = Loadable(lazy(() => import('~/pages/shop/ShopProductDetail')));
 const ShopCheckout = Loadable(lazy(() => import('~/pages/shop/ShopCheckout')));
 const ShopProducts = Loadable(lazy(() => import('~/pages/shop/ShopProducts')));
+// auth
+const Login = Loadable(lazy(() => import('~/pages/auth/Login')));
 
 const NotFound = Loadable(lazy(() => import('~/pages/Page404')));
 // Main
