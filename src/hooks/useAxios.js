@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PATH_MODULES } from '~/routes/paths';
+import useAuth from './useAuth';
 
 const useAxios = ({ customErrorMessages = null, intervalClearError = 2000, responseCb = null } = {}) => {
+  const { setLastHttpRequestTime } = useAuth();
+
   const location = useLocation();
   const navigate = useNavigate();
   const [response, setResponse] = useState([]);
@@ -32,6 +35,7 @@ const useAxios = ({ customErrorMessages = null, intervalClearError = 2000, respo
 
       setResponse(res.data);
       setError(null);
+      setLastHttpRequestTime(Date.now());
     } catch (err) {
       if (customErrorMessages) {
         customErrorMessages(err, setError);
