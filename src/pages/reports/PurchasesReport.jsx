@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import CsvDownloader from 'react-csv-downloader';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
@@ -33,7 +33,6 @@ import { usePrint } from '~/hooks/usePrint';
 import useErrorMessage from '~/hooks/useErrorMessage';
 
 import { add } from 'date-fns';
-import { TABLE_STATES } from '~/constants/dataTable';
 import {
   COLUMNS_CSV_PURCHASES_REPORT,
   COLUMN_PURCHASES_REPORT_PDF,
@@ -41,11 +40,6 @@ import {
   PURCHASES_REPORT_SORT_OPTIONS,
 } from '~/constants/purchasesReport';
 import { getBOBCurrency } from '~/utils/dataHandler';
-
-const customDataSubsidiary = ({ data }) => {
-  const newData = data.map(({ id, nombre }) => ({ id, name: nombre }));
-  return { data: newData };
-};
 
 const initialForm = {
   criterio: DEFAULT_VALUE_ITEM,
@@ -69,6 +63,7 @@ const styleTableCell = {
 };
 
 export default function PurchasesReport() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [showAllRows, setShowAllRows] = useState(true);
   const [resGetPurchase, errorGetPurchase, loadingGetPurchase, axiosFetchGetPurchase] = useAxios();
@@ -110,7 +105,7 @@ export default function PurchasesReport() {
     const url = `/api/v1/compras/report/?dateStart=${dateStart}&dateEnd=${dateEnd}&orderBy=${watchValues.orderBy}`;
 
     axiosFetchGetPurchase({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url,
     });

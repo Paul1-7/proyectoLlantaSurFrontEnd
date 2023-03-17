@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Autocomplete, Box, Button, Container, Grid, Stack, TextField, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -44,10 +44,13 @@ const productsCustomData = ({ data }) => {
 };
 
 export default function AddDefectiveProductsForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [productValue, setProductValue] = useState(initialProductValue);
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(productsCustomData);
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
+    responseCb: productsCustomData,
+  });
 
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
 
@@ -85,7 +88,7 @@ export default function AddDefectiveProductsForm() {
 
   useEffect(() => {
     axiosFetchGetProducts({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos`,
     });
@@ -93,7 +96,7 @@ export default function AddDefectiveProductsForm() {
 
   const onSubmit = (data) => {
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/productos-defectuosos`,
       requestConfig: {

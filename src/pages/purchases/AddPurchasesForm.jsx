@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -59,12 +59,14 @@ const customDataProducts = ({ data }) => {
 const btnActions = { add: true };
 
 export default function AddPurchasesForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resPost, errorPost, loadingPost, axiosFetchPost, , setErrorPost] = useAxios();
   const [resGetProviders, errorGetProviders, loadingGetProviders, axiosFetchGetProviders, , setErrorProviders] =
-    useAxios(customDataProviders);
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts, , setErrorProducts] =
-    useAxios(customDataProducts);
+    useAxios({ responseCb: customDataProviders });
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts, , setErrorProducts] = useAxios({
+    responseCb: customDataProducts,
+  });
 
   useErrorMessage({
     errors: [errorGetProducts, errorGetProviders, errorPost],
@@ -73,12 +75,12 @@ export default function AddPurchasesForm() {
 
   useEffect(() => {
     axiosFetchGetProducts({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos`,
     });
     axiosFetchGetProviders({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/proveedores`,
     });
@@ -107,7 +109,7 @@ export default function AddPurchasesForm() {
     };
 
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/compras`,
       requestConfig: {

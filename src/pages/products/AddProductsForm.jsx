@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -41,26 +41,27 @@ const getOnlyActiveDatas = ({ data }) => {
 };
 
 export default function AddBrandForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
-  const [resGetBrand, , , axiosFetchGetBrand] = useAxios(getOnlyActiveDatas);
-  const [resGetCategory, , , axiosFetchGetCategory] = useAxios(getOnlyActiveDatas);
-  const [resGetProvider, , , axiosFetchGetProvider] = useAxios(getOnlyActiveDatas);
+  const [resGetBrand, , , axiosFetchGetBrand] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetCategory, , , axiosFetchGetCategory] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetProvider, , , axiosFetchGetProvider] = useAxios({ responseCb: getOnlyActiveDatas });
 
   useEffect(() => {
     axiosFetchGetBrand({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/marcas`,
     });
     axiosFetchGetCategory({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/categorias`,
     });
     axiosFetchGetProvider({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/proveedores`,
     });
@@ -86,7 +87,7 @@ export default function AddBrandForm() {
     });
 
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/productos`,
       headers: { 'Content-Type': 'multipart/form-data' },

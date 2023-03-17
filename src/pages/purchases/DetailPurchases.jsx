@@ -16,8 +16,7 @@ import {
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
-import axios from '~/apis/apis';
-
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { useParams } from 'react-router';
 import { getBOBCurrency } from '~/utils/dataHandler';
@@ -31,6 +30,7 @@ const sxNoPrint = {
 };
 
 export default function DetailSeel() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resGetPurchase, errorGetPurchase, loadingGetPurchase, axiosFetchGetPurchase, , setErrorGetPurchase] =
     useAxios();
@@ -44,7 +44,7 @@ export default function DetailSeel() {
 
   useEffect(() => {
     axiosFetchGetPurchase({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/compras/${id}`,
     });

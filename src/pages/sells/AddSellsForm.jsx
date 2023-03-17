@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -66,26 +66,31 @@ const customDataProducts = ({ data }) => {
 const btnActions = { add: true };
 
 export default function AddSellsForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(customDataProducts);
-  const [resGetCustomers, , loadingGetCustomers, axiosFetchGetCustomers] = useAxios(customDataCustomers);
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
+    responseCb: customDataProducts,
+  });
+  const [resGetCustomers, , loadingGetCustomers, axiosFetchGetCustomers] = useAxios({
+    responseCb: customDataCustomers,
+  });
 
   useEffect(() => {
     axiosFetchGetCustomers({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/clientes`,
     });
     axiosFetchGetProducts({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos`,
     });
     axiosFetchGetBusinessData({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/datos-negocio`,
     });
@@ -102,7 +107,7 @@ export default function AddSellsForm() {
     data.fecha = new Date();
     data.idCliente = data.idCliente.idCliente;
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/ventas`,
       requestConfig: {

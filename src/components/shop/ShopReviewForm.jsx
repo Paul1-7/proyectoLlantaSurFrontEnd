@@ -34,7 +34,7 @@ function ShopReviewForm({ handleOpen, handleClose }) {
     console.log('TCL: onSubmit -> data', data);
 
     // axiosFetchPost({
-    //   axiosInstance: axios,
+    //   axiosInstance: axiosPrivate,
     //   method: 'POST',
     //   url: `/api/v1/reviews`,
     //   requestConfig: {

@@ -2,7 +2,7 @@ import { Divider, FormHelperText, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, Fragment } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useAxios from '~/hooks/useAxios';
 import Controls from '~/components/forms/Control';
 import useErrorMessage from '~/hooks/useErrorMessage';
@@ -13,7 +13,10 @@ const customDataSubsidiaries = ({ data }) => {
 };
 
 function ProductsSubsidiariesPurchases({ data = [] }) {
-  const [resGetSubsidiaries, errorGetSubsidiaries, , axiosFetchGetSubsidiaries] = useAxios(customDataSubsidiaries);
+  const axiosPrivate = useAxiosPrivate();
+  const [resGetSubsidiaries, errorGetSubsidiaries, , axiosFetchGetSubsidiaries] = useAxios({
+    responseCb: customDataSubsidiaries,
+  });
   const { control, formState } = useFormContext();
   const watchProducts = useWatch({ control, name: 'detalle' });
   const errorsSubsiProd = formState.errors?.sucursalesProductos;
@@ -26,7 +29,7 @@ function ProductsSubsidiariesPurchases({ data = [] }) {
 
   useEffect(() => {
     axiosFetchGetSubsidiaries({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/sucursales`,
     });

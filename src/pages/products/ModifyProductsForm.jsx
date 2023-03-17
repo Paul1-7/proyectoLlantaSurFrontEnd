@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -55,14 +55,15 @@ const getOnlyActiveDatas = ({ data }) => {
 };
 
 export default function ModifyProductForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
-  const [resGetBrand, , , axiosFetchGetBrand] = useAxios(getOnlyActiveDatas);
-  const [resGetCategory, , , axiosFetchGetCategory] = useAxios(getOnlyActiveDatas);
-  const [resGetProvider, , , axiosFetchGetProvider] = useAxios(getOnlyActiveDatas);
+  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios({ responseCb: customData });
+  const [resGetBrand, , , axiosFetchGetBrand] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetCategory, , , axiosFetchGetCategory] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetProvider, , , axiosFetchGetProvider] = useAxios({ responseCb: getOnlyActiveDatas });
 
   const id = location.pathname.split('/').pop();
 
@@ -85,7 +86,7 @@ export default function ModifyProductForm() {
       } else formData.append(key, value);
     });
     axiosFetchPut({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'PUT',
       url: `/api/v1/productos/${id}`,
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -95,22 +96,22 @@ export default function ModifyProductForm() {
 
   useEffect(() => {
     axiosFetchGetBrand({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/marcas`,
     });
     axiosFetchGetCategory({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/categorias`,
     });
     axiosFetchGetProvider({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/proveedores`,
     });
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos/${id}`,
     });

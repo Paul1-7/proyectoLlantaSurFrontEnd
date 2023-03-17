@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import { Clear, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
@@ -28,6 +28,7 @@ const initialForm = {
 };
 
 export default function AddSubsidiariesForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
@@ -40,7 +41,7 @@ export default function AddSubsidiariesForm() {
 
   const onSubmit = (data) => {
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/sucursales`,
       requestConfig: {

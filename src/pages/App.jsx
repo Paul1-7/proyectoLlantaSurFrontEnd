@@ -1,8 +1,8 @@
 // material
 import { Backdrop, CircularProgress, Container, Grid, Typography } from '@mui/material';
-import axios from '~/apis/apis';
-import { useEffect } from 'react';
 
+import { useEffect } from 'react';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import Page from '~/components/Page';
 import useSettings from '~/hooks/useSettings';
 import { AppWelcome } from '~/components/dashboard';
@@ -57,25 +57,28 @@ function getStockLowProducts(products, minStockAvailable) {
 }
 
 export default function App() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resGetBestSellingProd, errorGetBestSellingProd, loadingGetBestSellingProd, axiosFetchGetBestSellingProd] =
     useAxios();
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(productCustomData);
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
+    responseCb: productCustomData,
+  });
   const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
 
   useEffect(() => {
     axiosFetchGetBestSellingProd({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: '/api/v1/productos/best-selling',
     });
     axiosFetchGetBusinessData({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: '/api/v1/datos-negocio',
     });
     axiosFetchGetProducts({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: '/api/v1/productos',
     });

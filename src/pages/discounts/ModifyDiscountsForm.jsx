@@ -3,8 +3,7 @@ import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } 
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
-import axios from '~/apis/apis';
-
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { Navigate, useParams } from 'react-router';
 import { COLUMNS } from '~/constants/dataTable';
@@ -67,6 +66,7 @@ const customDataProducts = ({ data }) => {
 };
 
 export default function ModifyDiscountsForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { resetDataRow } = useContext(DataTableContext);
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -75,17 +75,26 @@ export default function ModifyDiscountsForm() {
     useAxios();
   const [resPutDiscount, errorPutDiscount, loadingPutDiscount, axiosFetchPutDiscount, , setErrorPutDiscount] =
     useAxios();
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(customDataProducts);
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
+    responseCb: customDataProducts,
+  });
   const { id } = useParams();
+
+  const methods = useForm({
+    resolver: yupResolver(schema.discounts),
+    defaultValues: initialForm,
+    mode: 'all',
+    criteriaMode: 'all',
+  });
 
   useEffect(() => {
     axiosFetchGetDiscount({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/descuentos/${id}`,
     });
     axiosFetchGetProducts({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos`,
     });
@@ -127,17 +136,10 @@ export default function ModifyDiscountsForm() {
     }
   }, [errorPutDiscount]);
 
-  const methods = useForm({
-    resolver: yupResolver(schema.discounts),
-    defaultValues: initialForm,
-    mode: 'all',
-    criteriaMode: 'all',
-  });
-
   const onSubmit = (data) => {
     resetDataRow();
     axiosFetchPutDiscount({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'PUT',
       url: `/api/v1/descuentos/${id}`,
       requestConfig: {

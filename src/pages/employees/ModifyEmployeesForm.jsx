@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -44,11 +44,12 @@ const customData = ({ data }) => {
 };
 
 export default function ModifyEmployeesForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut] = useAxios();
-  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios(customData);
+  const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios({ responseCb: customData });
 
   const id = location.pathname.split('/').pop();
 
@@ -61,7 +62,7 @@ export default function ModifyEmployeesForm() {
 
   const onSubmit = (data) => {
     axiosFetchPut({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'PUT',
       url: `/api/v1/empleados/${id}`,
       requestConfig: {
@@ -72,7 +73,7 @@ export default function ModifyEmployeesForm() {
 
   useEffect(() => {
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/empleados/${id}`,
     });

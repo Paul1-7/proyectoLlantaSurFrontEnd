@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -19,6 +18,7 @@ import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 
 const initialForm = {
   nombre: '',
@@ -27,6 +27,7 @@ const initialForm = {
 };
 
 export default function AddBrandForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
@@ -39,7 +40,7 @@ export default function AddBrandForm() {
 
   const onSubmit = (data) => {
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/marcas`,
       requestConfig: {

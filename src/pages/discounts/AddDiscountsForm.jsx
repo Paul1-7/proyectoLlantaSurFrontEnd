@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -71,16 +71,19 @@ const customDataProducts = ({ data }) => {
 const btnActions = { add: true };
 
 export default function AddDiscountsForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { resetDataRow } = useContext(DataTableContext);
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
 
-  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios(customDataProducts);
+  const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
+    responseCb: customDataProducts,
+  });
 
   useEffect(() => {
     axiosFetchGetProducts({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos`,
     });
@@ -96,7 +99,7 @@ export default function AddDiscountsForm() {
   const onSubmit = (data) => {
     resetDataRow();
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/descuentos`,
       requestConfig: {

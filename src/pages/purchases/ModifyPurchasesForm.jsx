@@ -18,7 +18,7 @@ import { Clear, Save } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import { DefectivesProductsHistory } from '~/components';
-import DefectiveProductsSell from './DefectiveProductsSell';
+// import DefectiveProductsSell from './DefectiveProductsSell';
 
 const { paymentMethods, salesTypes } = TABLE_STATES;
 
@@ -43,10 +43,11 @@ const salesCustomData = ({ data }) => {
 };
 
 export default function ModifySell() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
-  const axiosPrivate = useAxiosPrivate();
+
   const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios({
     responseCb: salesCustomData,
   });
@@ -170,7 +171,7 @@ export default function ModifySell() {
           </Grid>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              {!Array.isArray(resGetSale) && !errorGetSale && <DefectiveProductsSell data={resGetSale?.detalle} />}
+              {/* {!Array.isArray(resGetSale) && !errorGetSale && <DefectiveProductsSell data={resGetSale?.detalle} />} */}
               <Stack flexDirection="row" gap={2} justifyContent="center">
                 <Button
                   startIcon={<Clear />}

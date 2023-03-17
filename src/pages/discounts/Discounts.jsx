@@ -6,8 +6,7 @@ import { COLUMNS } from '~/constants/dataTable';
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
-import axios from '~/apis/apis';
-
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { PATH_MODULES } from '~/routes/paths';
 import DialogConfirmation from '~/components/DialogConfirmation';
@@ -21,6 +20,7 @@ import { Discount } from '@mui/icons-material';
 const buttonsActions = { edit: true, remove: true, detail: true };
 
 export default function Discounts() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
@@ -31,7 +31,7 @@ export default function Discounts() {
 
   const handleDelete = (id) => {
     axiosFetchDelete({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'DELETE',
       url: `/api/v1/descuentos/${id}`,
     });
@@ -68,7 +68,7 @@ export default function Discounts() {
 
   useEffect(() => {
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: '/api/v1/descuentos',
     });

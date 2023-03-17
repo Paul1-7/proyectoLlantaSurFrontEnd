@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import CsvDownloader from 'react-csv-downloader';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
@@ -63,12 +63,14 @@ const styleTableCell = {
 };
 
 export default function InventoryReport() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [showAllRows, setShowAllRows] = useState(true);
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
-  const [resGetSubsidiary, errorGetSubsidiary, loadingGetSubsidiary, axiosFetchGetSubsidiary] =
-    useAxios(customDataSubsidiary);
+  const [resGetSubsidiary, errorGetSubsidiary, loadingGetSubsidiary, axiosFetchGetSubsidiary] = useAxios({
+    responseCb: customDataSubsidiary,
+  });
 
   const methods = useForm({
     resolver: yupResolver(schema.inventaryReport),
@@ -88,7 +90,7 @@ export default function InventoryReport() {
 
   useEffect(() => {
     axiosFetchGetSubsidiary({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/sucursales`,
     });
@@ -100,7 +102,7 @@ export default function InventoryReport() {
     const url = `/api/v1/productos/reportes/?criterio=${criterio}&sucursal=${sucursal}`;
 
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url,
     });

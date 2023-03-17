@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -41,10 +41,12 @@ function SubsidiariesCustomData({ data }) {
 }
 
 export default function AddEmployeesForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
-  const [resGetSubsidiaries, errorGetSubsidiaries, loadingGetSubsidiaries, axiosFetchGetSubsidiaries] =
-    useAxios(SubsidiariesCustomData);
+  const [resGetSubsidiaries, errorGetSubsidiaries, loadingGetSubsidiaries, axiosFetchGetSubsidiaries] = useAxios({
+    responseCb: SubsidiariesCustomData,
+  });
 
   useErrorMessage({ errors: [errorPost, errorGetSubsidiaries] });
   const methods = useForm({
@@ -56,7 +58,7 @@ export default function AddEmployeesForm() {
 
   useEffect(() => {
     axiosFetchGetSubsidiaries({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/sucursales/`,
     });
@@ -64,7 +66,7 @@ export default function AddEmployeesForm() {
 
   const onSubmit = (data) => {
     axiosFetchPost({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/empleados`,
       requestConfig: {

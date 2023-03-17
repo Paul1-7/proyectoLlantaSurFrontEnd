@@ -16,7 +16,7 @@ import {
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import { TABLE_STATES } from '~/constants/dataTable';
 
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
@@ -29,6 +29,7 @@ import Fieldset from '~/components/forms/Fieldset';
 import { Label } from '~/components';
 
 export default function DetailDiscounts() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resGetDiscount, errorGetDiscount, loadingGetDiscount, axiosFetchGetDiscount, , setErrorGetDiscount] =
     useAxios();
@@ -41,7 +42,7 @@ export default function DetailDiscounts() {
 
   useEffect(() => {
     axiosFetchGetDiscount({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/descuentos/${id}`,
     });

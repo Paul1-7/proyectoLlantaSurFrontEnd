@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Backdrop, Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import Controls from '~/components/forms/Control';
@@ -27,6 +27,7 @@ const initialForm = {
 };
 
 export default function InvoiceBatchingForm() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
@@ -41,7 +42,7 @@ export default function InvoiceBatchingForm() {
 
   const onSubmit = (data) => {
     axiosFetchPut({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'PUT',
       url: `/api/v1/dosificacion-facturas`,
       requestConfig: {
@@ -52,7 +53,7 @@ export default function InvoiceBatchingForm() {
 
   useEffect(() => {
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/dosificacion-facturas`,
     });

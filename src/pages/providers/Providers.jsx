@@ -1,12 +1,11 @@
 import { useContext, useEffect } from 'react';
 import { Button, Container, Grid, Typography } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import { COLUMNS } from '~/constants/dataTable';
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
-import axios from '~/apis/apis';
 
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { PATH_MODULES } from '~/routes/paths';
@@ -21,6 +20,7 @@ import DataTableContext from '~/contexts/DataTableContext';
 const buttonsActions = { edit: true, remove: true, detail: false };
 
 export default function Providers() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function Providers() {
 
   const handleDelete = (id) => {
     axiosFetchDelete({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'DELETE',
       url: `/api/v1/proveedores/${id}`,
     });
@@ -68,7 +68,7 @@ export default function Providers() {
 
   useEffect(() => {
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: '/api/v1/proveedores',
     });

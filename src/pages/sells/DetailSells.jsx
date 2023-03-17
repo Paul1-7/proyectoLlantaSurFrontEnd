@@ -16,7 +16,7 @@ import {
 import useSettings from '~/hooks/useSettings';
 import Page from '~/components/Page';
 import useAxios from '~/hooks/useAxios';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import { conversorNumerosALetras as ClaseConversor } from 'conversor-numero-a-letras-es-ar';
 
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
@@ -38,6 +38,7 @@ const sxNoPrint = {
 };
 
 export default function DetailSeel() {
+  const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
@@ -59,12 +60,12 @@ export default function DetailSeel() {
 
   useEffect(() => {
     axiosFetchGetSale({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/ventas/${id}`,
     });
     axiosFetchGetBusinessData({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/datos-negocio`,
     });

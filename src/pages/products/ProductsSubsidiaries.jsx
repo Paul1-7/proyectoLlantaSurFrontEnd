@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import axios from '~/apis/apis';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useAxios from '~/hooks/useAxios';
 import Controls from '~/components/forms/Control';
 
@@ -13,6 +13,7 @@ const initialForm = {
 };
 
 function ProductsSubsidiaries({ data = [] }) {
+  const axiosPrivate = useAxiosPrivate();
   const [resGet, , , axiosFetchGet] = useAxios();
   const { control } = useFormContext();
   const { fields, append } = useFieldArray({
@@ -22,7 +23,7 @@ function ProductsSubsidiaries({ data = [] }) {
 
   useEffect(() => {
     axiosFetchGet({
-      axiosInstance: axios,
+      axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/sucursales`,
     });
