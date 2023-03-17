@@ -6,6 +6,7 @@ import tire from '~/assets/icons/tire.svg';
 import { PATH_MODULES } from '~/routes/paths';
 import SvgIconStyle from '~/components/SvgIconStyle';
 import { Person, PersonAdd } from '@mui/icons-material';
+import { ROLES } from '~/config';
 
 const ICON_SIZE = {
   width: 22,
@@ -37,5 +38,22 @@ const menuConfig = [
     icon: <Person sx={{ ...ICON_SIZE }} />,
   },
 ];
+
+export const navItemsToActiveSesion = (navItems, auth) => {
+  const { roles = [] } = auth?.user ?? {};
+  const { CLIENTE } = ROLES;
+  let activeSesionNavItems = [...navItems];
+  if ((roles.length === 1 && roles.includes(CLIENTE.id)) || roles.length === 0) {
+    activeSesionNavItems = activeSesionNavItems.filter(({ title }) => title !== 'Dashboard');
+  }
+
+  if (roles.length > 0) {
+    activeSesionNavItems = activeSesionNavItems.filter(
+      ({ title }) => !(title === 'Registrarse' || title === 'Iniciar sesión'),
+    );
+  }
+
+  return activeSesionNavItems;
+};
 
 export default menuConfig;

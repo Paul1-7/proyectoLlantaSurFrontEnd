@@ -14,6 +14,7 @@ import { MHidden, MIconButton } from '~/components/@material-extend';
 import ShopProductSearch from '~/components/shop/ShopProductSearch';
 import { useGetCategoriesQuery } from '~/redux/api/categoriesApi';
 import { PATH_MODULES } from '~/routes/paths';
+import useAuth from '~/hooks/useAuth';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
@@ -62,6 +63,7 @@ const mergeCategoriesIntoMenu = (categories, menu) => {
 };
 
 export default function MainNavbar() {
+  const { auth } = useAuth();
   const { checkout } = useSelector(({ products }) => products);
   const categories = useGetCategoriesQuery();
   const newMenuItems = mergeCategoriesIntoMenu(categories.data, navConfig);
@@ -106,7 +108,7 @@ export default function MainNavbar() {
                 <ShoppingCart />
               </Badge>
             </MIconButton>
-            <AccountPopover />
+            {auth?.user && <AccountPopover />}
             <MHidden width="mdUp">
               <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems.reverse()]} />
             </MHidden>

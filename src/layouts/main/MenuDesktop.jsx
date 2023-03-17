@@ -6,6 +6,8 @@ import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
 import { Box, Link, List, Stack, Popover, ListItem, styled, ListItemButton } from '@mui/material';
+import useAuth from '~/hooks/useAuth';
+import { navItemsToActiveSesion } from './MenuConfig';
 
 // ----------------------------------------------------------------------
 
@@ -144,6 +146,8 @@ MenuDesktopItem.propTypes = {
 };
 
 export default function MenuDesktop({ isOffset, isHome, navConfig }) {
+  const { auth } = useAuth();
+  const navItems = navItemsToActiveSesion(navConfig, auth);
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const anchorEl = useRef();
@@ -164,7 +168,7 @@ export default function MenuDesktop({ isOffset, isHome, navConfig }) {
 
   return (
     <Stack direction="row">
-      {navConfig.map((link) => (
+      {navItems.map((link) => (
         <MenuDesktopItem
           key={link.title}
           item={link}

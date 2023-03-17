@@ -1,10 +1,18 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 // material
 import { Box, Card, Stack, Link, Alert, Typography, styled } from '@mui/material';
 import { Page } from '~/components';
 import { PATH_MODULES } from '~/routes/paths';
 import { MHidden } from '~/components/@material-extend';
 import LoginForm from '~/components/auth/LoginForm';
+import useAuth from '~/hooks/useAuth';
+import useAxios from '~/hooks/useAxios';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import schema from '~/schemas';
+import axios from '~/apis/apis';
+import useErrorMessage from '~/hooks/useErrorMessage';
+import { useEffect } from 'react';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -34,9 +42,60 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0),
 }));
 
-// ----------------------------------------------------------------------
+const customErrorMessages = (err, setError) => {
+  if (!err?.response) {
+    setError({ message: 'No hay respuesta del servidor' });
+  } else if (err.response?.status === 400) {
+    setError({ message: 'No se encuentra el usuario o contraseña' });
+  } else if (err.response?.status === 401) {
+    setError({ message: 'No estas autorizado' });
+  } else {
+    setError({ message: 'Falló el inicio de sesión' });
+  }
+};
+
+const initialForm = {
+  usuario: '',
+  password: '',
+};
 
 export default function Login() {
+  const { setAuthToken } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || '/';
+  const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios({
+    customErrorMessages,
+  });
+
+  useErrorMessage({
+    errors: [errorPost],
+  });
+
+  const methods = useForm({
+    resolver: yupResolver(schema.login),
+    defaultValues: initialForm,
+    mode: 'all',
+    criteriaMode: 'all',
+  });
+
+  const onSubmit = (data) => {
+    axiosFetchPost({
+      axiosInstance: axios,
+      method: 'POST',
+      url: `/api/v1/usuarios/login`,
+      requestConfig: {
+        ...data,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (Array.isArray(resPost)) return;
+    setAuthToken(resPost);
+    navigate(from, { replace: true });
+  }, [resPost]);
+
   return (
     <RootStyle title="Login">
       <MHidden width="mdDown">
@@ -47,7 +106,7 @@ export default function Login() {
           <img src="/static/illustrations/illustration_login.png" alt="login" />
         </SectionStyle>
       </MHidden>
-      <ContentStyle sx={{ mx: { xs: 'auto', md: 'none' }, mt: { xs: 6, md: 0 } }}>
+      <ContentStyle sx={{ mx: { xs: 'auto', md: 'none' }, mt: { xs: 6, md: 0 }, pr: 2 }}>
         <Stack direction="row" alignItems="center" sx={{ mb: 3 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" gutterBottom>
@@ -61,7 +120,11 @@ export default function Login() {
           si realizaste una compra en la tienda física, tu usuario es tu CI/NIT con el cual realizaste la compra, y la
           contraseña es el número de télefono
         </Alert>
-        <LoginForm />
+        <FormProvider {...methods}>
+          <form autoComplete="off" noValidate onSubmit={methods.handleSubmit(onSubmit)}>
+            <LoginForm methods={methods} loading={loadingPost} />
+          </form>
+        </FormProvider>
         <MHidden width="smUp">
           <Typography variant="body2" align="center" sx={{ mt: 3 }}>
             ¿No tienes una cuenta?&nbsp;
@@ -71,6 +134,7 @@ export default function Login() {
           </Typography>
         </MHidden>
       </ContentStyle>
+      {/* {!loadingPost && !errorPost && !Array.isArray(resPost) && <Navigate to={from} replace state={resPost} />} */}
     </RootStyle>
   );
 }

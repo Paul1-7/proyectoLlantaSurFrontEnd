@@ -10,6 +10,7 @@ import store, { persistor } from './redux/store';
 import App from './App';
 import { SettingsProvider } from './contexts/SettingsContext';
 import Scrollbar from './components/Scrollbar';
+import { AuthProvider } from './contexts/AuthProvider';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <PersistGate loading={null} persistor={persistor}>
                 <SnackbarProvider maxSnack={3}>
                   <Scrollbar sx={{ height: 1 }}>
-                    <App />
+                    <AuthProvider>
+                      <App />
+                    </AuthProvider>
                   </Scrollbar>
                 </SnackbarProvider>
               </PersistGate>

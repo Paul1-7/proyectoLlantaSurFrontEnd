@@ -16,6 +16,8 @@ import {
   useTheme,
   styled,
 } from '@mui/material';
+import useAuth from '~/hooks/useAuth';
+import { navItemsToActiveSesion } from '~/layouts/main/MenuConfig';
 
 // ----------------------------------------------------------------------
 
@@ -167,13 +169,15 @@ NavItem.propTypes = {
 };
 
 export default function NavSection({ navConfig, isShow = true, ...other }) {
+  const { auth } = useAuth();
+  const navItems = navItemsToActiveSesion(navConfig, auth);
   const { pathname } = useLocation();
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
 
   return (
     <Box {...other}>
       <List disablePadding>
-        {navConfig.map((item) => {
+        {navItems.map((item) => {
           return <NavItem key={item.title} item={item} active={match} isShow={isShow} />;
         })}
       </List>

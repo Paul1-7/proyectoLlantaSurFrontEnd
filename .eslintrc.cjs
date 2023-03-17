@@ -26,6 +26,7 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
+    'consistent-return': 0,
     'react/require-default-props': 0,
     'react/react-in-jsx-scope': 0,
     'react/jsx-no-constructed-context-values': 0,
