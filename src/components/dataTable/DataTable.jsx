@@ -255,7 +255,7 @@ DataTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   numeration: PropTypes.bool,
-  btnActions: PropTypes.object,
+  btnActions: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   orderByDefault: PropTypes.string,
   align: PropTypes.string,
   handleDelete: PropTypes.func,

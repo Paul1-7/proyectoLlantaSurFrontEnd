@@ -16,7 +16,10 @@ import DataTable from '~/components/dataTable/DataTable';
 import { useSnackbar } from 'notistack';
 import { Inventory2 } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
+import useAuth from '~/hooks/useAuth';
+import { ROLES } from '~/config';
 
+const { ADMINISTRADOR } = ROLES;
 const buttonsActions = { edit: true, remove: true, detail: false };
 
 const idSucBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
@@ -47,6 +50,7 @@ const customData = ({ data }) => {
 };
 
 export default function Products() {
+  const { isRolUserAllowedTo } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -133,6 +137,7 @@ export default function Products() {
               LinkComponent={Link}
               to={PATH_MODULES.products.new}
               startIcon={<Inventory2 />}
+              disabled={isRolUserAllowedTo([ADMINISTRADOR.id])}
             >
               Nuevo producto
             </Button>
@@ -145,7 +150,7 @@ export default function Products() {
           loading={loadingGet || loadingGetBusinessData}
           numeration
           minStock={resGetBusinessData?.cantMinProd}
-          btnActions={buttonsActions}
+          btnActions={!isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="nombre"
           collapse="sucursales"
         />

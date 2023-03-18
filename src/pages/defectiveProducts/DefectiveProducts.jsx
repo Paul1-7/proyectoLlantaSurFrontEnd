@@ -16,7 +16,10 @@ import DataTable from '~/components/dataTable/DataTable';
 import { useSnackbar } from 'notistack';
 import { LibraryAdd } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
+import useAuth from '~/hooks/useAuth';
+import { ROLES } from '~/config';
 
+const { ADMINISTRADOR } = ROLES;
 const buttonsActions = { remove: true, detail: false };
 
 const customData = ({ data }) => {
@@ -32,6 +35,7 @@ const customData = ({ data }) => {
 
 export default function Categories() {
   const axiosPrivate = useAxiosPrivate();
+  const { isRolUserAllowedTo } = useAuth();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
@@ -121,7 +125,7 @@ export default function Categories() {
           error={errorGet}
           loading={loadingGet}
           numeration
-          btnActions={buttonsActions}
+          btnActions={!isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="fecha"
           orderDesc
         />

@@ -61,6 +61,13 @@ export function AuthProvider({ children }) {
     );
   };
 
+  function isRolUserAllowedTo(idRoles) {
+    const { roles: rolesUser = [] } = auth?.user ?? {};
+    console.log('TCL: isRolUserAllowedTo -> rolesUser', rolesUser);
+
+    return rolesUser.some((roleUser) => !idRoles.includes(roleUser));
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -73,6 +80,7 @@ export function AuthProvider({ children }) {
         setAutoRefresh,
         isExpiredToken,
         logOut,
+        isRolUserAllowedTo,
       }}
     >
       {children}

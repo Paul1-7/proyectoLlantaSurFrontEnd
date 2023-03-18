@@ -16,10 +16,14 @@ import DataTable from '~/components/dataTable/DataTable';
 import { useSnackbar } from 'notistack';
 import DataTableContext from '~/contexts/DataTableContext';
 import { Discount } from '@mui/icons-material';
+import useAuth from '~/hooks/useAuth';
+import { ROLES } from '~/config';
 
+const { ADMINISTRADOR } = ROLES;
 const buttonsActions = { edit: true, remove: true, detail: true };
 
 export default function Discounts() {
+  const { isRolUserAllowedTo } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -101,6 +105,7 @@ export default function Discounts() {
               LinkComponent={Link}
               to={PATH_MODULES.discounts.new}
               startIcon={<Discount />}
+              disabled={isRolUserAllowedTo([ADMINISTRADOR.id])}
             >
               Nuevo descuento
             </Button>
@@ -112,7 +117,7 @@ export default function Discounts() {
           error={errorGet}
           loading={loadingGet}
           numeration
-          btnActions={buttonsActions}
+          btnActions={!isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="fechaFin"
         />
       </Container>

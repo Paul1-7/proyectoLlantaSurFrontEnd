@@ -170,11 +170,16 @@ NavItem.propTypes = {
 
 export default function NavSection({ navConfig, isShow = true, ...other }) {
   const { auth } = useAuth();
-  const navItems = navItemsToActiveSesion(navConfig, auth);
+  const { roles = [] } = auth.user ?? {};
+  let navItems = navItemsToActiveSesion(navConfig, auth);
   const { pathname } = useLocation();
-  console.log('TCL: NavSection -> pathname', pathname);
 
-  if (pathname.includes('dashboard')) {
+  if (pathname.includes('dashboard') && roles.length > 0) {
+    navItems = navItems.filter(({ roles: rolesNav }) => {
+      if (!rolesNav) return false;
+
+      return roles.some((rol) => rolesNav.includes(rol));
+    });
   }
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
 
