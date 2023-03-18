@@ -6,14 +6,13 @@ const data = yup.object().shape({
     .string()
     .when('cantidad', {
       is: (val) => Number(val) >= 1,
-      then: yup.string().required(),
+      then: () => yup.string().required(),
       otherwise: yup.string(),
     })
     .matches(regex.alphaNumeric, msg.alphaNumeric),
   cantidad: yup
-    .string()
+    .number()
     .required()
-    .matches(regex.number, msg.number)
     .test('stockCheck', 'La cantidad no puede ser mayor al stock', (val, e) => {
       const stock = e.parent.stock ? Number(e.parent.stock) : null;
       const cantidad = val ? Number(val) : null;

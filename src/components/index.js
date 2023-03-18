@@ -5,6 +5,7 @@ export { default as DialogConfirmation } from './DialogConfirmation';
 export { default as Iconify } from './Iconify';
 export { default as Image } from './Image';
 export { default as Label } from './Label';
+export { default as Avatar } from './Avatar';
 export { default as Loadable } from './Loadable';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as Logo } from './Logo';

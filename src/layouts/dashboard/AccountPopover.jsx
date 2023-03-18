@@ -3,19 +3,17 @@ import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import { Link as RouterLink } from 'react-router-dom';
-// material
-import { Avatar, Box, Divider, MenuItem, Typography, alpha, Stack } from '@mui/material';
+import { Box, Divider, MenuItem, Typography, alpha, Stack } from '@mui/material';
 // components
 import { MIconButton } from '~/components/@material-extend';
 import MenuPopover from '~/components/MenuPopover';
 import useAuth from '~/hooks/useAuth';
 import { getNamesRolesFromIds } from '~/utils/dataHandler';
-import { Label } from '~/components';
+import { Avatar, Label } from '~/components';
 import useAxios from '~/hooks/useAxios';
 import { LoadingButton } from '@mui/lab';
 import useErrorMessage from '~/hooks/useErrorMessage';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
-// ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   { label: 'Inicio', icon: homeFill, linkTo: '/' },
@@ -24,6 +22,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const { auth, logOut } = useAuth();
+  const { nombre, apellido } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
   const [, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const anchorRef = useRef(null);
@@ -78,13 +77,13 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar alt="My Avatar" src="/static/mock-images/avatars/avatar_default.jpg" />
+        <Avatar name={`${nombre} ${apellido}`} />
       </MIconButton>
 
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" align="center" noWrap sx={{ mb: 2 }}>
-            {auth.user.nombre}
+            {`${nombre} ${apellido}`}
           </Typography>
           <Stack gap={1}>
             {nameRoles.map((rol) => (

@@ -57,7 +57,7 @@ const productAmount = (product) => {
   return totalStock;
 };
 
-const getNamesRolesFromIds = (ids) => {
+const getNamesRolesFromIds = (ids = []) => {
   const namesRoles = [];
   const rolesEntries = Object.entries(ROLES);
 

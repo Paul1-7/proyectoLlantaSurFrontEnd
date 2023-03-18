@@ -1,6 +1,9 @@
-import { Avatar, Box, styled, Typography } from '@mui/material';
+import { Box, Stack, styled, Typography } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getNamesRolesFromIds } from '~/utils/dataHandler';
+import Label from './Label';
+import Avatar from './Avatar';
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -11,17 +14,22 @@ const AccountStyle = styled('div')(({ theme }) => ({
 }));
 
 function AccountUserCard({ data, sx }) {
-  const { name, role } = data;
+  const { name, roles } = data;
+  const nameRoles = getNamesRolesFromIds(roles);
   return (
     <AccountStyle sx={sx}>
-      <Avatar alt="My Avatar" src="/static/mock-images/avatars/avatar_default.jpg" />
+      <Avatar name={name} />
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+        <Typography variant="subtitle2" align="center" sx={{ color: 'text.primary', mb: 2 }}>
           {name}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {role}
-        </Typography>
+        <Stack gap={1}>
+          {nameRoles.map((rol) => (
+            <Label key={rol} variant="filled">
+              {rol}
+            </Label>
+          ))}
+        </Stack>
       </Box>
     </AccountStyle>
   );

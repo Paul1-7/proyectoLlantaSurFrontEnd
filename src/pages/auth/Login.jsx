@@ -106,7 +106,7 @@ export default function Login() {
           <img src="/static/illustrations/illustration_login.png" alt="login" />
         </SectionStyle>
       </MHidden>
-      <ContentStyle sx={{ mx: { xs: 'auto', md: 'none' }, mt: { xs: 6, md: 0 }, pr: 2 }}>
+      <ContentStyle sx={{ mx: { xs: 'auto', md: '0' }, mt: { xs: 6, md: 0 }, pr: 2 }}>
         <Stack direction="row" alignItems="center" sx={{ mb: 3 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" gutterBottom>

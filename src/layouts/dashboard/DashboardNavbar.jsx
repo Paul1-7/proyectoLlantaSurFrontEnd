@@ -8,6 +8,7 @@ import useCollapseDrawer from '~/hooks/useCollapseDrawer';
 // components
 import { MHidden } from '~/components/@material-extend';
 import useAuth from '~/hooks/useAuth';
+import { Label } from '~/components';
 import AccountPopover from './AccountPopover';
 
 // ----------------------------------------------------------------------
@@ -59,6 +60,9 @@ export default function DashboardNavbar({ onOpenSidebar }) {
             <Icon icon={menu2Fill} />
           </IconButton>
         </MHidden>
+        <Label variant="filled" sx={{ p: 1.5 }}>
+          Sucursal: {auth?.user?.sucursal?.nombre}
+        </Label>
 
         <Box sx={{ flexGrow: 1 }} />
 

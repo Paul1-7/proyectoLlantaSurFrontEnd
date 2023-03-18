@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
-import { Box, Stack, Avatar, Drawer, Tooltip, CardActionArea, alpha, styled } from '@mui/material';
+import { Box, Stack, Drawer, Tooltip, CardActionArea, alpha, styled } from '@mui/material';
 // hooks
 import useCollapseDrawer from '~/hooks/useCollapseDrawer';
 
 import { MHidden } from '~/components/@material-extend';
-import { AccountUserCard, NavSection, Scrollbar, Logo } from '~/components';
+import { AccountUserCard, NavSection, Scrollbar, Logo, Avatar } from '~/components';
+import useAuth from '~/hooks/useAuth';
 import sidebarConfig from './SidebarConfig';
 
 // ----------------------------------------------------------------------
@@ -69,6 +70,8 @@ IconCollapse.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
+  const { auth } = useAuth();
+  const { nombre, apellido, roles } = auth?.user ?? {};
 
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -112,9 +115,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Stack>
 
         {isCollapse ? (
-          <Avatar alt="My Avatar" src="/static/mock-images/avatars/avatar_default.jpg" sx={{ mx: 'auto', mb: 2 }} />
+          <Avatar name={`${nombre} ${apellido}`} />
         ) : (
-          <AccountUserCard data={{ name: 'user', role: 'admin' }} />
+          <AccountUserCard data={{ name: `${nombre} ${apellido}`, roles }} />
         )}
       </Stack>
 

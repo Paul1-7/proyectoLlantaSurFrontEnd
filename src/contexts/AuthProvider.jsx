@@ -63,8 +63,6 @@ export function AuthProvider({ children }) {
 
   function isRolUserAllowedTo(idRoles) {
     const { roles: rolesUser = [] } = auth?.user ?? {};
-    console.log('TCL: isRolUserAllowedTo -> rolesUser', rolesUser);
-
     return rolesUser.some((roleUser) => !idRoles.includes(roleUser));
   }
 

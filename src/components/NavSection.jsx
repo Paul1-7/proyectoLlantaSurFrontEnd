@@ -170,7 +170,7 @@ NavItem.propTypes = {
 
 export default function NavSection({ navConfig, isShow = true, ...other }) {
   const { auth } = useAuth();
-  const { roles = [] } = auth.user ?? {};
+  const { roles = [] } = auth?.user ?? {};
   let navItems = navItemsToActiveSesion(navConfig, auth);
   const { pathname } = useLocation();
 
