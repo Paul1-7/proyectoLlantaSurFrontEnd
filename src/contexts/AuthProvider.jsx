@@ -1,11 +1,12 @@
 import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import jwtDecode from 'jwt-decode';
+import useLocalStorage from '~/hooks/useLocalStorage';
 
 const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useLocalStorage('persist', null);
   const [lastHttpRequestTime, setLastHttpRequestTime] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(false);
   // let intervalTokenRefresh;
