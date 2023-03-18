@@ -2,27 +2,52 @@ import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
-import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { Avatar, Button, Box, Divider, MenuItem, Typography, alpha } from '@mui/material';
+import { Avatar, Box, Divider, MenuItem, Typography, alpha, Stack } from '@mui/material';
 // components
 import { MIconButton } from '~/components/@material-extend';
 import MenuPopover from '~/components/MenuPopover';
-
+import useAuth from '~/hooks/useAuth';
+import { getNamesRolesFromIds } from '~/utils/dataHandler';
+import { Label } from '~/components';
+import useAxios from '~/hooks/useAxios';
+import { LoadingButton } from '@mui/lab';
+import useErrorMessage from '~/hooks/useErrorMessage';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
-  { label: 'Home', icon: homeFill, linkTo: '/' },
-  { label: 'Profile', icon: personFill, linkTo: '#' },
-  { label: 'Settings', icon: settings2Fill, linkTo: '#' },
+  { label: 'Inicio', icon: homeFill, linkTo: '/' },
+  { label: 'Perfil', icon: personFill, linkTo: '#' },
 ];
 
-// ----------------------------------------------------------------------
-
 export default function AccountPopover() {
+  const { auth, logOut } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const [, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const nameRoles = getNamesRolesFromIds(auth.user.roles);
+  useErrorMessage({
+    errrors: [errorPost],
+  });
+
+  const onSubmit = () => {
+    const data = {
+      token: auth.refreshToken,
+    };
+
+    axiosFetchPost({
+      axiosInstance: axiosPrivate,
+      method: 'POST',
+      url: `/api/v1/usuarios/logout`,
+      requestConfig: {
+        ...data,
+      },
+    });
+    logOut();
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -58,12 +83,16 @@ export default function AccountPopover() {
 
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle1" noWrap>
-            displayName
+          <Typography variant="subtitle1" align="center" noWrap sx={{ mb: 2 }}>
+            {auth.user.nombre}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            email
-          </Typography>
+          <Stack gap={1}>
+            {nameRoles.map((rol) => (
+              <Label key={rol} variant="filled">
+                {rol}
+              </Label>
+            ))}
+          </Stack>
         </Box>
 
         <Divider sx={{ my: 1 }} />
@@ -91,9 +120,16 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
-            Logout
-          </Button>
+          <LoadingButton
+            loading={loadingPost}
+            type="button"
+            fullWidth
+            color="inherit"
+            variant="outlined"
+            onClick={onSubmit}
+          >
+            Cerrar sesión
+          </LoadingButton>
         </Box>
       </MenuPopover>
     </>

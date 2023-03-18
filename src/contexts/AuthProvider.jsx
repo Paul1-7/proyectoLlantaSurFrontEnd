@@ -22,17 +22,34 @@ export function AuthProvider({ children }) {
   //   return () => clearInterval(intervalTokenRefresh);
   // }, [lastHttpRequestTime]);
 
+  function isExpiredToken() {
+    if (!auth?.accessToken) return false;
+
+    const { exp = 0 } = jwtDecode(auth.accessToken) ?? {};
+
+    return Date.now() >= exp * 1000;
+  }
+
+  function logOut() {
+    setAuth(null);
+    window.localStorage.removeItem('persist');
+  }
+
   useEffect(() => {
     const token = window.localStorage.getItem('persist');
 
-    if (token) {
-      const tokenParsed = JSON.parse(token);
-      const accessTokenDecoded = jwtDecode(tokenParsed.accessToken);
-      setAuth({
-        user: accessTokenDecoded,
-        accessToken: tokenParsed.accessToken,
-        refreshToken: tokenParsed.refreshToken,
-      });
+    if (!token) return;
+
+    const tokenParsed = JSON.parse(token);
+    const accessTokenDecoded = jwtDecode(tokenParsed.accessToken);
+    setAuth({
+      user: accessTokenDecoded,
+      accessToken: tokenParsed.accessToken,
+      refreshToken: tokenParsed.refreshToken,
+    });
+
+    if (Date.now() >= accessTokenDecoded.exp * 1000) {
+      window.localStorage.removeItem('persist');
     }
   }, []);
 
@@ -46,7 +63,17 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ auth, setAuthToken, setAuth, lastHttpRequestTime, setLastHttpRequestTime, autoRefresh, setAutoRefresh }}
+      value={{
+        auth,
+        setAuthToken,
+        setAuth,
+        lastHttpRequestTime,
+        setLastHttpRequestTime,
+        autoRefresh,
+        setAutoRefresh,
+        isExpiredToken,
+        logOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

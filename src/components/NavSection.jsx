@@ -172,6 +172,10 @@ export default function NavSection({ navConfig, isShow = true, ...other }) {
   const { auth } = useAuth();
   const navItems = navItemsToActiveSesion(navConfig, auth);
   const { pathname } = useLocation();
+  console.log('TCL: NavSection -> pathname', pathname);
+
+  if (pathname.includes('dashboard')) {
+  }
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
 
   return (

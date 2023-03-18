@@ -6,7 +6,11 @@ import MainLayout from '~/layouts/main';
 import DashboardLayout from '~/layouts/dashboard';
 import LogoOnlyLayout from '~/layouts/LogoOnlyLayout';
 import Loadable from '~/components/Loadable';
+import RequireAuth from '~/pages/auth/RequireAuth';
+import { ROLES } from '~/config';
 import { PATH_MODULES } from './paths';
+
+const { ADMINISTRADOR, EMPLEADO_VENTAS } = ROLES;
 
 export default function Router() {
   return useRoutes([
@@ -16,154 +20,375 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: '', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <App /> },
+        {
+          path: 'app',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <App />
+            </RequireAuth>
+          ),
+        },
         // customers
         {
           path: 'clientes',
           element: (
-            <DataTableProvider>
-              <Customers />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DataTableProvider>
+                <Customers />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'clientes/nuevo', element: <AddCustomerForm /> },
-        { path: 'clientes/modificar/:id', element: <ModifyCustomerForm /> },
+        {
+          path: 'clientes/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <AddCustomerForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'clientes/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <ModifyCustomerForm />
+            </RequireAuth>
+          ),
+        },
         // employees
         {
           path: 'empleados',
           element: (
-            <DataTableProvider>
-              <Employees />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <Employees />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'empleados/nuevo', element: <AddEmployeesForm /> },
-        { path: 'empleados/modificar/:id', element: <ModifyEmployeesForm /> },
+        {
+          path: 'empleados/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <AddEmployeesForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'empleados/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifyEmployeesForm />
+            </RequireAuth>
+          ),
+        },
         // categories
         {
           path: 'categorias',
           element: (
-            <DataTableProvider>
-              <Categories />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <Categories />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'categorias/nuevo', element: <AddCategoriesForm /> },
-        { path: 'categorias/modificar/:id', element: <ModifyCategoriesForm /> },
+        {
+          path: 'categorias/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <AddCategoriesForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'categorias/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifyCategoriesForm />{' '}
+            </RequireAuth>
+          ),
+        },
         // Brands
         {
           path: 'marcas',
           element: (
-            <DataTableProvider>
-              <Brands />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <Brands />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'marcas/nuevo', element: <AddBrandForm /> },
-        { path: 'marcas/modificar/:id', element: <ModifyBrandForm /> },
+        {
+          path: 'marcas/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <AddBrandForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'marcas/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifyBrandForm />
+            </RequireAuth>
+          ),
+        },
         // Products
         {
           path: 'productos',
           element: (
-            <DataTableProvider>
-              <Products />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DataTableProvider>
+                <Products />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'productos/nuevo', element: <AddProductsForm /> },
-        { path: 'productos/modificar/:id', element: <ModifyProductsForm /> },
+        {
+          path: 'productos/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <AddProductsForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'productos/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifyProductsForm />
+            </RequireAuth>
+          ),
+        },
         // Providers
         {
           path: 'proveedores',
           element: (
-            <DataTableProvider>
-              <Providers />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <Providers />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'proveedores/nuevo', element: <AddProvidersForm /> },
-        { path: 'proveedores/modificar/:id', element: <ModifyProvidersForm /> },
+        {
+          path: 'proveedores/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <AddProvidersForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'proveedores/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifyProvidersForm />
+            </RequireAuth>
+          ),
+        },
         // Subsidiaries
         {
           path: 'sucursales',
           element: (
-            <DataTableProvider>
-              <Subsidiaries />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <Subsidiaries />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'sucursales/nuevo', element: <AddSubsidiariesForm /> },
-        { path: 'sucursales/modificar/:id', element: <ModifySubsidiariesForm /> },
+        {
+          path: 'sucursales/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <AddSubsidiariesForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'sucursales/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifySubsidiariesForm />
+            </RequireAuth>
+          ),
+        },
         // Discounts
         {
           path: 'descuentos',
           element: (
-            <DataTableProvider>
-              <Discounts />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DataTableProvider>
+                <Discounts />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
         {
           path: 'descuentos/nuevo',
           element: (
-            <DataTableProvider>
-              <AddDiscountsForm />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <AddDiscountsForm />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
         {
           path: 'descuentos/modificar/:id',
           element: (
-            <DataTableProvider>
-              <ModifyDiscountsForm />{' '}
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <ModifyDiscountsForm />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
         {
           path: `${PATH_MODULES.discounts.detail}/:id`,
-          element: <DetailDiscounts />,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DetailDiscounts />
+            </RequireAuth>
+          ),
         },
         // Sells
         {
           path: 'ventas',
           element: (
-            <DataTableProvider>
-              <Sells />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DataTableProvider>
+                <Sells />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: 'ventas/nuevo', element: <AddSellsForm /> },
-        { path: 'ventas/modificar/:id', element: <ModifySellsForm /> },
-        { path: 'ventas/detalle/:id', element: <DetailSells /> },
+        {
+          path: 'ventas/nuevo',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <AddSellsForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'ventas/modificar/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <ModifySellsForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'ventas/detalle/:id',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DetailSells />
+            </RequireAuth>
+          ),
+        },
         // Purchases
         {
           path: PATH_MODULES.purchases.root,
           element: (
-            <DataTableProvider>
-              <Purchases />
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DataTableProvider>
+                <Purchases />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: PATH_MODULES.purchases.new, element: <AddPurchasesForm /> },
-        { path: `${PATH_MODULES.purchases.modify}/:id`, element: <ModifyPurchasesForm /> },
-        { path: `${PATH_MODULES.purchases.detail}/:id`, element: <DetailPurchases /> },
+        {
+          path: PATH_MODULES.purchases.new,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              {' '}
+              <AddPurchasesForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: `${PATH_MODULES.purchases.modify}/:id`,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <ModifyPurchasesForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: `${PATH_MODULES.purchases.detail}/:id`,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <DetailPurchases />{' '}
+            </RequireAuth>
+          ),
+        },
         // reports
-        { path: PATH_MODULES.reports.products, element: <InventoryReport /> },
-        { path: PATH_MODULES.reports.sales, element: <SalesReport /> },
-        { path: PATH_MODULES.reports.purchases, element: <PurchasesReport /> },
+        {
+          path: PATH_MODULES.reports.products,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <InventoryReport />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: PATH_MODULES.reports.sales,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              {' '}
+              <SalesReport />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: PATH_MODULES.reports.purchases,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <PurchasesReport />
+            </RequireAuth>
+          ),
+        },
         // generalManagement
-        { path: 'administracion/dosificacion-facturas', element: <InvoiceBatchingForm /> },
-        { path: 'administracion/datos-negocio', element: <BusinessDataForm /> },
+        {
+          path: 'administracion/dosificacion-facturas',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <InvoiceBatchingForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: 'administracion/datos-negocio',
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <BusinessDataForm />
+            </RequireAuth>
+          ),
+        },
         // defective products
         {
           path: PATH_MODULES.defectiveProducts.root,
           element: (
-            <DataTableProvider>
-              <DefectiveProducts />{' '}
-            </DataTableProvider>
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DataTableProvider>
+                <DefectiveProducts />
+              </DataTableProvider>
+            </RequireAuth>
           ),
         },
-        { path: PATH_MODULES.defectiveProducts.new, element: <AddDefectiveProductsForm /> },
+        {
+          path: PATH_MODULES.defectiveProducts.new,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <AddDefectiveProductsForm />
+            </RequireAuth>
+          ),
+        },
       ],
     },
     // Main Routes
@@ -192,6 +417,7 @@ export default function Router() {
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
+    { path: PATH_MODULES.auth.unauthorized, element: <Unauthorized /> },
   ]);
 }
 
@@ -261,6 +487,7 @@ const ShopCheckout = Loadable(lazy(() => import('~/pages/shop/ShopCheckout')));
 const ShopProducts = Loadable(lazy(() => import('~/pages/shop/ShopProducts')));
 // auth
 const Login = Loadable(lazy(() => import('~/pages/auth/Login')));
+const Unauthorized = Loadable(lazy(() => import('~/pages/Unauthorized')));
 
 const NotFound = Loadable(lazy(() => import('~/pages/Page404')));
 // Main

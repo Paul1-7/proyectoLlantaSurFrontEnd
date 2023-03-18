@@ -42,6 +42,7 @@ const menuConfig = [
 export const navItemsToActiveSesion = (navItems, auth) => {
   const { roles = [] } = auth?.user ?? {};
   const { CLIENTE } = ROLES;
+
   let activeSesionNavItems = [...navItems];
   if ((roles.length === 1 && roles.includes(CLIENTE.id)) || roles.length === 0) {
     activeSesionNavItems = activeSesionNavItems.filter(({ title }) => title !== 'Dashboard');

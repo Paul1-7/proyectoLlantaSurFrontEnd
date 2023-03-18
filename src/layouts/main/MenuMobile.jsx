@@ -11,12 +11,19 @@ import NavSection from '~/components/NavSection';
 import Scrollbar from '~/components/Scrollbar';
 import { MIconButton } from '~/components/@material-extend';
 import { AccountUserCard } from '~/components';
+import useAuth from '~/hooks/useAuth';
 
 const PADDING = 2.5;
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
+  const { isExpiredToken } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  let navItems = [...navConfig];
+
+  if (isExpiredToken()) {
+    navItems = navItems.filter(({ title }) => !(title === 'Registrarse' || title === 'Iniciar sesión'));
+  }
 
   const handleDrawerOpen = () => {
     setMobileOpen(true);
@@ -56,7 +63,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
             <Logo sx={{ mx: PADDING, my: 3 }} />
           </Link>
           <AccountUserCard data={{ name: 'user', role: 'admin' }} sx={{ mx: 2 }} />
-          <NavSection navConfig={navConfig} sx={{ paddingBottom: '2rem', pr: 1 }} />
+          <NavSection navConfig={navItems} sx={{ paddingBottom: '2rem', pr: 1 }} />
         </Scrollbar>
       </Drawer>
     </>

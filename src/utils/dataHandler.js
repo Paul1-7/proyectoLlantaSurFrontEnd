@@ -1,3 +1,5 @@
+import { ROLES } from '~/config';
+
 /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
 const optionsDate = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
@@ -55,6 +57,16 @@ const productAmount = (product) => {
   return totalStock;
 };
 
+const getNamesRolesFromIds = (ids) => {
+  const namesRoles = [];
+  const rolesEntries = Object.entries(ROLES);
+
+  rolesEntries.forEach(([, valueRol]) => {
+    if (ids.includes(valueRol.id)) namesRoles.push(valueRol.name);
+  });
+  return namesRoles;
+};
+
 export {
   objectByString,
   getBOBCurrency,
@@ -63,4 +75,5 @@ export {
   productAmount,
   isCurrentDateInRange,
   isValidDiscount,
+  getNamesRolesFromIds,
 };

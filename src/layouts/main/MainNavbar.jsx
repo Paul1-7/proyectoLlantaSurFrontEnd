@@ -103,7 +103,13 @@ export default function MainNavbar() {
             <MHidden width="mdDown">
               <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems]} isAuthenticated />
             </MHidden>
-            <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
+            <MIconButton
+              size="large"
+              color="default"
+              LinkComponent={Link}
+              to={PATH_MODULES.shop.checkout}
+              sx={{ mr: 2 }}
+            >
               <Badge badgeContent={checkout.totalQuantity} color="error">
                 <ShoppingCart />
               </Badge>

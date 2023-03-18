@@ -7,8 +7,8 @@ import { Box, Stack, AppBar, Toolbar, IconButton, alpha, styled } from '@mui/mat
 import useCollapseDrawer from '~/hooks/useCollapseDrawer';
 // components
 import { MHidden } from '~/components/@material-extend';
+import useAuth from '~/hooks/useAuth';
 import AccountPopover from './AccountPopover';
-import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +39,7 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function DashboardNavbar({ onOpenSidebar }) {
+  const { auth } = useAuth();
   const { isCollapse } = useCollapseDrawer();
 
   return (
@@ -62,8 +63,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <NotificationsPopover />
-          <AccountPopover />
+          {auth?.user && <AccountPopover />}
         </Stack>
       </ToolbarStyle>
     </RootStyle>

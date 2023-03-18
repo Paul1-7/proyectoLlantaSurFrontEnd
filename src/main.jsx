@@ -14,24 +14,24 @@ import { AuthProvider } from './contexts/AuthProvider';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <SettingsProvider>
-        <CollapseDrawerProvider>
-          <BrowserRouter>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <SnackbarProvider maxSnack={3}>
-                  <Scrollbar sx={{ height: 1 }}>
-                    <AuthProvider>
+    <AuthProvider>
+      <HelmetProvider>
+        <SettingsProvider>
+          <CollapseDrawerProvider>
+            <BrowserRouter>
+              <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                  <SnackbarProvider maxSnack={3}>
+                    <Scrollbar sx={{ height: 1 }}>
                       <App />
-                    </AuthProvider>
-                  </Scrollbar>
-                </SnackbarProvider>
-              </PersistGate>
-            </Provider>
-          </BrowserRouter>
-        </CollapseDrawerProvider>
-      </SettingsProvider>
-    </HelmetProvider>
+                    </Scrollbar>
+                  </SnackbarProvider>
+                </PersistGate>
+              </Provider>
+            </BrowserRouter>
+          </CollapseDrawerProvider>
+        </SettingsProvider>
+      </HelmetProvider>
+    </AuthProvider>
   </React.StrictMode>,
 );

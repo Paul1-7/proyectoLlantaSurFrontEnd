@@ -146,8 +146,13 @@ MenuDesktopItem.propTypes = {
 };
 
 export default function MenuDesktop({ isOffset, isHome, navConfig }) {
-  const { auth } = useAuth();
-  const navItems = navItemsToActiveSesion(navConfig, auth);
+  const { auth, isExpiredToken } = useAuth();
+  let navItems = navItemsToActiveSesion(navConfig, auth);
+
+  if (isExpiredToken()) {
+    navItems = navItems.filter(({ title }) => !(title === 'Registrarse' || title === 'Iniciar sesión'));
+  }
+
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const anchorEl = useRef();
