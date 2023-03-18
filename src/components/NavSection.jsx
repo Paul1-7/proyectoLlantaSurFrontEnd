@@ -175,8 +175,12 @@ export default function NavSection({ navConfig, isShow = true, ...other }) {
   const { pathname } = useLocation();
 
   if (pathname.includes('dashboard') && roles.length > 0) {
-    navItems = navItems.filter(({ roles: rolesNav }) => {
-      if (!rolesNav) return false;
+    navItems = navItems.filter(({ roles: rolesNav, children }) => {
+      if (!rolesNav && children) {
+        return children.some(({ roles: rolesChildren }) => {
+          return roles.some((rol) => rolesChildren.includes(rol));
+        });
+      }
 
       return roles.some((rol) => rolesNav.includes(rol));
     });
