@@ -83,12 +83,11 @@ export default function ShopProductDetails() {
                 <span style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>Precio: </span>
                 {getBOBCurrency(product.data?.precioVenta)}
               </Typography>
-              {!!product.data?.descuentos?.length &&
-                isValidDiscount(product.data?.descuentos) && (
-                  <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
-                    {getBOBCurrency(product.data?.descuentos?.at(0)?.precioDesc)}
-                  </Typography>,
-                )}
+              {!!product.data?.descuentos?.length && isValidDiscount(product.data?.descuentos) && (
+                <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
+                  {getBOBCurrency(product.data?.descuentos?.at(0)?.precioDesc)}
+                </Typography>
+              )}
             </Stack>
             <Typography variant="h6" component="p">
               Marca:
