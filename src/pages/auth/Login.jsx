@@ -106,7 +106,7 @@ export default function Login() {
           <img src="/static/illustrations/illustration_login.png" alt="login" />
         </SectionStyle>
       </MHidden>
-      <ContentStyle sx={{ mx: { xs: 'auto', md: '0' }, mt: { xs: 6, md: 0 }, pr: 2 }}>
+      <ContentStyle sx={{ mx: { xs: 'auto', md: '0' }, mt: { xs: 7, md: 0 }, px: { xs: 2 } }}>
         <Stack direction="row" alignItems="center" sx={{ mb: 3 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" gutterBottom>
@@ -125,16 +125,13 @@ export default function Login() {
             <LoginForm methods={methods} loading={loadingPost} />
           </form>
         </FormProvider>
-        <MHidden width="smUp">
-          <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-            ¿No tienes una cuenta?&nbsp;
-            <Link variant="subtitle2" component={RouterLink} to={PATH_MODULES.auth.signUp}>
-              Registrate aquí
-            </Link>
-          </Typography>
-        </MHidden>
+        <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+          ¿No tienes una cuenta?&nbsp;
+          <Link variant="subtitle2" component={RouterLink} to={PATH_MODULES.auth.signUp}>
+            Registrate aquí
+          </Link>
+        </Typography>
       </ContentStyle>
-      {/* {!loadingPost && !errorPost && !Array.isArray(resPost) && <Navigate to={from} replace state={resPost} />} */}
     </RootStyle>
   );
 }

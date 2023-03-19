@@ -19,11 +19,13 @@ import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
+import useAuth from '~/hooks/useAuth';
 
 const initialForm = {
   usuario: '',
   email: '',
-  password: '',
+  password: '0',
+  passwordConfirmation: '',
   nombre: '',
   foto: '',
   apellido: '',
@@ -31,10 +33,12 @@ const initialForm = {
   direccion: '',
   celular: '',
   ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
+  idSuc: '',
 };
 
 export default function ModifyCustomerForm() {
+  const { auth } = useAuth();
+  const { id: idSuc, nombre: nombreSuc } = auth?.user?.sucursal ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -52,12 +56,16 @@ export default function ModifyCustomerForm() {
   });
 
   const onSubmit = (data) => {
+    const newData = {
+      ...data,
+      idSuc,
+    };
     axiosFetchPut({
       axiosInstance: axiosPrivate,
       method: 'PUT',
       url: `/api/v1/clientes/${id}`,
       requestConfig: {
-        ...data,
+        ...newData,
       },
     });
   };
@@ -76,9 +84,21 @@ export default function ModifyCustomerForm() {
       const objectArray = Object.entries(resGet);
 
       objectArray.forEach(([key, value]) => {
-        if (keys.includes(key)) {
-          methods.setValue(key, String(value), { shouldValidate: true });
+        if (!keys.includes(key)) {
+          return;
         }
+
+        if (value === null) {
+          methods.setValue(key, String(''), { shouldValidate: true });
+          return;
+        }
+
+        if (value === idSuc) {
+          methods.setValue(key, String(nombreSuc), { shouldValidate: true });
+          return;
+        }
+
+        methods.setValue(key, String(value), { shouldValidate: true });
       });
     }
   }, [resGet]);
@@ -151,10 +171,15 @@ export default function ModifyCustomerForm() {
             <Fieldset title="Datos del usuario">
               <Grid container wrap="wrap" spacing={1}>
                 <Grid item xs={12} md={6}>
-                  <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
+                  <Controls.Input
+                    name="usuario"
+                    label="Usuario"
+                    placeholder="Por defecto es el CI / NIT"
+                    autoComplete="off"
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Input name="email" type="email" label="Email" />
+                  <Controls.Input name="email" type="email" label="Email" autoComplete="off" />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.Input
@@ -162,10 +187,12 @@ export default function ModifyCustomerForm() {
                     name="password"
                     label="Contraseña"
                     placeholder="Por defecto es el numero de celular"
+                    autoComplete="off"
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.Input
+                    autoComplete="off"
                     name="passwordConfirmation"
                     type="password"
                     label="Repetir contraseña"

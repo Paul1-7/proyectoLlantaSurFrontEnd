@@ -20,12 +20,13 @@ import { COLUMNS } from '~/constants/dataTable';
 import { DataTableProvider } from '~/contexts/DataTableContext';
 import { Link } from 'react-router-dom';
 import useErrorMessage from '~/hooks/useErrorMessage';
+import useAuth from '~/hooks/useAuth';
 import ProductsPurchases from './ProductsPurchases';
 import ProductsSubsidiariesPurchases from './ProductsSubsidiariesPurchases';
 
 const initialForm = {
   fecha: new Date().toLocaleDateString(),
-  idEmp: 'd71ac730-e43b-4c9c-a480-164f9c630e07',
+  idEmp: '',
   idProv: { nombre: 'Ninguno', id: '0' },
   codCompra: '',
   detalle: [],
@@ -59,6 +60,8 @@ const customDataProducts = ({ data }) => {
 const btnActions = { add: true };
 
 export default function AddPurchasesForm() {
+  const { auth } = useAuth();
+  const { nombre = '', apellido = '', idUsuario } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resPost, errorPost, loadingPost, axiosFetchPost, , setErrorPost] = useAxios();
@@ -88,7 +91,7 @@ export default function AddPurchasesForm() {
 
   const methods = useForm({
     resolver: yupResolver(schema.purchases),
-    defaultValues: initialForm,
+    defaultValues: { ...initialForm, idEmp: `${nombre} ${apellido}` },
     mode: 'all',
     criteriaMode: 'all',
   });
@@ -105,6 +108,7 @@ export default function AddPurchasesForm() {
     const newData = {
       ...data,
       idProv,
+      idEmp: idUsuario,
       sucursalesProductos,
     };
 

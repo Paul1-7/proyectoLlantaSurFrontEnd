@@ -15,15 +15,15 @@ import schema from '~/schemas';
 import { Navigate, useLocation } from 'react-router';
 import { PATH_MODULES } from '~/routes/paths';
 import { useEffect } from 'react';
-import { useSnackbar } from 'notistack';
-import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from '~/constants/items';
 import { Link } from 'react-router-dom';
+import useErrorMessage from '~/hooks/useErrorMessage';
 
 const initialForm = {
-  usuario: '',
+  usuario: '0',
   email: '',
   password: '',
+  passwordConfirmation: '',
   nombre: '',
   foto: '',
   apellido: '',
@@ -31,7 +31,7 @@ const initialForm = {
   direccion: '',
   celular: '',
   ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
+  idSuc: '0',
   roles: [ITEMS_SELECTS[1].idRol],
 };
 
@@ -43,13 +43,22 @@ const customData = ({ data }) => {
   return { data: { ...data, roles } };
 };
 
+function SubsidiariesCustomData({ data }) {
+  const newData = data.filter(({ estado }) => estado === 1).map(({ id: idSuc, nombre }) => ({ idSuc, nombre }));
+
+  return { data: newData };
+}
+
 export default function ModifyEmployeesForm() {
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
-  const { enqueueSnackbar } = useSnackbar();
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut] = useAxios();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios({ responseCb: customData });
+  const [resGetSubsidiaries, errorGetSubsidiaries, loadingGetSubsidiaries, axiosFetchGetSubsidiaries] = useAxios({
+    responseCb: SubsidiariesCustomData,
+  });
+  useErrorMessage({ errors: [errorGetSubsidiaries, errorGet, errorPut] });
 
   const id = location.pathname.split('/').pop();
 
@@ -77,45 +86,36 @@ export default function ModifyEmployeesForm() {
       method: 'GET',
       url: `/api/v1/empleados/${id}`,
     });
+    axiosFetchGetSubsidiaries({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/sucursales`,
+    });
   }, []);
 
   useEffect(() => {
-    if (!Array.isArray(resGet) && !errorGet) {
-      const keys = Object.keys(initialForm);
-      const objectArray = Object.entries(resGet);
+    if (Array.isArray(resGet) || !resGetSubsidiaries.length) return;
+    const keys = Object.keys(initialForm);
+    const objectArray = Object.entries(resGet);
 
-      objectArray.forEach(([key, value]) => {
-        if (keys.includes(key)) {
-          methods.setValue(key, key !== 'roles' ? String(value ?? '') : value, { shouldValidate: true });
-        }
-      });
-    }
-  }, [resGet]);
+    objectArray.forEach(([key, value]) => {
+      if (!keys.includes(key)) return;
 
-  useEffect(() => {
-    const severity = 'error';
-    let message = null;
+      if (key === 'password') {
+        methods.setValue(key, '', { shouldValidate: true });
+        return;
+      }
 
-    if (Array.isArray(resPut) && errorPut) {
-      message = errorPut?.message;
-    }
-
-    if (Array.isArray(resGet) && errorGet) {
-      message = errorGet?.message;
-    }
-
-    if (message) {
-      enqueueSnackbar(message, {
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-        autoHideDuration: 5000,
-        content: (key, message) => <SnackBar id={key} message={message} severity={severity} />,
-      });
-    }
-  }, [errorPut, errorGet]);
+      methods.setValue(key, key !== 'roles' ? String(value ?? '') : value, { shouldValidate: true });
+    });
+  }, [resGet, resGetSubsidiaries]);
 
   return (
     <Page title="modificar empleado">
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }} open={loadingGet}>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
+        open={loadingGet || loadingGetSubsidiaries}
+      >
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -150,7 +150,7 @@ export default function ModifyEmployeesForm() {
                   <Controls.Input name="ciNit" label="CI / NIT" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Input name="idSuc" label="Sucursal" disabled />
+                  <Controls.Select name="idSuc" label="Sucursal" items={resGetSubsidiaries} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />

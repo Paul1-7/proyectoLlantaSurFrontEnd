@@ -18,6 +18,8 @@ import salesReport from './salesReport';
 import purchasesReport from './purchasesReport';
 import purchases from './purchases';
 import login from './login';
+import phoneNumber from './phoneNumber';
+import register from './register';
 
 const schema = {
   customer,
@@ -40,6 +42,8 @@ const schema = {
   purchases,
   purchasesReport,
   login,
+  phoneNumber,
+  register,
 };
 
 export default schema;

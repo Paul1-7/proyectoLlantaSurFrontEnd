@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = window.localStorage.getItem('persist');
 
-    if (!token) return;
+    if (token === null || token === 'null') return;
 
     const tokenParsed = JSON.parse(token);
     const accessTokenDecoded = jwtDecode(tokenParsed.accessToken);
@@ -51,6 +51,7 @@ export function AuthProvider({ children }) {
 
     if (Date.now() >= accessTokenDecoded.exp * 1000) {
       window.localStorage.removeItem('persist');
+      setAuth(null);
     }
   }, []);
 

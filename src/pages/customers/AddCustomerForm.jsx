@@ -19,6 +19,7 @@ import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
 import { Clear, Save } from '@mui/icons-material';
+import useAuth from '~/hooks/useAuth';
 
 const initialForm = {
   usuario: '',
@@ -31,28 +32,34 @@ const initialForm = {
   direccion: '',
   celular: '',
   ciNit: '',
-  idSuc: '678197a0-69a8-4c24-89a5-bf13873cc08b',
+  idSuc: '',
 };
 
 export default function AddCustomerForm() {
+  const { auth } = useAuth();
+  const { id: idSuc, nombre: nombreSuc } = auth?.user?.sucursal ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
   const methods = useForm({
     resolver: yupResolver(schema.customer),
-    defaultValues: initialForm,
+    defaultValues: { ...initialForm, idSuc: nombreSuc },
     mode: 'all',
     criteriaMode: 'all',
   });
 
   const onSubmit = (data) => {
+    const newData = {
+      ...data,
+      idSuc,
+    };
     axiosFetchPost({
       axiosInstance: axiosPrivate,
       method: 'POST',
       url: `/api/v1/clientes`,
       requestConfig: {
-        ...data,
+        ...newData,
       },
     });
   };
