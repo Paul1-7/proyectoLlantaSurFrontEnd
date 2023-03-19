@@ -18,6 +18,7 @@ import {
 import { getBOBCurrency } from '~/utils/dataHandler';
 import { HelpOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { PATH_MODULES } from '~/routes/paths';
 
 export default function CheckoutSummary({
   onEdit,
@@ -33,6 +34,7 @@ export default function CheckoutSummary({
     <Card sx={{ mb: 3 }}>
       <CardHeader
         title="Resumen de la compra"
+        sx={{ textAlign: 'center' }}
         action={
           enableEdit && (
             <Button size="small" type="button" onClick={onEdit} startIcon={<Icon icon={editFill} />}>
@@ -71,8 +73,8 @@ export default function CheckoutSummary({
                 title={
                   <>
                     Para mas información realice un click en el siguiente enlace&nbsp;
-                    <Link style={{ textDecoration: 'none' }} to="/">
-                      Políticas de envio
+                    <Link style={{ textDecoration: 'none' }} to={PATH_MODULES.staticPages.frequentlAskedQuestions}>
+                      Preguntas frecuentes
                     </Link>
                   </>
                 }

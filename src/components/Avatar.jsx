@@ -32,7 +32,7 @@ function stringAvatar(name) {
   };
 }
 
-function Avatar({ name }) {
+function Avatar({ name = '' }) {
   return <AvatarMui {...stringAvatar(name)} />;
 }
 

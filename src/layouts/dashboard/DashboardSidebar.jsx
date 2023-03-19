@@ -114,10 +114,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           </MHidden>
         </Stack>
 
-        {isCollapse ? (
-          <Avatar name={`${nombre} ${apellido}`} />
-        ) : (
-          <AccountUserCard data={{ name: `${nombre} ${apellido}`, roles }} />
+        {auth?.user && (
+          isCollapse ? (
+            <Avatar name={`${nombre} ${apellido}`} />
+          ) : (
+            <AccountUserCard data={{ name: `${nombre} ${apellido}`, roles }} />
+          ),
         )}
       </Stack>
 

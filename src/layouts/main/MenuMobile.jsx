@@ -17,7 +17,8 @@ const PADDING = 2.5;
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
-  const { isExpiredToken } = useAuth();
+  const { isExpiredToken, auth } = useAuth();
+  const { nombre, apellido, roles } = auth?.user ?? {};
   const [mobileOpen, setMobileOpen] = useState(false);
   let navItems = [...navConfig];
 
@@ -62,7 +63,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
           <Link component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
             <Logo sx={{ mx: PADDING, my: 3 }} />
           </Link>
-          <AccountUserCard data={{ name: 'user', role: 'admin' }} sx={{ mx: 2 }} />
+          {auth?.user && <AccountUserCard data={{ name: `${nombre} ${apellido}`, roles }} sx={{ mx: 2 }} />}
           <NavSection navConfig={navItems} sx={{ paddingBottom: '2rem', pr: 1 }} />
         </Scrollbar>
       </Drawer>

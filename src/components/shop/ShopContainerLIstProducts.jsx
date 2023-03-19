@@ -3,7 +3,7 @@ import React from 'react';
 import { LoadingScreen, Page } from '~/components';
 import PropTypes from 'prop-types';
 
-function ShopContainerListProducts({ loading, error, children, title = '', titleContainer }) {
+function ShopContainerListProducts({ loading = false, error = null, children, title = '', titleContainer }) {
   return (
     <Page title={title}>
       {loading && !error && <LoadingScreen />}

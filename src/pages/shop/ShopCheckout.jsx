@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CheckoutBillingAddress, CheckoutCart, CheckoutOrderComplete, CheckoutPayment } from '~/components/checkout';
 import { withStyles } from '@mui/styles';
 
-const STEPS = ['Cart', 'Billing & address', 'Payment'];
+const STEPS = ['Carrito', 'Dirección de envío', 'Pago'];
 
 const QontoConnector = withStyles((theme) => ({
   alternativeLabel: {

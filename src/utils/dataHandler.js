@@ -46,7 +46,7 @@ function isValidDiscount(value) {
 
 const productAmount = (product) => {
   const { descuentos = [] } = product || {};
-  if (isValidDiscount(descuentos.at(0))) return product.descuentos.at(0).cantMax;
+  if (descuentos.length && isValidDiscount(descuentos.at(0))) return product.descuentos.at(0).cantMax;
 
   const sucursales = product?.sucursales ?? [];
   let totalStock = 0;

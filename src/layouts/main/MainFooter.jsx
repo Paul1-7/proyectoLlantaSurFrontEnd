@@ -4,6 +4,7 @@ import { Grid, Link, Divider, Container, Typography, IconButton, Stack, styled, 
 //
 import Logo from '~/components/Logo';
 import { Facebook, WhatsApp } from '@mui/icons-material';
+import { PATH_MODULES } from '~/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -16,16 +17,16 @@ const LINKS = [
   {
     headline: 'Tienda',
     children: [
-      { name: 'Sobre nosotros', href: '#' },
-      { name: 'Preguntas frecuentes', href: '#' },
+      { name: 'Sobre nosotros', href: PATH_MODULES.staticPages.about },
+      { name: 'Preguntas frecuentes', href: PATH_MODULES.staticPages.frequentlAskedQuestions },
     ],
   },
   {
     headline: 'Politicas',
     children: [
-      { name: 'Garantias', href: '#' },
-      { name: 'Devoluciones y cambios', href: '#' },
-      { name: 'Términos y condiciones', href: '#' },
+      { name: 'Garantias', href: PATH_MODULES.staticPages.warranties },
+      { name: 'Devoluciones y cambios', href: PATH_MODULES.staticPages.devolutions },
+      { name: 'Términos y condiciones', href: PATH_MODULES.staticPages.termConditions },
     ],
   },
 ];
