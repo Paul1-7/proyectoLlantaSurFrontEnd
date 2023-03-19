@@ -94,9 +94,12 @@ export const PATH_MODULES = {
     resetPassword: path(ROOTS_SHOP, 'recuperar-contraseña'),
     unauthorized: path(ROOTS_SHOP, 'no-autorizado'),
   },
+  staticPages: {
+    about: path(ROOTS_SHOP, 'sobre-nosotros'),
+    frequentlAskedQuestions: path(ROOTS_SHOP, 'preguntas-frecuentes'),
+    warranties: path(ROOTS_SHOP, 'garantias'),
+    devolutions: path(ROOTS_SHOP, 'devoluciones-cambios'),
+    termConditions: path(ROOTS_SHOP, 'terminos-condiciones'),
+  },
   notFound: '/404',
-  compras: path(ROOTS_DASHBOARD, '/compras'),
-  pedidos: path(ROOTS_DASHBOARD, '/pedidos'),
-  reseñas: path(ROOTS_DASHBOARD, '/reseñas'),
-  favoritos: path(ROOTS_DASHBOARD, '/favoritos'),
 };

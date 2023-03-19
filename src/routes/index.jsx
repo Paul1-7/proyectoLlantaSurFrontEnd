@@ -412,6 +412,12 @@ export default function Router() {
         { path: `${PATH_MODULES.shop.products}/:id`, element: <ShopProductDetail /> },
         { path: `${PATH_MODULES.shop.products}`, element: <ShopProducts /> },
         { path: `${PATH_MODULES.shop.checkout}`, element: <ShopCheckout /> },
+        // static
+        { path: `${PATH_MODULES.staticPages.about}`, element: <ShopAbout /> },
+        { path: `${PATH_MODULES.staticPages.frequentlAskedQuestions}`, element: <ShopFrequenlyAskedQuestions /> },
+        { path: `${PATH_MODULES.staticPages.warranties}`, element: <ShopWarranties /> },
+        { path: `${PATH_MODULES.staticPages.devolutions}`, element: <ShopDevolutions /> },
+        { path: `${PATH_MODULES.staticPages.termConditions}`, element: <ShopTermConditions /> },
         // auth
         { path: `${PATH_MODULES.auth.signIn}`, element: <Login /> },
       ],
@@ -485,6 +491,14 @@ const ShopCategories = Loadable(lazy(() => import('~/pages/shop/ShopCategories')
 const ShopProductDetail = Loadable(lazy(() => import('~/pages/shop/ShopProductDetail')));
 const ShopCheckout = Loadable(lazy(() => import('~/pages/shop/ShopCheckout')));
 const ShopProducts = Loadable(lazy(() => import('~/pages/shop/ShopProducts')));
+// static shop
+const ShopAbout = Loadable(lazy(() => import('~/pages/shop/staticPages/ShopAbout')));
+const ShopWarranties = Loadable(lazy(() => import('~/pages/shop/staticPages/ShopWarranties')));
+const ShopDevolutions = Loadable(lazy(() => import('~/pages/shop/staticPages/ShopDevolutions')));
+const ShopTermConditions = Loadable(lazy(() => import('~/pages/shop/staticPages/ShopTermConditions')));
+const ShopFrequenlyAskedQuestions = Loadable(
+  lazy(() => import('~/pages/shop/staticPages/ShopFrequenlyAskedQuestions')),
+);
 // auth
 const Login = Loadable(lazy(() => import('~/pages/auth/Login')));
 const Unauthorized = Loadable(lazy(() => import('~/pages/Unauthorized')));
