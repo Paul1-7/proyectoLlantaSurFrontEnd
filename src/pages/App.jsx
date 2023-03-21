@@ -9,6 +9,7 @@ import { AppWelcome } from '~/components/dashboard';
 import { ChartBar } from '~/components/charts';
 import useErrorMessage from '~/hooks/useErrorMessage';
 import useAxios from '~/hooks/useAxios';
+import useAuth from '~/hooks/useAuth';
 
 const getStockFromSubsidiaries = (subsidiaries) => {
   return subsidiaries
@@ -57,6 +58,8 @@ function getStockLowProducts(products, minStockAvailable) {
 }
 
 export default function App() {
+  const { auth } = useAuth();
+  const { nombre, apellido } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [resGetBestSellingProd, errorGetBestSellingProd, loadingGetBestSellingProd, axiosFetchGetBestSellingProd] =
@@ -100,7 +103,7 @@ export default function App() {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-        <AppWelcome displayName="aas" />
+        <AppWelcome displayName={`${nombre} ${apellido}`} />
         <Grid container spacing={2} sx={{ pt: 4 }}>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1" align="center">

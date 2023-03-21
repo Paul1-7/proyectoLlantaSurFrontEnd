@@ -30,7 +30,7 @@ const ICONS = {
 };
 
 const sidebarConfig = [
-  { title: 'App', path: PATH_MODULES.app, icon: ICONS.dashboard, roles: [ADMINISTRADOR.id] },
+  { title: 'Dashboard', path: PATH_MODULES.app, icon: ICONS.dashboard, roles: [ADMINISTRADOR.id] },
   { title: 'Compras', path: PATH_MODULES.purchases.root, icon: ICONS.purchase, roles: [ADMINISTRADOR.id] },
   {
     title: 'Clientes',
