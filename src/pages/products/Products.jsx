@@ -137,7 +137,7 @@ export default function Products() {
               LinkComponent={Link}
               to={PATH_MODULES.products.new}
               startIcon={<Inventory2 />}
-              disabled={isRolUserAllowedTo([ADMINISTRADOR.id])}
+              disabled={!isRolUserAllowedTo([ADMINISTRADOR.id])}
             >
               Nuevo producto
             </Button>
@@ -150,7 +150,7 @@ export default function Products() {
           loading={loadingGet || loadingGetBusinessData}
           numeration
           minStock={resGetBusinessData?.cantMinProd}
-          btnActions={!isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
+          btnActions={isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="nombre"
           collapse="sucursales"
         />

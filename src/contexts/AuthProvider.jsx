@@ -65,7 +65,8 @@ export function AuthProvider({ children }) {
 
   function isRolUserAllowedTo(idRoles) {
     const { roles: rolesUser = [] } = auth?.user ?? {};
-    return rolesUser.some((roleUser) => !idRoles.includes(roleUser));
+
+    return rolesUser.some((roleUser) => idRoles.includes(roleUser));
   }
 
   return (

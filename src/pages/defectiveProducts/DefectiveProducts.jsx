@@ -125,7 +125,7 @@ export default function Categories() {
           error={errorGet}
           loading={loadingGet}
           numeration
-          btnActions={!isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
+          btnActions={isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="fecha"
           orderDesc
         />

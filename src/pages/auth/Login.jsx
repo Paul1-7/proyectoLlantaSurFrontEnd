@@ -83,7 +83,7 @@ export default function Login() {
     axiosFetchPost({
       axiosInstance: axios,
       method: 'POST',
-      url: `/api/v1/usuarios/login`,
+      url: `/api/v1/auth/login`,
       requestConfig: {
         ...data,
       },

@@ -89,7 +89,7 @@ export default function Register() {
     axiosFetchPostPhoneNumber({
       axiosInstance: axios,
       method: 'POST',
-      url: `/api/v1/usuarios/verificar-telefono`,
+      url: `/api/v1/auth/verificar-telefono`,
       requestConfig: {
         ...data,
       },

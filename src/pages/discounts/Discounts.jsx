@@ -105,7 +105,7 @@ export default function Discounts() {
               LinkComponent={Link}
               to={PATH_MODULES.discounts.new}
               startIcon={<Discount />}
-              disabled={isRolUserAllowedTo([ADMINISTRADOR.id])}
+              disabled={!isRolUserAllowedTo([ADMINISTRADOR.id])}
             >
               Nuevo descuento
             </Button>
@@ -117,7 +117,7 @@ export default function Discounts() {
           error={errorGet}
           loading={loadingGet}
           numeration
-          btnActions={!isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
+          btnActions={isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="fechaFin"
         />
       </Container>

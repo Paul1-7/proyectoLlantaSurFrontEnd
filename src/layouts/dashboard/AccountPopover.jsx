@@ -40,7 +40,7 @@ export default function AccountPopover() {
     axiosFetchPost({
       axiosInstance: axiosPrivate,
       method: 'POST',
-      url: `/api/v1/usuarios/logout`,
+      url: `/api/v1/auth/logout`,
       requestConfig: {
         ...data,
       },
