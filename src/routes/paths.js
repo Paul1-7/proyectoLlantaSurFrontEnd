@@ -80,6 +80,7 @@ export const PATH_MODULES = {
     bestSelling: path(ROOTS_SHOP, `productos/mas-vendidos`),
     brands: path(ROOTS_SHOP, `marcas`),
     categories: path(ROOTS_SHOP, `categorias`),
+    favorites: path(ROOTS_SHOP, `favoritos`),
     checkout: path(ROOTS_SHOP, `carro-de-compras`),
   },
   purchases: {

@@ -306,7 +306,6 @@ export default function Router() {
           path: PATH_MODULES.purchases.new,
           element: (
             <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
-              {' '}
               <AddPurchasesForm />
             </RequireAuth>
           ),
@@ -412,6 +411,7 @@ export default function Router() {
         { path: `${PATH_MODULES.shop.products}/:id`, element: <ShopProductDetail /> },
         { path: `${PATH_MODULES.shop.products}`, element: <ShopProducts /> },
         { path: `${PATH_MODULES.shop.checkout}`, element: <ShopCheckout /> },
+        { path: `${PATH_MODULES.shop.favorites}`, element: <ShopFavorites /> },
         // static
         { path: `${PATH_MODULES.staticPages.about}`, element: <ShopAbout /> },
         { path: `${PATH_MODULES.staticPages.frequentlAskedQuestions}`, element: <ShopFrequenlyAskedQuestions /> },
@@ -492,6 +492,7 @@ const ShopCategories = Loadable(lazy(() => import('~/pages/shop/ShopCategories')
 const ShopProductDetail = Loadable(lazy(() => import('~/pages/shop/ShopProductDetail')));
 const ShopCheckout = Loadable(lazy(() => import('~/pages/shop/ShopCheckout')));
 const ShopProducts = Loadable(lazy(() => import('~/pages/shop/ShopProducts')));
+const ShopFavorites = Loadable(lazy(() => import('~/pages/shop/ShopFavorites')));
 // static shop
 const ShopAbout = Loadable(lazy(() => import('~/pages/shop/staticPages/ShopAbout')));
 const ShopWarranties = Loadable(lazy(() => import('~/pages/shop/staticPages/ShopWarranties')));
