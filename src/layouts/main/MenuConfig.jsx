@@ -29,7 +29,7 @@ const menuConfig = [
   { title: 'Dashboard', path: PATH_MODULES.root, icon: <Icon icon={dashboard} {...ICON_SIZE} /> },
   {
     title: 'Registrarse',
-    path: PATH_MODULES.auth.signUp,
+    path: PATH_MODULES.auth.verifyPhoneNumber,
     icon: <PersonAdd sx={{ ...ICON_SIZE }} />,
   },
   {
