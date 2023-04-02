@@ -78,6 +78,7 @@ function DataTable({
 
   const [open, setOpen] = useState({ state: false, index: null });
   const dataFiltered = filterData(searchQuery, rows);
+  console.log('TCL: dataFiltered', dataFiltered);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -160,6 +161,7 @@ function DataTable({
                     {numeration && <TableCell align={align}>{page * rowsPerPage + index + 1}</TableCell>}
                     {columns.map(({ field, type }, index) => {
                       const value = row[field];
+                      console.log('TCL: value', value);
 
                       if (type === 'states') {
                         return <DataTableCell.States key={index} align={align} value={value} />;
@@ -178,6 +180,9 @@ function DataTable({
                       }
                       if (type === 'array') {
                         return <DataTableCell.ValuesArray key={index} align={align} value={value} />;
+                      }
+                      if (type === 'isDiscount') {
+                        return <DataTableCell.CellIsDiscount key={index} align={align} value={value} />;
                       }
                       if (type === 'stock') {
                         return <DataTableCell.Stock key={index} align={align} value={value} minStock={minStock} />;

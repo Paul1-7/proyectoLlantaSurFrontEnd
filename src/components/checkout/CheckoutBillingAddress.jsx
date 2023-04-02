@@ -12,7 +12,7 @@ import useAxios from '~/hooks/useAxios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { PATH_MODULES } from '~/routes/paths';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import CheckoutSummary from './CheckoutSummary';
 
@@ -21,7 +21,7 @@ function AddressItem({ onNextStep, onCreateBilling = null }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorGet],
   });
 

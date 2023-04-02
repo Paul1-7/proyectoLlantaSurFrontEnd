@@ -20,6 +20,7 @@ import purchases from './purchases';
 import login from './login';
 import phoneNumber from './phoneNumber';
 import register from './register';
+import sliderImages from './sliderImages';
 
 const schema = {
   customer,
@@ -44,6 +45,7 @@ const schema = {
   login,
   phoneNumber,
   register,
+  sliderImages,
 };
 
 export default schema;

@@ -30,7 +30,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
 import { DEFAULT_VALUE_ITEM } from '~/constants/items';
 import { usePrint } from '~/hooks/usePrint';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 import { add } from 'date-fns';
 import {
@@ -67,7 +67,7 @@ export default function PurchasesReport() {
   const { themeStretch } = useSettings();
   const [showAllRows, setShowAllRows] = useState(true);
   const [resGetPurchase, errorGetPurchase, loadingGetPurchase, axiosFetchGetPurchase] = useAxios();
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorGetPurchase],
   });
 

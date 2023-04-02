@@ -59,9 +59,6 @@ export default function ShopProductCard({ product }) {
             <Typography variant="subtitle1">{getBOBCurrency(precioVenta)}</Typography>
           </Stack>
           <Stack direction="row">
-            <MIconButton color="error" onClick={() => dispatch(addCart(product))}>
-              <Favorite />
-            </MIconButton>
             <MIconButton color="success" onClick={() => dispatch(addCart(product))}>
               <AddShoppingCart />
             </MIconButton>

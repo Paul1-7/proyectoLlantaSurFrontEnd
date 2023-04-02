@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useAxios from '~/hooks/useAxios';
 import Controls from '~/components/forms/Control';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 const customDataSubsidiaries = ({ data }) => {
   const newData = data.map(({ id, nombre }) => ({ idSuc: id, nombre, stock: 1 }));
@@ -21,7 +21,7 @@ function ProductsSubsidiariesPurchases({ data = [] }) {
   const watchProducts = useWatch({ control, name: 'detalle' });
   const errorsSubsiProd = formState.errors?.sucursalesProductos;
 
-  useErrorMessage({ errors: [errorGetSubsidiaries, errorGetSubsidiaries] });
+  useSnackBarMessage({ errors: [errorGetSubsidiaries, errorGetSubsidiaries] });
   const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'sucursalesProductos',

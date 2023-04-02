@@ -17,7 +17,7 @@ import { PATH_MODULES } from '~/routes/paths';
 import { useEffect } from 'react';
 import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from '~/constants/items';
 import { Link } from 'react-router-dom';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 const initialForm = {
   usuario: '',
@@ -48,7 +48,7 @@ export default function AddEmployeesForm() {
     responseCb: SubsidiariesCustomData,
   });
 
-  useErrorMessage({ errors: [errorPost, errorGetSubsidiaries] });
+  useSnackBarMessage({ errors: [errorPost, errorGetSubsidiaries] });
   const methods = useForm({
     resolver: yupResolver(schema.employees),
     defaultValues: initialForm,

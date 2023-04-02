@@ -5,6 +5,8 @@ import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import Image from '~/components/Image';
 import { CARDS_INFO } from '~/constants/shop';
+import { useGetSlidersImagesQuery } from '~/redux/api/sliderImageApi';
+import { PATH_MODULES } from '~/routes/paths';
 import ShopSidebarMain from './ShopSidebarMain';
 import ShopItemInfo from './ShopItemInfo';
 
@@ -29,6 +31,7 @@ const RootGrid = styled('section')(({ theme }) => ({
 }));
 
 function ShopMainSection({ titleSidebar }) {
+  const slidersImage = useGetSlidersImagesQuery();
   return (
     <RootGrid>
       <Card component="article" sx={{ gridArea: 'main', height: 'fit-content' }}>
@@ -40,29 +43,25 @@ function ShopMainSection({ titleSidebar }) {
           useKeyboardArrows
           showStatus={false}
           swipeScrollTolerance={5}
-          interval={5000}
+          interval={4000}
           transitionTime={1200}
         >
-          <Box>
-            <Image
-              ratio="16/9"
-              src="https://res.cloudinary.com/paul1-7/image/upload/v1674596227/llanta-sur/ofertas/oferta_fuowuk.webp"
-              alt="s"
-            />
-            <Button LinkComponent={Link} variant="contained" to="#" sx={{ position: 'absolute', bottom: 24, left: 24 }}>
-              Compralo ahora
-            </Button>
-          </Box>
-          <Box>
-            <Image
-              ratio="16/9"
-              src="https://res.cloudinary.com/paul1-7/image/upload/v1674596227/llanta-sur/ofertas/oferta_fuowuk.webp"
-              alt="s"
-            />
-            <Button LinkComponent={Link} variant="contained" to="#" sx={{ position: 'absolute', bottom: 24, left: 24 }}>
-              Compralo ahora
-            </Button>
-          </Box>
+          {!!slidersImage.data &&
+            slidersImage.data
+              .filter(({ estado }) => estado === 1)
+              .map(({ id, idProd, urlImg }) => (
+                <Box key={id}>
+                  <Image ratio="16/9" src={urlImg} alt="imagen slider" stylesImg={{ height: '100%' }} />
+                  <Button
+                    LinkComponent={Link}
+                    variant="contained"
+                    to={`${PATH_MODULES.shop.products}/${idProd}`}
+                    sx={{ position: 'absolute', bottom: 24, left: 24 }}
+                  >
+                    Compralo ahora
+                  </Button>
+                </Box>
+              ))}
         </Carousel>
       </Card>
       <Card component="article" sx={{ gridArea: 'sidebar', display: { xs: 'none', md: 'block' } }}>

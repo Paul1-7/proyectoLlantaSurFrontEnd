@@ -19,7 +19,7 @@ import DataTable from '~/components/dataTable/DataTable';
 import { COLUMNS } from '~/constants/dataTable';
 import { DataTableProvider } from '~/contexts/DataTableContext';
 import { Link } from 'react-router-dom';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import useAuth from '~/hooks/useAuth';
 import ProductsPurchases from './ProductsPurchases';
 import ProductsSubsidiariesPurchases from './ProductsSubsidiariesPurchases';
@@ -71,7 +71,7 @@ export default function AddPurchasesForm() {
     responseCb: customDataProducts,
   });
 
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorGetProducts, errorGetProviders, errorPost],
     setErrors: [setErrorProducts, setErrorProviders, setErrorPost],
   });

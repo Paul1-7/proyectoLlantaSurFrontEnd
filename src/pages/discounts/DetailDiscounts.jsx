@@ -23,7 +23,7 @@ import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { PATH_MODULES } from '~/routes/paths';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import { formatDateToLocal, getBOBCurrency } from '~/utils/dataHandler';
 import Fieldset from '~/components/forms/Fieldset';
 import { Label } from '~/components';
@@ -33,7 +33,7 @@ export default function DetailDiscounts() {
   const { themeStretch } = useSettings();
   const [resGetDiscount, errorGetDiscount, loadingGetDiscount, axiosFetchGetDiscount, , setErrorGetDiscount] =
     useAxios();
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorGetDiscount],
     setErrors: [setErrorGetDiscount],
   });

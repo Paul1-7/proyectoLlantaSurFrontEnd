@@ -68,6 +68,7 @@ export const PATH_MODULES = {
     root: path(ROOTS_DASHBOARD, '/administracion'),
     businessData: `${ROOTS_DASHBOARD}/administracion/datos-negocio`,
     invoiceBatching: `${ROOTS_DASHBOARD}/administracion/dosificacion-facturas`,
+    sliderImages: `${ROOTS_DASHBOARD}/administracion/slider-de-imagenes`,
   },
   defectiveProducts: {
     root: path(ROOTS_DASHBOARD, '/productos-defectuosos'),

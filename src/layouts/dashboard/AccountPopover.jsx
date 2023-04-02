@@ -12,7 +12,7 @@ import { getNamesRolesFromIds } from '~/utils/dataHandler';
 import { Avatar, Label } from '~/components';
 import useAxios from '~/hooks/useAxios';
 import { LoadingButton } from '@mui/lab';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 
 const MENU_OPTIONS = [
@@ -28,7 +28,7 @@ export default function AccountPopover() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const nameRoles = getNamesRolesFromIds(auth.user.roles);
-  useErrorMessage({
+  useSnackBarMessage({
     errrors: [errorPost],
   });
 

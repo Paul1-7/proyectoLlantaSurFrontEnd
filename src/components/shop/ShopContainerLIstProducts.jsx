@@ -3,12 +3,12 @@ import React from 'react';
 import { LoadingScreen, Page } from '~/components';
 import PropTypes from 'prop-types';
 
-function ShopContainerListProducts({ loading = false, error = null, children, title = '', titleContainer }) {
+function ShopContainerListProducts({ loading = false, error = null, children, title = '', titleContainer, sx }) {
   return (
     <Page title={title}>
       {loading && !error && <LoadingScreen />}
       {!loading && (
-        <Container sx={{ margin: { xs: '9rem 0rem 2rem 0rem', xl: '9rem 4rem 2rem 4rem' } }} maxWidth="xl">
+        <Container sx={{ margin: { xs: '9rem 0rem 2rem 0rem', xl: '9rem 4rem 2rem 4rem' }, ...sx }} maxWidth="xl">
           {titleContainer && <Typography variant="h3">{titleContainer}</Typography>}
           {children}
         </Container>
@@ -23,6 +23,7 @@ ShopContainerListProducts.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string,
   titleContainer: PropTypes.string,
+  sx: PropTypes.object,
 };
 
 export default ShopContainerListProducts;

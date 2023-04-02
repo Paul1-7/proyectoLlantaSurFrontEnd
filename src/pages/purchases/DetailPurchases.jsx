@@ -21,7 +21,7 @@ import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { useParams } from 'react-router';
 import { getBOBCurrency } from '~/utils/dataHandler';
 import { usePrint } from '~/hooks/usePrint';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 const sxNoPrint = {
   '@media print': {
@@ -35,7 +35,7 @@ export default function DetailSeel() {
   const [resGetPurchase, errorGetPurchase, loadingGetPurchase, axiosFetchGetPurchase, , setErrorGetPurchase] =
     useAxios();
 
-  useErrorMessage({ errors: [errorGetPurchase], setErrors: [setErrorGetPurchase] });
+  useSnackBarMessage({ errors: [errorGetPurchase], setErrors: [setErrorGetPurchase] });
 
   const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({
     fileName: `Factura-${resGetPurchase?.cliente?.nombre ?? ''}`,

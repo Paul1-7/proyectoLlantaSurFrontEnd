@@ -339,7 +339,6 @@ export default function Router() {
           path: PATH_MODULES.reports.sales,
           element: (
             <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
-              {' '}
               <SalesReport />
             </RequireAuth>
           ),
@@ -366,6 +365,14 @@ export default function Router() {
           element: (
             <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
               <BusinessDataForm />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: PATH_MODULES.generalManagement.sliderImages,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
+              <SliderImagesForm />
             </RequireAuth>
           ),
         },
@@ -484,6 +491,7 @@ const PurchasesReport = Loadable(lazy(() => import('~/pages/reports/PurchasesRep
 // general options
 const InvoiceBatchingForm = Loadable(lazy(() => import('~/pages/generalManagement/InvoiceBatchingForm')));
 const BusinessDataForm = Loadable(lazy(() => import('~/pages/generalManagement/BusinessDataForm')));
+const SliderImagesForm = Loadable(lazy(() => import('~/pages/generalManagement/SliderImagesForm')));
 // shop
 const Shop = Loadable(lazy(() => import('~/pages/shop/Shop')));
 const BestSelling = Loadable(lazy(() => import('~/pages/shop/BestSellingProducts')));

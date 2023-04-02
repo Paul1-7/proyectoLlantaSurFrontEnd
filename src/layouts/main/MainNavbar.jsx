@@ -2,7 +2,7 @@ import { Link, NavLink as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { Box, AppBar, Toolbar, Container, Badge, styled } from '@mui/material';
 // hooks
-import { ShoppingCart } from '@mui/icons-material';
+import { Favorite, ShoppingCart } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotalQuantity } from '~/redux/slices/productsShop';
 import { useEffect } from 'react';
@@ -103,16 +103,19 @@ export default function MainNavbar() {
             <MHidden width="mdDown">
               <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems]} isAuthenticated />
             </MHidden>
+            <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
+              <Badge badgeContent={checkout.totalQuantity} color="error">
+                <ShoppingCart />
+              </Badge>
+            </MIconButton>
             <MIconButton
               size="large"
               color="default"
               LinkComponent={Link}
-              to={PATH_MODULES.shop.checkout}
+              to={PATH_MODULES.shop.favorites}
               sx={{ mr: 2 }}
             >
-              <Badge badgeContent={checkout.totalQuantity} color="error">
-                <ShoppingCart />
-              </Badge>
+              <Favorite />
             </MIconButton>
             {auth?.user && <AccountPopover />}
             <MHidden width="mdUp">

@@ -27,6 +27,7 @@ const ICONS = {
   discount: getIcon('ic_discount'),
   report: getIcon('ic_analytics'),
   purchase: getIcon('ic_purchase'),
+  sliderImage: getIcon('ic_image'),
 };
 
 const sidebarConfig = [
@@ -81,6 +82,11 @@ const sidebarConfig = [
       {
         title: 'Dosificación de facturas',
         path: PATH_MODULES.generalManagement.invoiceBatching,
+        roles: [ADMINISTRADOR.id],
+      },
+      {
+        title: 'Slider de imagenes',
+        path: PATH_MODULES.generalManagement.sliderImages,
         roles: [ADMINISTRADOR.id],
       },
     ],

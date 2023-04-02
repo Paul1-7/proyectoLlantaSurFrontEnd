@@ -20,7 +20,7 @@ function getRatio(ratio = '1/1') {
   }[ratio];
 }
 
-export default function Image({ ratio, sx, src, alt, ...other }) {
+export default function Image({ ratio, sx, src, alt, stylesImg, ...other }) {
   if (ratio) {
     return (
       <Box
@@ -48,7 +48,7 @@ export default function Image({ ratio, sx, src, alt, ...other }) {
           src={src}
           alt={alt}
           loading="lazy"
-          style={{ width: '100%', position: 'absolute', top: 0, left: 0, objectFit: 'cover', ...other }}
+          style={{ width: '100%', position: 'absolute', top: 0, left: 0, objectFit: 'cover', ...stylesImg, ...other }}
         />
       </Box>
     );
@@ -65,7 +65,7 @@ export default function Image({ ratio, sx, src, alt, ...other }) {
         ...sx,
       }}
     >
-      <img src={src} alt={alt} loading="lazy" style={{ width: '100%', objectFit: 'cover', ...other }} />
+      <img src={src} alt={alt} loading="lazy" style={{ width: '100%', objectFit: 'cover', ...stylesImg, ...other }} />
     </Box>
   );
 }
@@ -75,5 +75,6 @@ Image.propTypes = {
   sx: PropTypes.object,
   src: PropTypes.string,
   alt: PropTypes.string,
+  stylesImg: PropTypes.object,
 };
 // ----------------------------------------------------------------------

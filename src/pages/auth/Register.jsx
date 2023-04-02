@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
 import axios from '~/apis/apis';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import { useState, useEffect } from 'react';
 import Controls from '~/components/forms/Control';
 import { LoadingButton } from '@mui/lab';
@@ -66,7 +66,7 @@ export default function Register() {
   const [resPostUser, errorPostUser, loadingPostUser, axiosFetchPostUser] = useAxios();
   const [existPhoneNumer, setExistPhoneNumer] = useState(false);
 
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorPostPhoneNumber],
   });
 

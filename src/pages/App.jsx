@@ -7,7 +7,7 @@ import Page from '~/components/Page';
 import useSettings from '~/hooks/useSettings';
 import { AppWelcome } from '~/components/dashboard';
 import { ChartBar } from '~/components/charts';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import useAxios from '~/hooks/useAxios';
 import useAuth from '~/hooks/useAuth';
 
@@ -87,7 +87,7 @@ export default function App() {
     });
   }, []);
 
-  useErrorMessage({ errors: [errorGetBestSellingProd, errorGetProducts, errorGetBusinessData] });
+  useSnackBarMessage({ errors: [errorGetBestSellingProd, errorGetProducts, errorGetBusinessData] });
 
   const { columnsBestSelling, dataBestSelling } = getDataToBestSellingProducts(resGetBestSellingProd);
   const { columnsProductsLowStock, dataProductsLowStock } = getStockLowProducts(

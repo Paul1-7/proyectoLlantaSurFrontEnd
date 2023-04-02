@@ -17,7 +17,7 @@ import { PATH_MODULES } from '~/routes/paths';
 import { useEffect } from 'react';
 import { ITEMS_RADIO_GROUP, ITEMS_SELECTS } from '~/constants/items';
 import { Link } from 'react-router-dom';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 const initialForm = {
   usuario: '0',
@@ -58,7 +58,7 @@ export default function ModifyEmployeesForm() {
   const [resGetSubsidiaries, errorGetSubsidiaries, loadingGetSubsidiaries, axiosFetchGetSubsidiaries] = useAxios({
     responseCb: SubsidiariesCustomData,
   });
-  useErrorMessage({ errors: [errorGetSubsidiaries, errorGet, errorPut] });
+  useSnackBarMessage({ errors: [errorGetSubsidiaries, errorGet, errorPut] });
 
   const id = location.pathname.split('/').pop();
 

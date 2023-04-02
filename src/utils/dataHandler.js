@@ -33,6 +33,11 @@ function isCurrentDateInRange(fechaInicio, fechaFin) {
   return currentDate >= new Date(fechaInicio) && currentDate <= new Date(fechaFin);
 }
 
+function isDateExpired(date) {
+  const currentDate = new Date();
+  return currentDate >= new Date(date);
+}
+
 function isValidDiscount(value) {
   if (!Array.isArray(value)) {
     const { fechaFin, fechaInicio, estado } = value;
@@ -76,4 +81,5 @@ export {
   isCurrentDateInRange,
   isValidDiscount,
   getNamesRolesFromIds,
+  isDateExpired,
 };

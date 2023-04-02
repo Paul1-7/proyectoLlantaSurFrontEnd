@@ -4,7 +4,7 @@ import { ShopContainerListProducts } from '~/components/shop';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CheckoutBillingAddress, CheckoutCart, CheckoutOrderComplete, CheckoutPayment } from '~/components/checkout';
 import { withStyles } from '@mui/styles';
 
@@ -64,9 +64,8 @@ QontoStepIcon.propTypes = {
 };
 
 function ShopCheckout() {
-  const dispatch = useDispatch();
   const { checkout } = useSelector((state) => state.products);
-  const { cart, billing, activeStep } = checkout;
+  const { activeStep } = checkout;
   const isComplete = activeStep === STEPS.length;
   return (
     <ShopContainerListProducts title="Checkout">

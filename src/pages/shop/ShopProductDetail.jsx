@@ -3,20 +3,52 @@ import { Stack, Box, Typography, Divider, Button, Tab, TextField } from '@mui/ma
 import { Image } from '~/components';
 import { useGetProductQuery } from '~/redux/api/productApi';
 import { ShopContainerListProducts, ShopCardReview, ShopReviewForm } from '~/components/shop';
-import { getBOBCurrency, isValidDiscount, productAmount } from '~/utils/dataHandler';
-import { AddShoppingCart, LocalMall } from '@mui/icons-material';
+import { getBOBCurrency, isCurrentDateInRange, isValidDiscount, productAmount } from '~/utils/dataHandler';
+import { AddShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import schema from '~/schemas';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { PATH_MODULES } from '~/routes/paths';
 import { useDispatch } from 'react-redux';
 import { addCart } from '~/redux/slices/productsShop';
+import useAuth from '~/hooks/useAuth';
+import useAxiosPrivate from '~/hooks/useAxiosPrivate';
+import useAxios from '~/hooks/useAxios';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
+import { useSnackbar } from 'notistack';
+
+function isFavoriteProductToUser(idCliente, favorites = []) {
+  return favorites.some((favorite) => favorite.idCliente === idCliente);
+}
+
+const customsDiscounts = (products) => {
+  return products
+    .map(({ descuento, cantMax, precio: precioDesc }) => ({ ...descuento, cantMax, precioDesc }))
+    .filter(({ fechaInicio, fechaFin }) => isCurrentDateInRange(fechaInicio, fechaFin));
+};
+
+const customDetailProduct = ({ data: product }) => {
+  return { data: { ...product, descuentos: customsDiscounts(product.descuentosProductos) } };
+};
 
 export default function ShopProductDetails() {
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const [resPostFavorite, errorPostFavorite, , axiosFetchPostFavorite] = useAxios();
+  const [resGetFavorite, errorGetFavorite, loadingGetFavorite, axiosFetchGetFavorite] = useAxios({
+    responseCb: customDetailProduct,
+  });
+
+  const { idUsuario } = auth?.user ?? {};
   const [openModalReview, setOpenModalReview] = useState(false);
+  useSnackBarMessage({
+    errors: [errorPostFavorite, errorGetFavorite],
+  });
+
+  const productAvailability = resGetFavorite?.descuentos?.at(0)?.cantMax ?? productAmount(resGetFavorite);
 
   const handleOpenModalReview = () => {
     setOpenModalReview(() => true);
@@ -26,6 +58,8 @@ export default function ShopProductDetails() {
   };
 
   const { id } = useParams();
+  const dataFavorite = { idCliente: idUsuario, idProd: id };
+
   const product = useGetProductQuery(id);
 
   const [tabs, setTabs] = useState('1');
@@ -59,13 +93,62 @@ export default function ShopProductDetails() {
     },
   ];
 
+  useEffect(() => {
+    axiosFetchGetFavorite({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/productos/${id}`,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (Array.isArray(resPostFavorite)) return;
+
+    axiosFetchGetFavorite({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/productos/${id}`,
+    });
+  }, [resPostFavorite]);
+
+  useEffect(() => {
+    if (Array.isArray(resPostFavorite)) return;
+
+    enqueueSnackbar(resPostFavorite?.message, {
+      anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+      autoHideDuration: 4000,
+      variant: 'success',
+    });
+  }, [resPostFavorite]);
+
+  const onSubmitAddFavorite = () => {
+    axiosFetchPostFavorite({
+      axiosInstance: axiosPrivate,
+      method: 'POST',
+      url: `/api/v1/favoritos`,
+      requestConfig: {
+        ...dataFavorite,
+      },
+    });
+  };
+  const onSubmitRemoveFavorite = () => {
+    console.log(resGetFavorite?.favoritos?.id);
+
+    if (Array.isArray(resGetFavorite)) return;
+    axiosFetchPostFavorite({
+      axiosInstance: axiosPrivate,
+      method: 'DELETE',
+      url: `/api/v1/favoritos/${resGetFavorite.favoritos.at(0).id}`,
+    });
+  };
+
   return (
-    <ShopContainerListProducts title={product.data?.nombre} error={product.isError} loading={product.isLoading}>
+    <ShopContainerListProducts title={resGetFavorite?.nombre} loading={loadingGetFavorite}>
       <ShopReviewForm handleOpen={openModalReview} handleClose={handleCloseModalReview} />
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ flexGrow: 1, p: 2 }}>
         <Box>
           <Image
-            src={product.data?.imagen}
+            src={resGetFavorite?.imagen}
             alt="image of product"
             sx={{ width: { xs: '100%', sm: '50vw', md: '30rem', lg: '35rem' } }}
             ratio="1/1"
@@ -73,7 +156,7 @@ export default function ShopProductDetails() {
         </Box>
         <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }} justifyContent="center">
           <Typography variant="h3" component="h1">
-            {product.data?.nombre}
+            {resGetFavorite?.nombre}
           </Typography>
           <Divider />
 
@@ -81,21 +164,21 @@ export default function ShopProductDetails() {
             <Stack direction="row" gap={2} alignItems="end">
               <Typography variant="h3" component="p">
                 <span style={{ fontWeight: 'bold', fontSize: '1.125rem' }}>Precio: </span>
-                {getBOBCurrency(product.data?.precioVenta)}
+                {getBOBCurrency(resGetFavorite?.precioVenta)}
               </Typography>
-              {!!product.data?.descuentos?.length && isValidDiscount(product.data?.descuentos) && (
+              {!!resGetFavorite?.descuentos?.length && isValidDiscount(resGetFavorite?.descuentos) && (
                 <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
-                  {getBOBCurrency(product.data?.descuentos?.at(0)?.precioDesc)}
+                  {getBOBCurrency(resGetFavorite?.descuentos?.at(0)?.precioDesc)}
                 </Typography>
               )}
             </Stack>
             <Typography variant="h6" component="p">
               Marca:
-              <span style={{ fontWeight: 'normal' }}> {product.data?.marca?.nombre} </span>
+              <span style={{ fontWeight: 'normal' }}> {resGetFavorite?.marca?.nombre} </span>
             </Typography>
             <Typography variant="h6" component="p">
               Categoria:
-              <span style={{ fontWeight: 'normal' }}> {product.data?.categoria?.nombre}</span>
+              <span style={{ fontWeight: 'normal' }}> {resGetFavorite?.categoria?.nombre}</span>
             </Typography>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography variant="h6" component="p">
@@ -113,33 +196,34 @@ export default function ShopProductDetails() {
                 }}
               />
               <Typography variant="caption" component="p">
-                {product.data?.descuentos?.at(0)?.cantMax ?? productAmount(product.data)} Disponibles
+                {productAvailability} Disponibles
               </Typography>
             </Stack>
 
             <Typography variant="h6" component="p">
               Precio total:
-              <span style={{ fontWeight: 'normal' }}> {getBOBCurrency(product.data?.precioVenta)} </span>
+              <span style={{ fontWeight: 'normal' }}> {getBOBCurrency(resGetFavorite?.precioVenta)} </span>
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', sm: 'start' }}>
             <Button
               variant="outlined"
-              onClick={() => dispatch(addCart({ ...product.data, addQuantity: watch('amount') }))}
+              onClick={() => dispatch(addCart({ ...product, addQuantity: watch('amount') }))}
               color="primary"
               startIcon={<AddShoppingCart />}
+              disabled={!productAvailability}
             >
               Agregar al carrito
             </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<LocalMall />}
-              LinkComponent={Link}
-              to={PATH_MODULES.shop.checkout}
-            >
-              Compralo Ahora
-            </Button>
+            {isFavoriteProductToUser(idUsuario, resGetFavorite?.favoritos) ? (
+              <Button variant="outlined" color="primary" onClick={onSubmitRemoveFavorite} startIcon={<Favorite />}>
+                Eliminar de favoritos
+              </Button>
+            ) : (
+              <Button variant="outlined" color="primary" onClick={onSubmitAddFavorite} startIcon={<FavoriteBorder />}>
+                Agregar a favoritos
+              </Button>
+            )}
           </Stack>
         </Box>
       </Stack>
@@ -152,7 +236,7 @@ export default function ShopProductDetails() {
             </TabList>
           </Box>
           <TabPanel value="1" sx={{ pt: 2 }}>
-            {product.data?.descripcion}
+            {resGetFavorite?.descripcion}
           </TabPanel>
           <TabPanel value="2" sx={{ pt: 2 }}>
             <Button variant="outlined" sx={{ mb: 1 }} onClick={handleOpenModalReview}>

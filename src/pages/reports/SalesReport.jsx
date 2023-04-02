@@ -30,7 +30,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
 import { DEFAULT_VALUE_ITEM } from '~/constants/items';
 import { usePrint } from '~/hooks/usePrint';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import {
   COLUMNS_CSV_SALES_REPORT,
   COLUMN_SALES_REPORT_PDF,
@@ -75,7 +75,7 @@ export default function SalesReport() {
   const [resGetSubsidiary, errorGetSubsidiary, loadingGetSubsidiary, axiosFetchGetSubsidiary] = useAxios({
     responseCb: customDataSubsidiary,
   });
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorGetSale, errorGetSubsidiary],
   });
 

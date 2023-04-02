@@ -70,6 +70,10 @@ const COLUMNS = {
     { field: 'precioVenta', header: 'precio de venta.', type: 'currency' },
     { field: 'precioCompra', header: 'precio de compra', type: 'currency' },
   ],
+  productsToSlider: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'descuentos', header: '¿Tiene descuento?', type: 'isDiscount' },
+  ],
   productsDiscounts: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'precioVenta', header: 'precio uni.', type: 'currency' },

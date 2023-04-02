@@ -9,7 +9,7 @@ import { setProducts } from '~/redux/slices/productsShop';
 import { ShopContainerListProducts, ShopFilter, ShopNotFound, ShopNotMatch, ShopProductList } from '~/components/shop';
 import { Scrollbar } from '~/components';
 import { useGetProductsQuery } from '~/redux/api/productApi';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 function ShopProducts() {
   const theme = useTheme();
@@ -21,7 +21,7 @@ function ShopProducts() {
   const products = useGetProductsQuery();
   const categories = useGetCategoriesQuery();
   const brands = useGetBrandsQuery();
-  useErrorMessage({ errors: [products.error, categories.error, brands.error] });
+  useSnackBarMessage({ errors: [products.error, categories.error, brands.error] });
 
   const handleOpenFilter = () => {
     setOpenFilter((openFilter) => !openFilter);

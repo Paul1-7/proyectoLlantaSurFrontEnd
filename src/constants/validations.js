@@ -25,6 +25,7 @@ const regex = {
   number: /^[0-9]+$/,
   tel: /^[0-9-+\s]+$/,
   float: /^[+-]?([0-9]*[.])?[0-9]+$/,
+  url: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/,
 };
 
 const msg = {
@@ -33,6 +34,7 @@ const msg = {
   number: 'Solo se permiten valores numericos',
   tel: 'No es un número de telefono',
   float: 'Solo se permiten valores numericos o decimales',
+  url: 'No es una direccion válida',
 };
 
 export { regex, msg };

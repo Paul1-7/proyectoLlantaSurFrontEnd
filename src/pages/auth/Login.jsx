@@ -11,7 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
 import axios from '~/apis/apis';
-import useErrorMessage from '~/hooks/useErrorMessage';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import { useEffect } from 'react';
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -68,7 +68,7 @@ export default function Login() {
     customErrorMessages,
   });
 
-  useErrorMessage({
+  useSnackBarMessage({
     errors: [errorPost],
   });
 
