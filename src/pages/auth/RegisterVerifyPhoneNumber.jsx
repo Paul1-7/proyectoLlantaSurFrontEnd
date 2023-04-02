@@ -1,10 +1,9 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
 // material
-import { Box, Card, Stack, Link, Alert, Typography, styled, TextField } from '@mui/material';
+import { Box, Card, Stack, Link, Alert, Typography, styled } from '@mui/material';
 import { Page } from '~/components';
 import { PATH_MODULES } from '~/routes/paths';
 import { MHidden } from '~/components/@material-extend';
-import LoginForm from '~/components/auth/LoginForm';
 import useAxios from '~/hooks/useAxios';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -47,43 +46,37 @@ const initialFormPhone = {
   celular: '',
 };
 
-const initialFormUser = {
-  usuario: '',
-  email: '',
-  password: '',
-  nombre: '',
-  apellido: '',
-  estado: '1',
-  direccion: '',
-  celular: '',
-  ciNit: '',
+const STATES_RESGISTER = {
+  INITIAL: 0,
+  EXIST_PHONE_NUMBER: 1,
+  REGISTER: 2,
 };
 
 export default function Register() {
   const [resPostPhoneNumber, errorPostPhoneNumber, loadingPostPhoneNumber, axiosFetchPostPhoneNumber] = useAxios({
     intervalClearError: 10 * 1000,
   });
-  const [resPostUser, errorPostUser, loadingPostUser, axiosFetchPostUser] = useAxios();
-  const [existPhoneNumer, setExistPhoneNumer] = useState(false);
-
+  const [existPhoneNumer, setExistPhoneNumer] = useState(STATES_RESGISTER.INITIAL);
   useSnackBarMessage({
     errors: [errorPostPhoneNumber],
   });
 
   useEffect(() => {
-    if (!Array.isArray(resPostPhoneNumber)) {
-      setExistPhoneNumer(true);
-    }
+    if (Array.isArray(resPostPhoneNumber)) return;
+    setExistPhoneNumer(() => {
+      if (resPostPhoneNumber?.message) return STATES_RESGISTER.REGISTER;
+      if (resPostPhoneNumber?.celular) return STATES_RESGISTER.EXIST_PHONE_NUMBER;
+      return STATES_RESGISTER.INITIAL;
+    });
   }, [resPostPhoneNumber]);
 
   const methods = useForm({
-    resolver: yupResolver(existPhoneNumer ? schema.login : schema.phoneNumber),
-    defaultValues: existPhoneNumer ? initialFormUser : initialFormPhone,
+    resolver: yupResolver(schema.phoneNumber),
+    defaultValues: initialFormPhone,
     mode: 'all',
     criteriaMode: 'all',
   });
-
-  console.log(methods.watch());
+  const phoneNumber = methods.watch('celular');
 
   const onSubmit = (data) => {
     axiosFetchPostPhoneNumber({
@@ -97,7 +90,7 @@ export default function Register() {
   };
 
   return (
-    <RootStyle title="Login">
+    <RootStyle title="Registrarse">
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h5" sx={{ px: 5, mt: 10, mb: 5 }} align="center">
@@ -106,16 +99,23 @@ export default function Register() {
           <img src="/static/illustrations/illustration_register.png" alt="register" />
         </SectionStyle>
       </MHidden>
-      <ContentStyle sx={{ mx: { xs: 'auto', md: '0' }, mt: { xs: 7, md: 0 }, px: { xs: 2 } }}>
+      <ContentStyle
+        sx={{
+          mx: { xs: 'auto', md: '0' },
+          mt: { xs: 7, md: 0 },
+          px: { xs: 2 },
+          ...(existPhoneNumer ? { maxWidth: '100%' } : {}),
+        }}
+      >
         <Stack direction="row" alignItems="center" sx={{ mb: 4 }}>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom align="center">
               Registrate en Llanta sur
             </Typography>
           </Box>
         </Stack>
 
-        {Array.isArray(resPostPhoneNumber) && !errorPostPhoneNumber ? (
+        {Array.isArray(resPostPhoneNumber) && !errorPostPhoneNumber && existPhoneNumer === STATES_RESGISTER.INITIAL && (
           <Stack>
             <Alert severity="info" sx={{ mb: 3 }}>
               ingresa tu número celular para verificar que no existes en nuestros registros
@@ -135,15 +135,8 @@ export default function Register() {
               </form>
             </FormProvider>
           </Stack>
-        ) : (
-          <FormProvider {...methods}>
-            <form autoComplete="off" noValidate onSubmit={methods.handleSubmit(onSubmit)}>
-              <LoginForm methods={methods} loading={loadingPostUser} />
-            </form>
-          </FormProvider>
         )}
-
-        {Array.isArray(resPostPhoneNumber) && !errorPostPhoneNumber && (
+        {existPhoneNumer === STATES_RESGISTER.EXIST_PHONE_NUMBER && (
           <Stack gap={2}>
             <Alert severity="info" sx={{ mb: 3 }}>
               EL número ingresado ya existe en nuestros registros, si no recuerda su contraseña puede recuperarlo en el
@@ -155,6 +148,9 @@ export default function Register() {
           </Stack>
         )}
       </ContentStyle>
+      {!loadingPostPhoneNumber && !errorPostPhoneNumber && !Array.isArray(resPostPhoneNumber) && (
+        <Navigate to={PATH_MODULES.auth.signUp} replace state={{ celular: phoneNumber }} />
+      )}
     </RootStyle>
   );
 }

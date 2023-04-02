@@ -1,22 +1,13 @@
-import { IconButton, InputAdornment, Link, Stack, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { Link, Stack, TextField } from '@mui/material';
+import React from 'react';
 import { Controller } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { PATH_MODULES } from '~/routes/paths';
 import { LoadingButton } from '@mui/lab';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
 import Controls from '../forms/Control';
 
 function LoginForm({ methods, loading }) {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleShowPassword = () => {
-    setShowPassword((show) => !show);
-  };
-
   return (
     <>
       <Stack spacing={3}>
@@ -27,17 +18,8 @@ function LoginForm({ methods, loading }) {
           render={({ field }) => (
             <TextField
               variant="outlined"
-              type={showPassword ? 'text' : 'password'}
+              type="password"
               label="Contraseña"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleShowPassword} edge="end">
-                      <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
               size="medium"
               value={field.value}
               onChange={field.onChange}

@@ -92,6 +92,7 @@ export const PATH_MODULES = {
   },
   auth: {
     signUp: path(ROOTS_SHOP, 'registrarse'),
+    verifyPhoneNumber: path(ROOTS_SHOP, 'verificar-numero-telefono'),
     signIn: path(ROOTS_SHOP, 'iniciar-sesion'),
     resetPassword: path(ROOTS_SHOP, 'recuperar-contraseña'),
     unauthorized: path(ROOTS_SHOP, 'no-autorizado'),
