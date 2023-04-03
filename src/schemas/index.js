@@ -21,6 +21,8 @@ import login from './login';
 import phoneNumber from './phoneNumber';
 import register from './register';
 import sliderImages from './sliderImages';
+import recoveryPasswordForm from './recoveryPasswordForm';
+import recoveryPasswordEmail from './recoveryPasswordEmail';
 
 const schema = {
   customer,
@@ -46,6 +48,8 @@ const schema = {
   phoneNumber,
   register,
   sliderImages,
+  recoveryPasswordForm,
+  recoveryPasswordEmail,
 };
 
 export default schema;

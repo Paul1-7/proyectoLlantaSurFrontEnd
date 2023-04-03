@@ -20,8 +20,9 @@ const RootStyle = styled(Page)(() => ({
   margin: '9rem 1rem 1rem ',
 }));
 
-export default function Register() {
+export default function RecoveryPasswordEmail() {
   const location = useLocation();
+  console.log('TCL: RecoveryPasswordEmail -> location', location);
   const navigate = useNavigate();
   const [resPostUser, errorPostUser, loadingPostUser, axiosFetchPostUser] = useAxios();
   useSnackBarMessage({
@@ -29,9 +30,9 @@ export default function Register() {
     successes: [resPostUser],
   });
 
-  useEffect(() => {
-    if (!location.state?.celular) return navigate(PATH_MODULES.auth.verifyPhoneNumber, { replace: true });
-  }, []);
+  // useEffect(() => {
+  //   if (!location) return navigate(PATH_MODULES.auth.verifyPhoneNumber, { replace: true });
+  // }, []);
 
   const initialFormUser = {
     usuario: '',

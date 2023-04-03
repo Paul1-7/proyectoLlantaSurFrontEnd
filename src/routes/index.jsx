@@ -429,6 +429,8 @@ export default function Router() {
         { path: `${PATH_MODULES.auth.signIn}`, element: <Login /> },
         { path: `${PATH_MODULES.auth.signUp}`, element: <RegisterForm /> },
         { path: `${PATH_MODULES.auth.verifyPhoneNumber}`, element: <RegisterVerifyPhoneNumber /> },
+        { path: `${PATH_MODULES.auth.resetPassword}`, element: <RecoveryPasswordEmail /> },
+        { path: `password-reset/:userId/:token`, element: <RecoveryPasswordForm /> },
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
@@ -514,6 +516,8 @@ const ShopFrequenlyAskedQuestions = Loadable(
 const Login = Loadable(lazy(() => import('~/pages/auth/Login')));
 const RegisterForm = Loadable(lazy(() => import('~/pages/auth/RegisterForm')));
 const RegisterVerifyPhoneNumber = Loadable(lazy(() => import('~/pages/auth/RegisterVerifyPhoneNumber')));
+const RecoveryPasswordEmail = Loadable(lazy(() => import('~/pages/auth/RecoveryPasswordEmail')));
+const RecoveryPasswordForm = Loadable(lazy(() => import('~/pages/auth/RecoveryPasswordForm')));
 const Unauthorized = Loadable(lazy(() => import('~/pages/Unauthorized')));
 
 const NotFound = Loadable(lazy(() => import('~/pages/Page404')));
