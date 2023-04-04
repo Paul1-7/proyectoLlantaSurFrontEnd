@@ -34,7 +34,6 @@ export const SALES_REPORT_FREQUENCY_OPTIONS = [
 ];
 
 export const SALES_REPORT_SORT_OPTIONS = [
-  { id: '1', name: 'Tipo de venta' },
   { id: '2', name: 'Fecha' },
   { id: '3', name: 'Vendedor' },
   { id: '4', name: 'Total' },

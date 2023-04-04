@@ -22,8 +22,6 @@ const RootStyle = styled(Page)(() => ({
 
 export default function RecoveryPasswordEmail() {
   const location = useLocation();
-  console.log('TCL: RecoveryPasswordEmail -> location', location);
-  console.log('TCL: RecoveryPasswordEmail -> location', location);
   const navigate = useNavigate();
   const [resPostUser, errorPostUser, loadingPostUser, axiosFetchPostUser] = useAxios();
   useSnackBarMessage({

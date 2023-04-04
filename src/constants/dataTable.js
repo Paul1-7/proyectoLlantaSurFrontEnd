@@ -53,12 +53,12 @@ const COLUMNS = {
     { field: 'proveedor', header: 'proveedor', type: '' },
   ],
   sells: [
+    { field: 'codReferencia', header: 'código de referencia', type: '' },
     { field: 'codVenta', header: 'código de venta', type: '' },
     { field: 'fecha', header: 'fecha', type: 'date' },
-    { field: 'tipoVenta', header: 'tipo de venta', type: 'salesTypes' },
-    { field: 'metodoPago', header: 'método de pago', type: 'paymentsMethods' },
     { field: 'cliente', header: 'cliente', type: '' },
     { field: 'vendedor', header: 'vendedor', type: '' },
+    { field: 'total', header: 'total', type: 'currency' },
   ],
   productsToSell: [
     { field: 'nombre', header: 'nombre', type: '' },

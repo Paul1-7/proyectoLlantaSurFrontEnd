@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Label from '../Label';
 
 function CellIsDiscount({ value, align }) {
-  console.log('TCL: CellIsDiscount -> value', value);
   return (
     <TableCell align={align}>
       <Label color="info">{value?.length ? 'si' : 'no'}</Label>

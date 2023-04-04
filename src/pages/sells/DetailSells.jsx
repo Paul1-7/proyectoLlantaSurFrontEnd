@@ -193,25 +193,19 @@ export default function DetailSeel() {
               <Grid item xs={6}>
                 <Typography component="h3">
                   <span style={{ fontWeight: 600 }}>Nombre/Razon social: </span>
-                  {resGetSale?.cliente?.nombre ?? ''}
+                  {resGetSale?.cliente?.nombre ?? ''} {resGetSale?.cliente?.apellido ?? ''}
                 </Typography>
               </Grid>
               <Grid item xs={6} sx={sxNoPrint}>
                 <Typography component="h3">
                   <span style={{ fontWeight: 600 }}>Vendedor: </span>
-                  {resGetSale?.vendedor?.nombre ?? ''}
+                  {resGetSale?.vendedor?.nombre ?? ''} {resGetSale?.vendedor?.apellido ?? ''}
                 </Typography>
               </Grid>
               <Grid item xs={6} sx={sxNoPrint}>
                 <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Método de pago: </span>
-                  {paymentMethods?.[resGetSale?.tipoVenta]?.name ?? ''}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={sxNoPrint}>
-                <Typography component="h3">
-                  <span style={{ fontWeight: 600 }}>Tipo de venta: </span>
-                  {salesTypes?.[resGetSale?.tipoVenta]?.name ?? ''}
+                  <span style={{ fontWeight: 600 }}>Codigo de referencia: </span>
+                  {resGetSale?.codReferencia ?? ''}
                 </Typography>
               </Grid>
             </Grid>

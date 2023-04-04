@@ -6,7 +6,6 @@ import useAxios from '~/hooks/useAxios';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { Navigate, useLocation } from 'react-router';
-import { TABLE_STATES } from '~/constants/dataTable';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
@@ -19,10 +18,6 @@ import { Link } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import { DefectivesProductsHistory } from '~/components';
 import DefectiveProductsSell from './DefectiveProductsSell';
-
-const { paymentMethods, salesTypes } = TABLE_STATES;
-
-const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
 
 const initialForm = {
   data: [],
@@ -130,13 +125,18 @@ export default function ModifySell() {
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1" paragraph>
-          Modificar venta
+          Modificar venta si hay productos defectuosos
         </Typography>
         <Typography gutterBottom sx={{ paddingBottom: '2rem' }}>
           Modifica la venta en caso de que uno o varios productos esten defectuosos, cambiando por unos nuevos
         </Typography>
         <Fieldset title="Datos de la venta" style={{ marginBottom: '2rem' }}>
           <Grid container wrap="wrap">
+            <Grid item xs={12} sm={6}>
+              <Typography component="h3" paragraph>
+                {`Codigo de referencia: ${resGetSale?.codReferencia ?? ''}`}
+              </Typography>
+            </Grid>
             <Grid item xs={12} sm={6}>
               <Typography component="h3" paragraph>
                 {`Código de venta: ${resGetSale?.codVenta ?? ''}`}
@@ -149,22 +149,12 @@ export default function ModifySell() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography component="h3" paragraph>
-                {`Cliente: ${resGetSale?.cliente?.nombre ?? ''}`}
+                {`Cliente: ${resGetSale?.cliente?.nombre ?? ''} ${resGetSale?.cliente?.apellido ?? ''}`}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography component="h3" paragraph>
-                {`Vendedor: ${resGetSale?.vendedor?.nombre ?? ''}`}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography component="h3" paragraph>
-                {`Método de pago: ${paymentMethods?.[resGetSale?.tipoVenta]?.name ?? ''}`}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography component="h3" paragraph>
-                {`Tipo de venta: ${salesTypes?.[resGetSale?.tipoVenta]?.name ?? ''}`}
+                {`Vendedor: ${resGetSale?.vendedor?.nombre ?? ''} ${resGetSale?.vendedor?.apellido ?? ''}`}
               </Typography>
             </Grid>
           </Grid>

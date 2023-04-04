@@ -7,7 +7,7 @@ const data = yup.object().shape({
     .when('cantidad', {
       is: (val) => Number(val) >= 1,
       then: () => yup.string().required(),
-      otherwise: yup.string(),
+      otherwise: () => yup.string(),
     })
     .matches(regex.alphaNumeric, msg.alphaNumeric),
   cantidad: yup
