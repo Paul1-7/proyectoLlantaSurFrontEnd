@@ -22,12 +22,9 @@ import { conversorNumerosALetras as ClaseConversor } from 'conversor-numero-a-le
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { useLocation } from 'react-router';
 import { getBOBCurrency } from '~/utils/dataHandler';
-import { TABLE_STATES } from '~/constants/dataTable';
 import { usePrint } from '~/hooks/usePrint';
 import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
-
-const { paymentMethods, salesTypes } = TABLE_STATES;
 
 const getTotal = (items) => items.reduce((prev, current) => prev + current.precioUni * current.cantidad, 0);
 

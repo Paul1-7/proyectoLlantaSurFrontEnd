@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import useAxios from '~/hooks/useAxios';
 import Page from '~/components/Page';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
@@ -21,6 +21,7 @@ import DataTable from '~/components/dataTable/DataTable';
 import { COLUMNS } from '~/constants/dataTable';
 import { DataTableProvider } from '~/contexts/DataTableContext';
 import { Link } from 'react-router-dom';
+import useAuth from '~/hooks/useAuth';
 import ProductsSell from './ProductSell';
 
 const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
@@ -66,7 +67,11 @@ const customDataProducts = ({ data }) => {
 const btnActions = { add: true };
 
 export default function AddSellsForm() {
+  const { auth } = useAuth();
+  const { nombre: nombreSucursal, id: idSuc } = auth?.user.sucursal ?? {};
+  const { nombre, apellido, idUsuario } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
+
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
@@ -104,7 +109,8 @@ export default function AddSellsForm() {
   });
 
   const onSubmit = (data) => {
-    data.fecha = new Date();
+    data.idVendedor = idUsuario;
+    data.idSucursal = idSuc;
     data.idCliente = data.idCliente.idCliente;
     axiosFetchPost({
       axiosInstance: axiosPrivate,
@@ -154,10 +160,10 @@ export default function AddSellsForm() {
                     <Controls.Input name="fecha" label="Fecha" disabled />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Controls.Input name="idVendedor" label="Vendedor" disabled />
+                    <TextField fullWidth size="small" disabled value={`${nombre} ${apellido}`} label="Vendedor" />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Controls.Input name="idSucursal" label="Sucursal" disabled />
+                    <TextField fullWidth size="small" disabled value={nombreSucursal} label="sucursal" />
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Controls.Autocomplete

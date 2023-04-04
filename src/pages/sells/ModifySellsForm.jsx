@@ -17,6 +17,7 @@ import { Clear, Save } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import { DefectivesProductsHistory } from '~/components';
+import useAuth from '~/hooks/useAuth';
 import DefectiveProductsSell from './DefectiveProductsSell';
 
 const initialForm = {
@@ -29,19 +30,22 @@ const currentSubsidiaryStock = (idSuc, subsidiaries) => {
   return value ? value.Sucursales_Productos.stock : '0';
 };
 
-const salesCustomData = ({ data }) => {
-  const newData = data.detalle.map((item) => ({
-    ...item,
-    stock: currentSubsidiaryStock(idSucursalBorrar, item.producto.sucursales),
-  }));
-  return { data: { ...data, detalle: newData } };
-};
-
 export default function ModifySell() {
+  const { auth } = useAuth();
+  const { id: idSucursal } = auth?.user.sucursal ?? {};
   const { themeStretch } = useSettings();
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar();
   const axiosPrivate = useAxiosPrivate();
+
+  const salesCustomData = ({ data }) => {
+    const newData = data.detalle.map((item) => ({
+      ...item,
+      stock: currentSubsidiaryStock(idSucursal, item.producto.sucursales),
+    }));
+    return { data: { ...data, detalle: newData } };
+  };
+
   const [resGetSale, errorGetSale, loadingGetSale, axiosFetchGetSale, , setErrorGetSale] = useAxios({
     responseCb: salesCustomData,
   });
@@ -100,9 +104,7 @@ export default function ModifySell() {
   }, [errorGetSale]);
 
   const onSubmit = ({ data }) => {
-    const filteredData = data
-      .map((value) => ({ ...value, idSuc: idSucursalBorrar }))
-      .filter(({ cantidad }) => cantidad > 0);
+    const filteredData = data.map((value) => ({ ...value, idSuc: idSucursal })).filter(({ cantidad }) => cantidad > 0);
 
     axiosFetchPost({
       axiosInstance: axiosPrivate,
