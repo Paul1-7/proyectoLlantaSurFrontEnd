@@ -102,7 +102,7 @@ export default function SliderImagesForm() {
   };
 
   return (
-    <Page title="Slider de imagenes">
+    <Page title="Galeria de imagenes">
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
         open={loadingGetProducts || loadingGetSliderImages}
@@ -112,10 +112,10 @@ export default function SliderImagesForm() {
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <BreadcrumbsCustom />
         <Typography variant="h3" component="h1">
-          Slider de imagenes de la tienda
+          Galeria principal de imagenes de la tienda
         </Typography>
         <Typography gutterBottom variant="subtitle1">
-          Modifica los sliders de imagenes de la pagina principal de la tienda
+          Gestiona la galeria principal de imagenes de la pagina principal de la tienda
         </Typography>
         <FormProvider {...methods}>
           <form

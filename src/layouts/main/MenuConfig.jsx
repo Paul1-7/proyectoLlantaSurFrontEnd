@@ -26,7 +26,7 @@ const menuConfig = [
     icon: <Icon icon={cubeFill} {...ICON_SIZE} />,
     children: [],
   },
-  { title: 'Dashboard', path: PATH_MODULES.root, icon: <Icon icon={dashboard} {...ICON_SIZE} /> },
+  { title: 'Administración', path: PATH_MODULES.root, icon: <Icon icon={dashboard} {...ICON_SIZE} /> },
   {
     title: 'Registrarse',
     path: PATH_MODULES.auth.verifyPhoneNumber,

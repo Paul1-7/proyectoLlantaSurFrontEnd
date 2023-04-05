@@ -16,12 +16,12 @@ export default function Router() {
   return useRoutes([
     // Dashboard Routes
     {
-      path: 'dashboard',
+      path: 'administracion',
       element: <DashboardLayout />,
       children: [
-        { path: '', element: <Navigate to="/dashboard/productos" replace /> },
+        { path: '', element: <Navigate to={PATH_MODULES.products.root} replace /> },
         {
-          path: 'app',
+          path: PATH_MODULES.app,
           element: (
             <RequireAuth allowedRoles={[ADMINISTRADOR.id]}>
               <App />

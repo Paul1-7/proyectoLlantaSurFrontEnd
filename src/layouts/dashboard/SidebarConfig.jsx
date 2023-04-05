@@ -31,7 +31,7 @@ const ICONS = {
 };
 
 const sidebarConfig = [
-  { title: 'Dashboard', path: PATH_MODULES.app, icon: ICONS.dashboard, roles: [ADMINISTRADOR.id] },
+  { title: 'Panel de control', path: PATH_MODULES.app, icon: ICONS.dashboard, roles: [ADMINISTRADOR.id] },
   { title: 'Compras', path: PATH_MODULES.purchases.root, icon: ICONS.purchase, roles: [ADMINISTRADOR.id] },
   {
     title: 'Clientes',
@@ -85,7 +85,7 @@ const sidebarConfig = [
         roles: [ADMINISTRADOR.id],
       },
       {
-        title: 'Slider de imagenes',
+        title: 'Galeria de imagenes principal',
         path: PATH_MODULES.generalManagement.sliderImages,
         roles: [ADMINISTRADOR.id],
       },

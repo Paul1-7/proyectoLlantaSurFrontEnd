@@ -4,14 +4,14 @@ function path(root, sublink) {
   return `${root}${sublink}`;
 }
 
-const ROOTS_DASHBOARD = '/dashboard';
+const ROOTS_DASHBOARD = '/administracion';
 const ROOTS_SHOP = '/';
 
 // ----------------------------------------------------------------------
 
 export const PATH_MODULES = {
   root: ROOTS_DASHBOARD,
-  app: path(ROOTS_DASHBOARD, '/app'),
+  app: path(ROOTS_DASHBOARD, '/panel-control'),
   customers: {
     root: path(ROOTS_DASHBOARD, '/clientes'),
     new: `${ROOTS_DASHBOARD}/clientes/nuevo`,
@@ -68,7 +68,7 @@ export const PATH_MODULES = {
     root: path(ROOTS_DASHBOARD, '/administracion'),
     businessData: `${ROOTS_DASHBOARD}/administracion/datos-negocio`,
     invoiceBatching: `${ROOTS_DASHBOARD}/administracion/dosificacion-facturas`,
-    sliderImages: `${ROOTS_DASHBOARD}/administracion/slider-de-imagenes`,
+    sliderImages: `${ROOTS_DASHBOARD}/administracion/galeria-de-imagenes`,
   },
   defectiveProducts: {
     root: path(ROOTS_DASHBOARD, '/productos-defectuosos'),
