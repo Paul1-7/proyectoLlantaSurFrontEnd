@@ -188,7 +188,7 @@ export default function AddPurchasesForm() {
                         rows={resGetProducts}
                         loading={loadingGetProducts || loadingGetProviders}
                         minStock={resGetProviders?.cantMinProd}
-                        error={errorGetProducts ?? errorGetProviders}
+                        error={errorGetProducts}
                         btnActions={btnActions}
                         size="small"
                         width="100%"

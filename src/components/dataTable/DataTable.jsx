@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Collapse,
   IconButton,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -19,8 +20,9 @@ import { Fragment, useState } from 'react';
 import SearchBar from '../SearchBar';
 import DataTableCell from './DataTableCell';
 import DataTableHead from './DataTableHead';
+import FilterProductsTable from '../products/FilterProductsTable';
 
-const filterData = (query, data) => {
+const getDataFiltered = (query, data) => {
   if (!query) {
     return data;
   }
@@ -64,7 +66,7 @@ function DataTable({
   align = 'center',
   error,
   loading,
-  minStock = null,
+  filtersProducts = null,
   collapse = null,
   width = null,
   orderDesc = false,
@@ -75,9 +77,10 @@ function DataTable({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterData, setFilterData] = useState([]);
 
   const [open, setOpen] = useState({ state: false, index: null });
-  const dataFiltered = filterData(searchQuery, rows);
+  const dataFiltered = getDataFiltered(searchQuery, filterData);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -106,7 +109,10 @@ function DataTable({
 
   return (
     <Box>
-      <SearchBar setSearchQuery={setSearchQuery} sx={{ marginBottom: '16px' }} />
+      <Stack flexDirection="row" justifyContent="space-between">
+        <SearchBar setSearchQuery={setSearchQuery} sx={{ marginBottom: '16px' }} />
+        {filtersProducts && <FilterProductsTable rows={rows} setFilterData={setFilterData} />}
+      </Stack>
       <TableContainer sx={{ minHeight: '25rem' }}>
         <Table sx={{ minWidth: width || 750, height: '25rem' }} aria-labelledby="tableTitle" {...others}>
           <DataTableHead
@@ -183,7 +189,7 @@ function DataTable({
                         return <DataTableCell.CellIsDiscount key={index} align={align} value={value} />;
                       }
                       if (type === 'stock') {
-                        return <DataTableCell.Stock key={index} align={align} value={value} minStock={minStock} />;
+                        return <DataTableCell.Stock key={index} align={align} value={value} minStock={row.stockMin} />;
                       }
                       return <DataTableCell.Default key={index} align={align} value={value} />;
                     })}
@@ -269,4 +275,5 @@ DataTable.propTypes = {
   width: PropTypes.string,
   minStock: PropTypes.number,
   orderDesc: PropTypes.bool,
+  filtersProducts: PropTypes.bool,
 };

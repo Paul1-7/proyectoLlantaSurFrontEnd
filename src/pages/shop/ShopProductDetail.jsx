@@ -132,8 +132,6 @@ export default function ShopProductDetails() {
     });
   };
   const onSubmitRemoveFavorite = () => {
-    console.log(resGetFavorite?.favoritos?.id);
-
     if (Array.isArray(resGetFavorite)) return;
     axiosFetchPostFavorite({
       axiosInstance: axiosPrivate,

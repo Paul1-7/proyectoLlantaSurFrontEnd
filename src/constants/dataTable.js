@@ -46,6 +46,7 @@ const COLUMNS = {
     { field: 'estado', header: 'estado', type: 'states' },
   ],
   purchases: [
+    { field: 'codReferencia', header: 'código de referencia', type: '' },
     { field: 'codCompra', header: 'código de compra', type: '' },
     { field: 'fecha', header: 'fecha', type: 'date' },
     { field: 'total', header: 'total', type: 'currency' },

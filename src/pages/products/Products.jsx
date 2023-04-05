@@ -18,11 +18,10 @@ import { Inventory2 } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/config';
+import FilterProductsTable from '~/components/products/FilterProductsTable';
 
 const { ADMINISTRADOR } = ROLES;
 const buttonsActions = { edit: true, remove: true, detail: false };
-
-const idSucBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
 
 const currentSubsidiaryStock = (idSuc, subsidiaries) => {
   const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
@@ -36,28 +35,29 @@ const stockOtherSubsidiary = (subsidiaries) =>
     stock: subsidiary.Sucursales_Productos.stock,
   }));
 
-const customData = ({ data }) => {
-  const newData = data.map((item) => ({
-    ...item,
-    marca: item.marca.nombre,
-    categoria: item.categoria.nombre,
-    proveedor: item.proveedor.nombre,
-    stock: currentSubsidiaryStock(idSucBorrar, item.sucursales),
-    sucursales: stockOtherSubsidiary(item.sucursales),
-  }));
-
-  return { data: newData };
-};
-
 export default function Products() {
-  const { isRolUserAllowedTo } = useAuth();
+  const { isRolUserAllowedTo, auth } = useAuth();
+  const { id: idSuc } = auth.user.sucursal;
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const { setOpenDialog, handleCloseDialog, openDialog, dataDialog } = useContext(DataTableContext);
   const navigate = useNavigate();
+
+  function customData({ data }) {
+    const newData = data.map((item) => ({
+      ...item,
+      marca: item.marca.nombre,
+      categoria: item.categoria.nombre,
+      proveedor: item.proveedor.nombre,
+      stock: currentSubsidiaryStock(idSuc, item.sucursales),
+      sucursales: stockOtherSubsidiary(item.sucursales),
+    }));
+
+    return { data: newData };
+  }
+
   const [resGet, errorGet, loadingGet, axiosFetchGet, setResGet] = useAxios({ responseCb: customData });
-  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
   const [resDelete, errorDelete, loadingDelete, axiosFetchDelete, , setErrorDelete] = useAxios();
 
   const location = useLocation();
@@ -105,11 +105,6 @@ export default function Products() {
       method: 'GET',
       url: '/api/v1/productos',
     });
-    axiosFetchGetBusinessData({
-      axiosInstance: axiosPrivate,
-      method: 'GET',
-      url: '/api/v1/datos-negocio',
-    });
   }, []);
 
   return (
@@ -146,10 +141,9 @@ export default function Products() {
         <DataTable
           columns={COLUMNS.products}
           rows={resGet}
-          error={errorGet ?? errorGetBusinessData}
-          loading={loadingGet || loadingGetBusinessData}
-          numeration
-          minStock={resGetBusinessData?.cantMinProd}
+          error={errorGet}
+          loading={loadingGet}
+          filtersProducts
           btnActions={isRolUserAllowedTo([ADMINISTRADOR.id]) && buttonsActions}
           orderByDefault="nombre"
           collapse="sucursales"

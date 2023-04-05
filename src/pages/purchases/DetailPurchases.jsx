@@ -86,6 +86,12 @@ export default function DetailSeel() {
             <Grid container>
               <Grid item xs={6}>
                 <Typography component="h3">
+                  <span style={{ fontWeight: 600 }}>Código de referencia: </span>
+                  {resGetPurchase.codReferencia}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography component="h3">
                   <span style={{ fontWeight: 600 }}>Código de compra: </span>
                   {resGetPurchase.codCompra}
                 </Typography>
