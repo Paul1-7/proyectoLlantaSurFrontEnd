@@ -26,13 +26,13 @@ const initialForm = {
   descripcion: '',
   precioCompra: '',
   precioVenta: '',
-  fecha: new Date(),
-  idProv: '0',
-  idCat: '0',
-  idMarca: '0',
+  idProv: { nombre: 'Ninguno', id: '0' },
+  idCat: { nombre: 'Ninguno', id: '0' },
+  idMarca: { nombre: 'Ninguno', id: '0' },
   sucursales: [],
   imagen: null,
   estado: '1',
+  stockMin: '5',
 };
 
 const getOnlyActiveDatas = ({ data }) => {
@@ -40,7 +40,7 @@ const getOnlyActiveDatas = ({ data }) => {
   return { data: newData };
 };
 
-export default function AddBrandForm() {
+export default function AddProductsForm() {
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -77,14 +77,22 @@ export default function AddBrandForm() {
   const onSubmit = (data) => {
     const formData = new FormData();
 
-    Object.entries(data).forEach(([key, value]) => {
-      if (key === 'imagen' && value !== null) {
-        formData.append('imagen', value?.file, value?.file?.name);
-      }
-      if (key === 'sucursales') {
-        formData.append(key, JSON.stringify(value));
-      } else formData.append(key, value);
-    });
+    Object.entries(data)
+      .map(([key, value]) => {
+        if (typeof value === 'object' && value !== null) {
+          return [key, value.id];
+        }
+        return [key, value];
+      })
+      .forEach(([key, value]) => {
+        if (key === 'imagen' && value !== null) {
+          formData.append('imagen', value?.file, value?.file?.name);
+        }
+
+        if (key === 'sucursales') {
+          formData.append(key, JSON.stringify(value));
+        } else formData.append(key, value);
+      });
 
     axiosFetchPost({
       axiosInstance: axiosPrivate,
@@ -136,16 +144,21 @@ export default function AddBrandForm() {
                   <Controls.Input name="precioVenta" label="precio de venta" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.DatePicker name="fecha" label="Fecha" />
+                  <Controls.Autocomplete name="idProv" label="Proveedor" items={resGetProvider} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Select name="idProv" label="Proveedor" items={resGetProvider} />
+                  <Controls.Autocomplete name="idMarca" label="Marca" items={resGetBrand} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Select name="idMarca" label="Marca" items={resGetBrand} />
+                  <Controls.Autocomplete name="idCat" label="Categoria" items={resGetCategory} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
+                  <Controls.Input
+                    name="stockMin"
+                    label="cantidad minima del producto"
+                    helperText="cantidad minima de las existencias del producto para notificar"
+                    type="number"
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
@@ -159,7 +172,7 @@ export default function AddBrandForm() {
                     helperText="*Se visualizara en la descripción del producto de la tienda"
                   />
                 </Grid>
-                <ProductsSubsidiaries />
+                {/* <ProductsSubsidiaries /> */}
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>
             </Fieldset>
@@ -193,6 +206,6 @@ export default function AddBrandForm() {
   );
 }
 
-AddBrandForm.propTypes = {
+AddProductsForm.propTypes = {
   title: PropTypes.string,
 };

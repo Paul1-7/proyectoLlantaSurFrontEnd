@@ -8,8 +8,8 @@ const subsidiaries = yup.object().shape({
 });
 
 const products = yup.object().shape({
-  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
-  descripcion: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
+  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  descripcion: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
   precioCompra: yup.number().typeError('El precio de compra debe ser un número').required(),
   precioVenta: yup
     .number()
@@ -21,21 +21,30 @@ const products = yup.object().shape({
       }
       return schema;
     }),
-  fecha: yup.date().typeError('la fecha introducida es incorrecta').required(),
   idProv: yup
-    .string()
-    .matches(regex.alphaNumeric, msg.alphaNumeric)
-    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
+    .object()
+    .shape({
+      id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
+      nombre: yup.string(),
+    })
+    .test('idProv-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
   idCat: yup
-    .string()
-    .matches(regex.alphaNumeric, msg.alphaNumeric)
-    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
+    .object()
+    .shape({
+      id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
+      nombre: yup.string(),
+    })
+    .test('idCat-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
   idMarca: yup
-    .string()
-    .matches(regex.alphaNumeric, msg.alphaNumeric)
-    .test('noDefaultValue', 'Tiene que seleccionar una opción', (value) => value !== '0'),
-  sucursales: yup.array().of(subsidiaries).required(),
-  imagen: yup.mixed(),
+    .object()
+    .shape({
+      id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
+      nombre: yup.string(),
+    })
+    .test('idBrand-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
+  sucursales: yup.array().of(subsidiaries),
+  imagen: yup.mixed().nullable(),
+  stockMin: yup.number().required().min(1, 'el minimo es 1').typeError('Debe de ser un número'),
   estado: yup.string().required().matches(regex.number, msg.number),
 });
 

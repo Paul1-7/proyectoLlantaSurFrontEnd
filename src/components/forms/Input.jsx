@@ -34,7 +34,7 @@ const InputMemo = memo(
   (prevProps, nextProps) => {
     return (
       prevProps.methods.formState.isDirty === nextProps.methods.formState.isDirty &&
-      compare(prevProps.methods.formState.errors, nextProps.methods.formState.errors) &&
+      prevProps.methods.formState.errors !== nextProps.methods.formState.errors &&
       prevProps.methods.formState.submitCount === nextProps.methods.formState.submitCount
     );
   },

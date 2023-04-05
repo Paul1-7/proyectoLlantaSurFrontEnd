@@ -24,9 +24,10 @@ const COLUMNS = {
     { field: 'estado', header: 'estado', type: 'states' },
   ],
   products: [
+    { field: 'codReferencia', header: 'código de referencia', type: '' },
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'precioVenta', header: 'precio', type: 'currency' },
-    { field: 'fecha', header: 'fecha', type: 'date' },
+    { field: 'fecha', header: 'fecha de creación', type: 'date' },
     { field: 'marca', header: 'marca', type: '' },
     { field: 'categoria', header: 'categoría', type: '' },
     { field: 'stock', header: 'stock', type: 'stock' },

@@ -26,13 +26,13 @@ const initialForm = {
   descripcion: '',
   precioCompra: '',
   precioVenta: '',
-  fecha: new Date(),
-  idProv: '0',
-  idCat: '0',
-  idMarca: '0',
+  idProv: { nombre: 'Ninguno', id: '0' },
+  idCat: { nombre: 'Ninguno', id: '0' },
+  idMarca: { nombre: 'Ninguno', id: '0' },
   sucursales: [],
   imagen: null,
   estado: '1',
+  stockMin: '5',
 };
 
 const stockOtherSubsidiary = (subsidiaries) =>
@@ -42,12 +42,18 @@ const stockOtherSubsidiary = (subsidiaries) =>
     stock: subsidiary.Sucursales_Productos.stock,
   }));
 
-const customData = ({ data }) => ({
-  data: {
-    ...data,
-    sucursales: stockOtherSubsidiary(data.sucursales),
-  },
-});
+const customData = ({ data }) => {
+  const { marca, proveedor, categoria, ...otherData } = data;
+  return {
+    data: {
+      ...otherData,
+      idMarca: { id: marca.id, nombre: marca.nombre },
+      idCat: { id: categoria.id, nombre: categoria.nombre },
+      idProv: { id: proveedor.id, nombre: proveedor.nombre },
+      sucursales: stockOtherSubsidiary(data.sucursales),
+    },
+  };
+};
 
 const getOnlyActiveDatas = ({ data }) => {
   const newData = data.filter(({ estado }) => estado === 1);
@@ -61,9 +67,9 @@ export default function ModifyProductForm() {
   const location = useLocation();
   const [resPut, errorPut, loadingPut, axiosFetchPut, , setErrorPut] = useAxios();
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios({ responseCb: customData });
-  const [resGetBrand, , , axiosFetchGetBrand] = useAxios({ responseCb: getOnlyActiveDatas });
-  const [resGetCategory, , , axiosFetchGetCategory] = useAxios({ responseCb: getOnlyActiveDatas });
-  const [resGetProvider, , , axiosFetchGetProvider] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetBrand, , loadingGetBrand, axiosFetchGetBrand] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetCategory, , loadingGetCategory, axiosFetchGetCategory] = useAxios({ responseCb: getOnlyActiveDatas });
+  const [resGetProvider, , loadingGetProvider, axiosFetchGetProvider] = useAxios({ responseCb: getOnlyActiveDatas });
 
   const id = location.pathname.split('/').pop();
 
@@ -77,14 +83,21 @@ export default function ModifyProductForm() {
   const onSubmit = (data) => {
     const formData = new FormData();
 
-    Object.entries(data).forEach(([key, value]) => {
-      if (key === 'imagen' && value?.file instanceof File) {
-        formData.append('imagen', value?.file, value?.file?.name);
-      }
-      if (key === 'sucursales') {
-        formData.append(key, JSON.stringify(value));
-      } else formData.append(key, value);
-    });
+    Object.entries(data)
+      .map(([key, value]) => {
+        if (typeof value === 'object' && value !== null) {
+          return [key, value.id];
+        }
+        return [key, value];
+      })
+      .forEach(([key, value]) => {
+        if (key === 'imagen' && value?.file instanceof File) {
+          formData.append('imagen', value?.file, value?.file?.name);
+        }
+        if (key === 'sucursales') {
+          formData.append(key, JSON.stringify(value));
+        } else formData.append(key, value);
+      });
     axiosFetchPut({
       axiosInstance: axiosPrivate,
       method: 'PUT',
@@ -129,6 +142,11 @@ export default function ModifyProductForm() {
       const objectArray = Object.entries(resGet);
 
       objectArray.forEach(([key, value]) => {
+        if (keys.includes(key) && typeof value === 'object') {
+          methods.setValue(key, value, { shouldValidate: true });
+          return;
+        }
+
         if (keys.includes(key) && key !== 'sucursales') {
           methods.setValue(key, String(value), { shouldValidate: true });
         }
@@ -178,10 +196,11 @@ export default function ModifyProductForm() {
             autoComplete="off"
           >
             <Fieldset title="Datos del producto *">
-              <Grid container wrap="wrap" spacing={1}>
+              <Grid container wrap="wrap" spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="nombre" label="Nombre" />
                 </Grid>
+
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="precioCompra" label="Precio de compra" />
                 </Grid>
@@ -189,16 +208,31 @@ export default function ModifyProductForm() {
                   <Controls.Input name="precioVenta" label="precio de venta" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.DatePicker name="fecha" label="Fecha" />
+                  <Controls.Autocomplete
+                    name="idProv"
+                    label="Proveedor"
+                    items={resGetProvider}
+                    loading={loadingGetProvider}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Select name="idProv" label="Proveedor" items={resGetProvider} />
+                  <Controls.Autocomplete name="idMarca" label="Marca" items={resGetBrand} loading={loadingGetBrand} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Select name="idMarca" label="Marca" items={resGetBrand} />
+                  <Controls.Autocomplete
+                    name="idCat"
+                    label="Categoria"
+                    items={resGetCategory}
+                    loading={loadingGetCategory}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Controls.Select name="idCat" label="Categoria" items={resGetCategory} />
+                  <Controls.Input
+                    name="stockMin"
+                    label="cantidad minima del producto"
+                    helperText="cantidad minima de las existencias del producto para notificar"
+                    type="number"
+                  />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
@@ -212,7 +246,7 @@ export default function ModifyProductForm() {
                     helperText="*Se visualizara en la descripción del producto de la tienda"
                   />
                 </Grid>
-                {!Array.isArray(resGet) && <ProductsSubsidiaries data={resGet.sucursales} />}
+                {/* <ProductsSubsidiaries /> */}
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>
             </Fieldset>
