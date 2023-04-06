@@ -427,6 +427,7 @@ export default function Router() {
         { path: `${PATH_MODULES.staticPages.termConditions}`, element: <ShopTermConditions /> },
         // auth
         { path: `${PATH_MODULES.auth.signIn}`, element: <Login /> },
+        { path: `${PATH_MODULES.auth.profile}`, element: <Profile /> },
         { path: `${PATH_MODULES.auth.signUp}`, element: <RegisterForm /> },
         { path: `${PATH_MODULES.auth.verifyPhoneNumber}`, element: <RegisterVerifyPhoneNumber /> },
         { path: `${PATH_MODULES.auth.resetPassword}`, element: <RecoveryPasswordEmail /> },
@@ -514,6 +515,7 @@ const ShopFrequenlyAskedQuestions = Loadable(
 );
 // auth
 const Login = Loadable(lazy(() => import('~/pages/auth/Login')));
+const Profile = Loadable(lazy(() => import('~/pages/auth/Profile')));
 const RegisterForm = Loadable(lazy(() => import('~/pages/auth/RegisterForm')));
 const RegisterVerifyPhoneNumber = Loadable(lazy(() => import('~/pages/auth/RegisterVerifyPhoneNumber')));
 const RecoveryPasswordEmail = Loadable(lazy(() => import('~/pages/auth/RecoveryPasswordEmail')));

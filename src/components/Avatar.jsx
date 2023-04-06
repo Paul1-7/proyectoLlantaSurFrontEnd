@@ -32,8 +32,8 @@ function stringAvatar(name) {
   };
 }
 
-function Avatar({ name = '' }) {
-  return <AvatarMui {...stringAvatar(name)} />;
+function Avatar({ name = '', ...others }) {
+  return <AvatarMui {...stringAvatar(name)} {...others} />;
 }
 
 Avatar.propTypes = {

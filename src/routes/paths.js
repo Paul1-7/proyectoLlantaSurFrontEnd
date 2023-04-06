@@ -96,6 +96,7 @@ export const PATH_MODULES = {
     signIn: path(ROOTS_SHOP, 'iniciar-sesion'),
     resetPassword: path(ROOTS_SHOP, 'recuperar-contraseña'),
     unauthorized: path(ROOTS_SHOP, 'no-autorizado'),
+    profile: path(ROOTS_SHOP, 'perfil-usuario'),
   },
   staticPages: {
     about: path(ROOTS_SHOP, 'sobre-nosotros'),

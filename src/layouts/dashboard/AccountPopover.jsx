@@ -14,10 +14,11 @@ import useAxios from '~/hooks/useAxios';
 import { LoadingButton } from '@mui/lab';
 import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
+import { PATH_MODULES } from '~/routes/paths';
 
 const MENU_OPTIONS = [
   { label: 'Inicio', icon: homeFill, linkTo: '/' },
-  { label: 'Perfil', icon: personFill, linkTo: '#' },
+  { label: 'Perfil', icon: personFill, linkTo: PATH_MODULES.auth.profile },
 ];
 
 export default function AccountPopover() {
