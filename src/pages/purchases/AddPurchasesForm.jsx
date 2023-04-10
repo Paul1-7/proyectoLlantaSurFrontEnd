@@ -95,6 +95,7 @@ export default function AddPurchasesForm() {
     mode: 'all',
     criteriaMode: 'all',
   });
+  console.log(methods.watch());
 
   const onSubmit = (data) => {
     const idProv = data.idProv.id;
@@ -187,7 +188,6 @@ export default function AddPurchasesForm() {
                         columns={COLUMNS.productsToPurchase}
                         rows={resGetProducts}
                         loading={loadingGetProducts || loadingGetProviders}
-                        minStock={resGetProviders?.cantMinProd}
                         error={errorGetProducts}
                         btnActions={btnActions}
                         size="small"

@@ -18,7 +18,6 @@ import { Inventory2 } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
 import useAuth from '~/hooks/useAuth';
 import { ROLES } from '~/config';
-import FilterProductsTable from '~/components/products/FilterProductsTable';
 
 const { ADMINISTRADOR } = ROLES;
 const buttonsActions = { edit: true, remove: true, detail: false };
@@ -26,14 +25,15 @@ const buttonsActions = { edit: true, remove: true, detail: false };
 const currentSubsidiaryStock = (idSuc, subsidiaries) => {
   const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
 
-  return value ? value.Sucursales_Productos.stock : '0';
+  return value ? value.SucursalesProductos.stock : '0';
 };
 
-const stockOtherSubsidiary = (subsidiaries) =>
-  subsidiaries.map((subsidiary) => ({
+const stockOtherSubsidiary = (subsidiaries) => {
+  return subsidiaries.map((subsidiary) => ({
     nombre: subsidiary.nombre,
-    stock: subsidiary.Sucursales_Productos.stock,
+    stock: subsidiary.SucursalesProductos.stock,
   }));
+};
 
 export default function Products() {
   const { isRolUserAllowedTo, auth } = useAuth();

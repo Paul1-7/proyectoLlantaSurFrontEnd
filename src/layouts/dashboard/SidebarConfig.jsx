@@ -28,10 +28,11 @@ const ICONS = {
   report: getIcon('ic_analytics'),
   purchase: getIcon('ic_purchase'),
   sliderImage: getIcon('ic_image'),
+  interBranchMovements: getIcon('ic_swap'),
 };
 
 const sidebarConfig = [
-  { title: 'Panel de control', path: PATH_MODULES.app, icon: ICONS.dashboard, roles: [ADMINISTRADOR.id] },
+  { title: 'Inicio', path: PATH_MODULES.app, icon: ICONS.dashboard, roles: [ADMINISTRADOR.id] },
   { title: 'Compras', path: PATH_MODULES.purchases.root, icon: ICONS.purchase, roles: [ADMINISTRADOR.id] },
   {
     title: 'Clientes',
@@ -61,6 +62,12 @@ const sidebarConfig = [
     title: 'Productos defectuosos',
     path: PATH_MODULES.defectiveProducts.root,
     icon: ICONS.defectiveProduct,
+    roles: [ADMINISTRADOR.id, EMPLEADO_VENTAS.id],
+  },
+  {
+    title: 'Movimientos entre sucursales',
+    path: PATH_MODULES.interBranchMovements.root,
+    icon: ICONS.interBranchMovements,
     roles: [ADMINISTRADOR.id, EMPLEADO_VENTAS.id],
   },
   {

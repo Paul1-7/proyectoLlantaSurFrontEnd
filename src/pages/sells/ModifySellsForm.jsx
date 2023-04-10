@@ -27,7 +27,7 @@ const initialForm = {
 const currentSubsidiaryStock = (idSuc, subsidiaries) => {
   const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
 
-  return value ? value.Sucursales_Productos.stock : '0';
+  return value ? value.SucursalesProductos.stock : '0';
 };
 
 export default function ModifySell() {

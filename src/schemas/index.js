@@ -23,6 +23,7 @@ import register from './register';
 import sliderImages from './sliderImages';
 import recoveryPasswordForm from './recoveryPasswordForm';
 import recoveryPasswordEmail from './recoveryPasswordEmail';
+import interBranchMovements from './interBranchMovements';
 
 const schema = {
   customer,
@@ -50,6 +51,7 @@ const schema = {
   sliderImages,
   recoveryPasswordForm,
   recoveryPasswordEmail,
+  interBranchMovements,
 };
 
 export default schema;

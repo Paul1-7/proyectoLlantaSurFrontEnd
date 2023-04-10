@@ -21,7 +21,7 @@ const useSnackBarMessage = ({ errors = [], setErrors = [], successes = [], setSu
           variant: severity,
         });
 
-      if (setErrors.length) setErrors?.[index]('');
+      if (setErrors.length) setErrors?.[index](null);
       return isErrorFetch;
     });
   }, errors);

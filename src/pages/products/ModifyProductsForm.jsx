@@ -39,7 +39,7 @@ const stockOtherSubsidiary = (subsidiaries) =>
   subsidiaries.map((subsidiary) => ({
     idSuc: subsidiary.id,
     nombre: subsidiary.nombre,
-    stock: subsidiary.Sucursales_Productos.stock,
+    stock: subsidiary.SucursalesProductos.stock,
   }));
 
 const customData = ({ data }) => {

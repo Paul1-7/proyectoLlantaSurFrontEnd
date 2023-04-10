@@ -80,7 +80,7 @@ function DataTable({
   const [filterData, setFilterData] = useState([]);
 
   const [open, setOpen] = useState({ state: false, index: null });
-  const dataFiltered = getDataFiltered(searchQuery, filterData);
+  const dataFiltered = getDataFiltered(searchQuery, filtersProducts ? filterData : rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -172,6 +172,9 @@ function DataTable({
                       }
                       if (type === 'date') {
                         return <DataTableCell.Date key={index} align={align} value={value} />;
+                      }
+                      if (type === 'dateTime') {
+                        return <DataTableCell.DateTime key={index} align={align} value={value} />;
                       }
                       if (type === 'paymentsMethods') {
                         return <DataTableCell.PaymentsMethods key={index} align={align} value={value} />;
@@ -273,7 +276,6 @@ DataTable.propTypes = {
   loading: PropTypes.bool,
   collapse: PropTypes.string,
   width: PropTypes.string,
-  minStock: PropTypes.number,
   orderDesc: PropTypes.bool,
   filtersProducts: PropTypes.bool,
 };

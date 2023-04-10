@@ -36,7 +36,7 @@ const initialForm = {
 
 const getSubsidiaryProducts = (subsidiary) => {
   let aux;
-  const data = subsidiary.map(({ nombre, Sucursales_Productos: product }) => ({
+  const data = subsidiary.map(({ nombre, SucursalesProductos: product }) => ({
     [nombre]: product.stock,
   }));
 

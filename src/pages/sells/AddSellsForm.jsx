@@ -24,13 +24,11 @@ import { Link } from 'react-router-dom';
 import useAuth from '~/hooks/useAuth';
 import ProductsSell from './ProductSell';
 
-const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
-
 const initialForm = {
   fecha: new Date().toLocaleDateString(),
   idCliente: { nombre: 'Ninguno', id: '0' },
   idVendedor: 'a5f92b6e-77c0-4522-89d5-53ec8c141e76',
-  idSucursal: idSucursalBorrar,
+  idSucursal: '',
   productos: [],
 };
 
@@ -48,20 +46,7 @@ const customDataCustomers = ({ data = [] }) => {
 const currentSubsidiaryStock = (idSuc, subsidiaries) => {
   const value = subsidiaries?.find((subsidiary) => subsidiary.id === idSuc);
 
-  return value ? value.Sucursales_Productos.stock : '0';
-};
-
-const customDataProducts = ({ data }) => {
-  const newData = data
-    .filter(({ estado }) => estado === 1)
-    .map(({ id, nombre, precioVenta, sucursales }) => ({
-      id,
-      nombre,
-      precio: precioVenta,
-      cantidad: currentSubsidiaryStock(idSucursalBorrar, sucursales),
-    }));
-
-  return { data: newData };
+  return value ? value.SucursalesProductos.stock : '0';
 };
 
 const btnActions = { add: true };
@@ -75,7 +60,19 @@ export default function AddSellsForm() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const [resPost, errorPost, loadingPost, axiosFetchPost] = useAxios();
-  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
+
+  const customDataProducts = ({ data }) => {
+    const newData = data
+      .filter(({ estado }) => estado === 1)
+      .map(({ id, nombre, precioVenta, sucursales }) => ({
+        id,
+        nombre,
+        precio: precioVenta,
+        cantidad: currentSubsidiaryStock(idSuc, sucursales),
+      }));
+
+    return { data: newData };
+  };
   const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
     responseCb: customDataProducts,
   });
@@ -93,11 +90,6 @@ export default function AddSellsForm() {
       axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/productos`,
-    });
-    axiosFetchGetBusinessData({
-      axiosInstance: axiosPrivate,
-      method: 'GET',
-      url: `/api/v1/datos-negocio`,
     });
   }, []);
 
@@ -185,9 +177,8 @@ export default function AddSellsForm() {
                       <DataTable
                         columns={COLUMNS.productsToSell}
                         rows={resGetProducts}
-                        loading={loadingGetProducts || loadingGetBusinessData}
-                        minStock={resGetBusinessData?.cantMinProd}
-                        error={errorGetProducts ?? errorGetBusinessData}
+                        loading={loadingGetProducts}
+                        error={errorGetProducts}
                         btnActions={btnActions}
                         size="small"
                         width="100%"

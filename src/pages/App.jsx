@@ -16,7 +16,7 @@ const getStockFromSubsidiaries = (subsidiaries) => {
     .filter(({ estado }) => estado === 1)
     .map((subsidiary) => ({
       nombre: subsidiary.nombre,
-      stock: subsidiary.Sucursales_Productos.stock,
+      stock: subsidiary.SucursalesProductos.stock,
     }));
 };
 

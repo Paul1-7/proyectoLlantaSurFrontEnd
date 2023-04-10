@@ -67,6 +67,18 @@ const COLUMNS = {
     { field: 'cantidad', header: 'cantidad', type: 'stock' },
     { field: 'precio', header: 'precio uni.', type: 'currency' },
   ],
+  interBranchMovements: [
+    { field: 'nombre', header: 'usuario', type: '' },
+    { field: 'fecha', header: 'fecha', type: 'dateTime' },
+    { field: 'producto', header: 'producto', type: '' },
+    { field: 'cantidad', header: 'cantidad', type: '' },
+    { field: 'sucOrigen', header: 'sucursal de origen', type: '' },
+    { field: 'sucDestino', header: 'sucursal de destino', type: '' },
+  ],
+  productsToMovements: [
+    { field: 'nombre', header: 'nombre', type: '' },
+    { field: 'cantidad', header: 'cantidad', type: 'stock' },
+  ],
   productsToPurchase: [
     { field: 'nombre', header: 'nombre', type: '' },
     { field: 'precioVenta', header: 'precio de venta.', type: 'currency' },

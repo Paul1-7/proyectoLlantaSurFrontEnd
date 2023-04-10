@@ -291,6 +291,25 @@ export default function Router() {
             </RequireAuth>
           ),
         },
+        // interBranchMovements
+        {
+          path: PATH_MODULES.interBranchMovements.root,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <DataTableProvider>
+                <InterBranchMovements />
+              </DataTableProvider>
+            </RequireAuth>
+          ),
+        },
+        {
+          path: PATH_MODULES.interBranchMovements.new,
+          element: (
+            <RequireAuth allowedRoles={[ADMINISTRADOR.id, EMPLEADO_VENTAS.id]}>
+              <AddInterBranchMovements />
+            </RequireAuth>
+          ),
+        },
         // Purchases
         {
           path: PATH_MODULES.purchases.root,
@@ -457,6 +476,9 @@ const ModifyEmployeesForm = Loadable(lazy(() => import('~/pages/employees/Modify
 // categories
 const Categories = Loadable(lazy(() => import('~/pages/categories/Categories')));
 const AddCategoriesForm = Loadable(lazy(() => import('~/pages/categories/AddCategoriesForm')));
+// interBranchMovements
+const InterBranchMovements = Loadable(lazy(() => import('~/pages/interBranchMovements/InterBranchMovements')));
+const AddInterBranchMovements = Loadable(lazy(() => import('~/pages/interBranchMovements/AddInterBranchMovements')));
 const ModifyCategoriesForm = Loadable(lazy(() => import('~/pages/categories/ModifyCategoriesForm')));
 // brands
 const Brands = Loadable(lazy(() => import('~/pages/brands/Brands')));

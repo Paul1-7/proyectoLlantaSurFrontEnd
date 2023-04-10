@@ -27,7 +27,7 @@ const idSucursalBorrar = '678197a0-69a8-4c24-89a5-bf13873cc08b';
 const getStockFromCurrentSubsidiary = (subsidiaries, idSuc) => {
   return subsidiaries
     .filter(({ id }) => id === idSuc)
-    .map(({ Sucursales_Productos: subsidiary }) => subsidiary.stock)
+    .map(({ SucursalesProductos: subsidiary }) => subsidiary.stock)
     .at(0);
 };
 

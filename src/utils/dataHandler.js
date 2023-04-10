@@ -33,6 +33,12 @@ function isCurrentDateInRange(fechaInicio, fechaFin) {
   return currentDate >= new Date(fechaInicio) && currentDate <= new Date(fechaFin);
 }
 
+const getDateTimeFormat = (value) => {
+  const format = new Intl.DateTimeFormat('es-BO', { dateStyle: 'medium', timeStyle: 'medium' });
+  const date = new Date(value);
+  return format.format(date);
+};
+
 function isDateExpired(date) {
   const currentDate = new Date();
   return currentDate >= new Date(date);
@@ -55,7 +61,7 @@ const productAmount = (product) => {
 
   const sucursales = product?.sucursales ?? [];
   let totalStock = 0;
-  sucursales.forEach(({ Sucursales_Productos: suc }) => {
+  sucursales.forEach(({ SucursalesProductos: suc }) => {
     totalStock += suc.stock;
   });
 
@@ -82,4 +88,5 @@ export {
   isValidDiscount,
   getNamesRolesFromIds,
   isDateExpired,
+  getDateTimeFormat,
 };

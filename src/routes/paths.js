@@ -74,6 +74,10 @@ export const PATH_MODULES = {
     root: path(ROOTS_DASHBOARD, '/productos-defectuosos'),
     new: `${ROOTS_DASHBOARD}/productos-defectuosos/nuevo`,
   },
+  interBranchMovements: {
+    root: path(ROOTS_DASHBOARD, '/movimientos-entre-sucursales'),
+    new: `${ROOTS_DASHBOARD}/movimientos-entre-sucursales/nuevo`,
+  },
   shop: {
     root: path(ROOTS_SHOP),
     products: path(ROOTS_SHOP, `productos`),
