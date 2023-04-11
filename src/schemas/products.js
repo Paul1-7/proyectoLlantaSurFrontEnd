@@ -27,6 +27,7 @@ const products = yup.object().shape({
       id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
       nombre: yup.string(),
     })
+    .required()
     .test('idProv-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
   idCat: yup
     .object()
@@ -34,6 +35,7 @@ const products = yup.object().shape({
       id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
       nombre: yup.string(),
     })
+    .required()
     .test('idCat-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
   idMarca: yup
     .object()
@@ -41,6 +43,7 @@ const products = yup.object().shape({
       id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
       nombre: yup.string(),
     })
+    .required()
     .test('idBrand-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
   sucursales: yup.array().of(subsidiaries),
   imagen: yup.mixed().nullable(),

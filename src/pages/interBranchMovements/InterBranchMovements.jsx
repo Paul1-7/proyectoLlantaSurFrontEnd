@@ -22,7 +22,6 @@ const customData = ({ data }) => {
     sucDestino: item.sucursalDestino.nombre,
     producto: item.producto.nombre,
   }));
-
   return { data: newData };
 };
 

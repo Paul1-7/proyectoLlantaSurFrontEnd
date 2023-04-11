@@ -6,7 +6,7 @@ const item = yup.object().shape({
     id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
     nombre: yup.string(),
   }),
-  urlImg: yup.string().matches(regex.url, msg.url),
+  urlImg: yup.string().matches(regex.url, msg.url).required(),
   estado: yup.string().required().matches(regex.number, msg.number),
 });
 const sliderImages = yup.object().shape({
