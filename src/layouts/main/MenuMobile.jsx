@@ -12,8 +12,15 @@ import Scrollbar from '~/components/Scrollbar';
 import { MIconButton } from '~/components/@material-extend';
 import { AccountUserCard } from '~/components';
 import useAuth from '~/hooks/useAuth';
+import { ROLES } from '~/config';
 
 const PADDING = 2.5;
+
+function isClientRol(roles = []) {
+  roles.includes(ROLES.CLIENTE.id);
+
+  return roles.length === 1 && roles.includes(ROLES.CLIENTE.id);
+}
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
@@ -24,6 +31,10 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
 
   if (isExpiredToken()) {
     navItems = navItems.filter(({ title }) => !(title === 'Registrarse' || title === 'Iniciar sesión'));
+  }
+
+  if (isClientRol(auth?.user.roles)) {
+    navItems = navItems.filter(({ title }) => title !== 'Administración');
   }
 
   const handleDrawerOpen = () => {

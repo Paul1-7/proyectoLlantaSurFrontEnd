@@ -7,14 +7,9 @@ import { PATH_MODULES } from '~/routes/paths';
 import Label from '~/components/Label';
 import Image from '~/components/Image';
 import { Link } from 'react-router-dom';
-import { AddShoppingCart, Favorite } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
-import { addCart } from '~/redux/slices/productsShop';
-import { MIconButton } from '~/components/@material-extend';
 import { getBOBCurrency } from '~/utils/dataHandler';
 
 export default function ShopProductCard({ product }) {
-  const dispatch = useDispatch();
   const { id, nombre, imagen, precio: descuento = null, precioVenta } = product;
   const status = 'descuento';
 

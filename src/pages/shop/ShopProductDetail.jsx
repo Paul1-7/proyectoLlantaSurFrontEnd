@@ -4,14 +4,12 @@ import { Image } from '~/components';
 import { useGetProductQuery } from '~/redux/api/productApi';
 import { ShopContainerListProducts, ShopReviewForm } from '~/components/shop';
 import { getBOBCurrency, isCurrentDateInRange, isValidDiscount, productAmount } from '~/utils/dataHandler';
-import { AddShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import schema from '~/schemas';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
-import { addCart } from '~/redux/slices/productsShop';
 import useAuth from '~/hooks/useAuth';
 import useAxiosPrivate from '~/hooks/useAxiosPrivate';
 import useAxios from '~/hooks/useAxios';
@@ -35,7 +33,6 @@ const customDetailProduct = ({ data: product }) => {
 export default function ShopProductDetails() {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [resPostFavorite, errorPostFavorite, , axiosFetchPostFavorite] = useAxios();
   const [resGetFavorite, errorGetFavorite, loadingGetFavorite, axiosFetchGetFavorite] = useAxios({
@@ -60,7 +57,7 @@ export default function ShopProductDetails() {
   const product = useGetProductQuery(id);
 
   const [tabs, setTabs] = useState('1');
-  const { register, formState, watch } = useForm({
+  const { register, formState } = useForm({
     resolver: yupResolver(schema.amountValidation(productAmount(product.data))),
     mode: 'all',
     criteriaMode: 'all',

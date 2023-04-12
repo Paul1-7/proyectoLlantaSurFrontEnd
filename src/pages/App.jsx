@@ -1,4 +1,3 @@
-// material
 import { Backdrop, CircularProgress, Container, Grid, Typography } from '@mui/material';
 
 import { useEffect } from 'react';
@@ -48,12 +47,10 @@ function getStockLowProducts(products) {
     const productFounded = product.sucursales.find(({ stock }) => stock <= product.stockMin);
 
     if (productFounded && productsWithLowStock.length < 8) {
-      console.log('TCL: getStockLowProducts -> productFounded', productFounded);
       productsWithLowStock.push(productFounded);
       columns.push(product.nombre);
     }
   });
-  console.log(productsWithLowStock);
   const rows = productsWithLowStock.map((sucursales) => sucursales.stock);
 
   return { columnsProductsLowStock: columns, dataProductsLowStock: [{ name: 'cantidad', data: rows }] };

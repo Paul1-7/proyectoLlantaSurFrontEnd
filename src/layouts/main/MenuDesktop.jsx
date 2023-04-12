@@ -7,6 +7,7 @@ import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
 import { Box, Link, List, Stack, Popover, ListItem, styled, ListItemButton } from '@mui/material';
 import useAuth from '~/hooks/useAuth';
+import { ROLES } from '~/config';
 import { navItemsToActiveSesion } from './MenuConfig';
 
 // ----------------------------------------------------------------------
@@ -145,12 +146,21 @@ MenuDesktopItem.propTypes = {
   anchorEl: PropTypes.object,
 };
 
+function isClientRol(roles = []) {
+  roles.includes(ROLES.CLIENTE.id);
+
+  return roles.length === 1 && roles.includes(ROLES.CLIENTE.id);
+}
+
 export default function MenuDesktop({ isOffset, isHome, navConfig }) {
   const { auth, isExpiredToken } = useAuth();
   let navItems = navItemsToActiveSesion(navConfig, auth);
 
   if (isExpiredToken()) {
     navItems = navItems.filter(({ title }) => !(title === 'Registrarse' || title === 'Iniciar sesión'));
+  }
+  if (isClientRol(auth?.user.roles)) {
+    navItems = navItems.filter(({ title }) => title !== 'Administración');
   }
 
   const { pathname } = useLocation();
