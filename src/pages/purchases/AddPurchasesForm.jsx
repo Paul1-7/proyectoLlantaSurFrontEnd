@@ -95,7 +95,6 @@ export default function AddPurchasesForm() {
     mode: 'all',
     criteriaMode: 'all',
   });
-  console.log(methods.watch());
 
   const onSubmit = (data) => {
     const idProv = data.idProv.id;
@@ -210,7 +209,7 @@ export default function AddPurchasesForm() {
                   variant="outlined"
                   color="error"
                   LinkComponent={Link}
-                  to={PATH_MODULES.sells.root}
+                  to={PATH_MODULES.purchases.root}
                 >
                   Cancelar
                 </Button>

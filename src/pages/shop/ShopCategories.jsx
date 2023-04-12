@@ -106,7 +106,7 @@ function ShopCategories() {
             >
               <Scrollbar
                 sx={{
-                  height: 1,
+                  height: '100%',
                 }}
               >
                 <ShopFilter

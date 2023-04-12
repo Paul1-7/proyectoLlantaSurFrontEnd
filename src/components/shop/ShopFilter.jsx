@@ -79,6 +79,7 @@ function ShopFilter({ categories, brands, products = [], loading, include = [], 
         p: '2rem 2.5rem 2rem 2rem',
         borderRadius: { xs: '0px', md: 2 },
         boxShadow: 'none',
+        height: '100%',
       }}
     >
       {loading ? (

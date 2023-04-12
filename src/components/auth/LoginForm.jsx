@@ -32,7 +32,7 @@ function LoginForm({ methods, loading }) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Link component={RouterLink} variant="subtitle2" to={PATH_MODULES.auth.resetPassword}>
+        <Link component={RouterLink} variant="subtitle2" to={PATH_MODULES.auth.resetPasswordEmail}>
           ¿Ólvido su contraseña?
         </Link>
       </Stack>

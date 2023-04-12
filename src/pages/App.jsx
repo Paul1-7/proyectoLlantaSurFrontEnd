@@ -21,10 +21,11 @@ const getStockFromSubsidiaries = (subsidiaries) => {
 };
 
 const productCustomData = ({ data }) => {
-  const newData = data.map(({ id, nombre, sucursales }) => ({
+  const newData = data.map(({ id, nombre, sucursales, stockMin }) => ({
     id,
     nombre,
     sucursales: getStockFromSubsidiaries(sucursales),
+    stockMin,
     // sucursales,
   }));
   return { data: newData };
@@ -38,20 +39,21 @@ function getDataToBestSellingProducts(products = []) {
   return { columnsBestSelling: columns, dataBestSelling: [{ name: 'cantidad vendida', data: dataRows }] };
 }
 
-function getStockLowProducts(products, minStockAvailable) {
-  if (!products.length || !minStockAvailable) return {};
+function getStockLowProducts(products) {
+  if (!products.length) return {};
 
   const productsWithLowStock = [];
   const columns = [];
   products.forEach((product) => {
-    const productFounded = product.sucursales.find(({ stock }) => stock <= minStockAvailable);
+    const productFounded = product.sucursales.find(({ stock }) => stock <= product.stockMin);
 
     if (productFounded && productsWithLowStock.length < 8) {
+      console.log('TCL: getStockLowProducts -> productFounded', productFounded);
       productsWithLowStock.push(productFounded);
       columns.push(product.nombre);
     }
   });
-
+  console.log(productsWithLowStock);
   const rows = productsWithLowStock.map((sucursales) => sucursales.stock);
 
   return { columnsProductsLowStock: columns, dataProductsLowStock: [{ name: 'cantidad', data: rows }] };
@@ -67,7 +69,6 @@ export default function App() {
   const [resGetProducts, errorGetProducts, loadingGetProducts, axiosFetchGetProducts] = useAxios({
     responseCb: productCustomData,
   });
-  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
 
   useEffect(() => {
     axiosFetchGetBestSellingProd({
@@ -75,11 +76,7 @@ export default function App() {
       method: 'GET',
       url: '/api/v1/productos/best-selling',
     });
-    axiosFetchGetBusinessData({
-      axiosInstance: axiosPrivate,
-      method: 'GET',
-      url: '/api/v1/datos-negocio',
-    });
+
     axiosFetchGetProducts({
       axiosInstance: axiosPrivate,
       method: 'GET',
@@ -87,19 +84,16 @@ export default function App() {
     });
   }, []);
 
-  useSnackBarMessage({ errors: [errorGetBestSellingProd, errorGetProducts, errorGetBusinessData] });
+  useSnackBarMessage({ errors: [errorGetBestSellingProd, errorGetProducts] });
 
   const { columnsBestSelling, dataBestSelling } = getDataToBestSellingProducts(resGetBestSellingProd);
-  const { columnsProductsLowStock, dataProductsLowStock } = getStockLowProducts(
-    resGetProducts,
-    resGetBusinessData?.cantMinProd,
-  );
+  const { columnsProductsLowStock, dataProductsLowStock } = getStockLowProducts(resGetProducts);
   return (
     <Page title="Dashboard">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
-          open={loadingGetProducts || loadingGetBusinessData || loadingGetBestSellingProd}
+          open={loadingGetProducts || loadingGetBestSellingProd}
         >
           <CircularProgress color="inherit" />
         </Backdrop>

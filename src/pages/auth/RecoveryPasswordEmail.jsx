@@ -1,5 +1,5 @@
 // material
-import { Box, Typography, styled, Grid, Alert, Container } from '@mui/material';
+import { Box, Typography, styled, Alert, Container } from '@mui/material';
 import { Page } from '~/components';
 import useAxios from '~/hooks/useAxios';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,7 +9,7 @@ import axios from '~/apis/apis';
 import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 import Controls from '~/components/forms/Control';
 import { LoadingButton } from '@mui/lab';
-import { Email, Save } from '@mui/icons-material';
+import { Email } from '@mui/icons-material';
 
 const RootStyle = styled(Page)(() => ({
   margin: '9rem 1rem 1rem ',
@@ -37,7 +37,7 @@ export default function RecoveryPasswordEmail() {
     axiosFetchPostUser({
       axiosInstance: axios,
       method: 'POST',
-      url: `/api/v1/auth/password-reset`,
+      url: `/api/v1/auth/recuperar-password`,
       requestConfig: {
         ...data,
       },

@@ -1,8 +1,8 @@
 import { Link, NavLink as RouterLink, useLocation } from 'react-router-dom';
 // material
-import { Box, AppBar, Toolbar, Container, Badge, styled } from '@mui/material';
+import { Box, AppBar, Toolbar, Container, styled } from '@mui/material';
 // hooks
-import { Favorite, ShoppingCart } from '@mui/icons-material';
+import { Favorite } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotalQuantity } from '~/redux/slices/productsShop';
 import { useEffect } from 'react';
@@ -103,11 +103,11 @@ export default function MainNavbar() {
             <MHidden width="mdDown">
               <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={[...newMenuItems]} isAuthenticated />
             </MHidden>
-            <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
+            {/* <MIconButton size="large" color="default" LinkComponent={Link} to={PATH_MODULES.shop.checkout}>
               <Badge badgeContent={checkout.totalQuantity} color="error">
                 <ShoppingCart />
               </Badge>
-            </MIconButton>
+            </MIconButton> */}
             <MIconButton
               size="large"
               color="default"

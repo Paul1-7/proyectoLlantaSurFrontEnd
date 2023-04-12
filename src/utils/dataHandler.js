@@ -61,8 +61,8 @@ const productAmount = (product) => {
 
   const sucursales = product?.sucursales ?? [];
   let totalStock = 0;
-  sucursales.forEach(({ SucursalesProductos: suc }) => {
-    totalStock += suc.stock;
+  sucursales.forEach(({ Sucursales_Productos: _suc, SucursalesProductos: suc }) => {
+    totalStock += suc ? suc.stock : _suc.stock;
   });
 
   return totalStock;

@@ -58,11 +58,11 @@ export default function ShopProductCard({ product }) {
 
             <Typography variant="subtitle1">{getBOBCurrency(precioVenta)}</Typography>
           </Stack>
-          <Stack direction="row">
+          {/* <Stack direction="row">
             <MIconButton color="success" onClick={() => dispatch(addCart(product))}>
               <AddShoppingCart />
             </MIconButton>
-          </Stack>
+          </Stack> */}
         </Stack>
       </Stack>
     </Card>

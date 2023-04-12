@@ -5,8 +5,8 @@ import MainFooter from './MainFooter';
 
 export default function MainLayout() {
   const location = useLocation();
-  const { signIn, signUp, profile, verifyPhoneNumber } = PATH_MODULES.auth;
-  const paths = [signIn, signUp, profile, verifyPhoneNumber];
+  const { signIn, signUp, profile, verifyPhoneNumber, resetPasswordEmail: resetPassword } = PATH_MODULES.auth;
+  const paths = [signIn, signUp, profile, verifyPhoneNumber, resetPassword];
   const isPathIncluded = paths.some((path) => location.pathname.includes(path));
   return (
     <>

@@ -4,7 +4,7 @@ import * as yup from 'yup';
 const products = yup.object().shape({
   idProd: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  cantidad: yup.string().matches(regex.number, msg.number).required(),
+  cantidad: yup.number().min(1, 'el valor mínimo es 1').typeError('tiene que ser un número').required(),
   precioCompra: yup.number().required().typeError('El precio de venta debe ser un número'),
   precioVenta: yup
     .number()

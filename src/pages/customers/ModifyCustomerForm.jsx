@@ -24,7 +24,7 @@ import useAuth from '~/hooks/useAuth';
 const initialForm = {
   usuario: '',
   email: '',
-  password: '0',
+  password: '',
   passwordConfirmation: '',
   nombre: '',
   foto: '',

@@ -70,16 +70,17 @@ export default function ProductList({ products = [], onDelete, onIncreaseQuantit
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="center">Product</TableCell>
-            <TableCell align="center">Price</TableCell>
-            <TableCell align="center">Quantity</TableCell>
-            <TableCell align="center">Total Price</TableCell>
+            <TableCell align="center">Producto</TableCell>
+            <TableCell align="center">Precio</TableCell>
+            <TableCell align="center">Cantidad</TableCell>
+            <TableCell align="center">Precio Total</TableCell>
             <TableCell align="center" />
           </TableRow>
         </TableHead>
 
         <TableBody>
           {products.map((product) => {
+            console.log('TCL: ProductList -> o', product);
             const { id, nombre, precioVenta, quantity, imagen } = product;
             return (
               <TableRow key={id}>

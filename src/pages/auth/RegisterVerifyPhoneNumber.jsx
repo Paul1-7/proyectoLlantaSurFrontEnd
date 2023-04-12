@@ -142,7 +142,7 @@ export default function Register() {
               EL número ingresado ya existe en nuestros registros, si no recuerda su contraseña puede recuperarlo en el
               siguiente enlace abajo
             </Alert>
-            <Link component={RouterLink} variant="subtitle2" to={PATH_MODULES.auth.resetPassword}>
+            <Link component={RouterLink} variant="subtitle2" to={PATH_MODULES.auth.resetPasswordEmail}>
               ¿Ólvido su contraseña?
             </Link>
           </Stack>

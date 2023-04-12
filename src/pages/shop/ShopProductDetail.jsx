@@ -1,8 +1,8 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Stack, Box, Typography, Divider, Button, Tab, TextField } from '@mui/material';
 import { Image } from '~/components';
 import { useGetProductQuery } from '~/redux/api/productApi';
-import { ShopContainerListProducts, ShopCardReview, ShopReviewForm } from '~/components/shop';
+import { ShopContainerListProducts, ShopReviewForm } from '~/components/shop';
 import { getBOBCurrency, isCurrentDateInRange, isValidDiscount, productAmount } from '~/utils/dataHandler';
 import { AddShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -50,9 +50,6 @@ export default function ShopProductDetails() {
 
   const productAvailability = resGetFavorite?.descuentos?.at(0)?.cantMax ?? productAmount(resGetFavorite);
 
-  const handleOpenModalReview = () => {
-    setOpenModalReview(() => true);
-  };
   const handleCloseModalReview = () => {
     setOpenModalReview(() => false);
   };
@@ -73,25 +70,6 @@ export default function ShopProductDetails() {
   const handleChangeTabs = (_, newValue) => {
     setTabs(() => newValue);
   };
-
-  const example = [
-    {
-      id: 1,
-      user: 'un sor',
-      rating: 3,
-      title: 'Great product',
-      description: 'Great product description',
-      date: '11-12-2023',
-    },
-    {
-      id: 2,
-      user: 'un sor',
-      rating: 5,
-      title: 'nice product',
-      description: 'nice product description',
-      date: '11-12-2023',
-    },
-  ];
 
   useEffect(() => {
     axiosFetchGetFavorite({
@@ -204,7 +182,7 @@ export default function ShopProductDetails() {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2} justifyContent={{ xs: 'center', sm: 'start' }}>
-            <Button
+            {/* <Button
               variant="outlined"
               onClick={() => dispatch(addCart({ ...product, addQuantity: watch('amount') }))}
               color="primary"
@@ -212,7 +190,7 @@ export default function ShopProductDetails() {
               disabled={!productAvailability}
             >
               Agregar al carrito
-            </Button>
+            </Button> */}
             {isFavoriteProductToUser(idUsuario, resGetFavorite?.favoritos) ? (
               <Button variant="outlined" color="primary" onClick={onSubmitRemoveFavorite} startIcon={<Favorite />}>
                 Eliminar de favoritos
@@ -230,20 +208,10 @@ export default function ShopProductDetails() {
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChangeTabs} aria-label="tabs description and reviews">
               <Tab label="Descripcion" value="1" sx={{ typography: 'h6' }} />
-              <Tab label="Reviews" value="2" sx={{ typography: 'h6' }} />
             </TabList>
           </Box>
           <TabPanel value="1" sx={{ pt: 2 }}>
             {resGetFavorite?.descripcion}
-          </TabPanel>
-          <TabPanel value="2" sx={{ pt: 2 }}>
-            <Button variant="outlined" sx={{ mb: 1 }} onClick={handleOpenModalReview}>
-              Valora este producto
-            </Button>
-            {!example.length && <Typography align="center">No hay valoraciones de este producto</Typography>}
-            {example.map((review) => (
-              <ShopCardReview data={review} key={review.id} />
-            ))}
           </TabPanel>
         </TabContext>
       </Box>
