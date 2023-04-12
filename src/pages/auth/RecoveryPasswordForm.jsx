@@ -67,7 +67,7 @@ export default function RecoveryPasswordEmail() {
   return (
     <RootStyle title="Registrarse">
       <Typography variant="h4" gutterBottom align="center">
-        Registrate en Llanta sur
+        Registrate en SURLLANTAS
       </Typography>
       <FormProvider {...methodsRegister}>
         <form autoComplete="off" noValidate onSubmit={methodsRegister.handleSubmit(onSubmit)}>

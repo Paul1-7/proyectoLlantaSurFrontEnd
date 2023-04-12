@@ -3,8 +3,8 @@ export const pwaOptions = {
   base: '/',
   includeAssets: ['favicon/*.png', 'favicon/*.ico'],
   manifest: {
-    name: 'Llanta Sur',
-    short_name: 'Llanta Sur',
+    name: 'SURLLANTAS',
+    short_name: 'SURLLANTAS',
     description: 'Tienda de repuestos automotrices y todo tipo de llantas',
     display: 'fullscreen',
     theme_color: '#000000',

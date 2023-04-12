@@ -110,7 +110,7 @@ export default function Register() {
         <Stack direction="row" alignItems="center" sx={{ mb: 4 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" gutterBottom align="center">
-              Registrate en Llanta sur
+              SURLLANTAS
             </Typography>
           </Box>
         </Stack>

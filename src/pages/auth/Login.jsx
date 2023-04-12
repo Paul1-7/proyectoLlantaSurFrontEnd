@@ -110,7 +110,7 @@ export default function Login() {
         <Stack direction="row" alignItems="center" sx={{ mb: 3 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" gutterBottom>
-              Inicia sesión en Llanta Sur
+              Inicia sesión en SURLLANTAS
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Ingresa tus credenciales abajo.</Typography>
           </Box>

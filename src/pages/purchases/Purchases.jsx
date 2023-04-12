@@ -17,7 +17,7 @@ import { useSnackbar } from 'notistack';
 import { Sell } from '@mui/icons-material';
 import DataTableContext from '~/contexts/DataTableContext';
 
-const buttonsActions = { edit: true, remove: true, detail: true };
+const buttonsActions = { edit: false, remove: true, detail: true };
 
 const customData = ({ data }) => {
   const newData = data.map((item) => ({ ...item, usuario: item.usuario.apellido, proveedor: item.proveedor.nombre }));
