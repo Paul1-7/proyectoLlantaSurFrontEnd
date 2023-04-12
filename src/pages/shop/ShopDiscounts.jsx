@@ -73,8 +73,8 @@ function ShopDiscounts() {
               <Scrollbar sx={{ height: 1 }}>
                 <ShopFilter
                   loading={categories.isLoading || brands.isLoading || discountData.isLoading}
-                  categories={categories.data}
-                  brands={brands.data}
+                  categories={categories.data?.filter(({ estado }) => estado === 1)}
+                  brands={brands.data?.filter(({ estado }) => estado === 1)}
                   products={discountData.data.productos}
                   include={['priceRange', 'brands', 'categories']}
                 />
@@ -105,8 +105,8 @@ function ShopDiscounts() {
               >
                 <ShopFilter
                   loading={categories.isLoading || brands.isLoading || discountData.isLoading}
-                  categories={categories.data}
-                  brands={brands.data}
+                  categories={categories.data?.filter(({ estado }) => estado === 1)}
+                  brands={brands.data?.filter(({ estado }) => estado === 1)}
                   products={discountData.data.productos}
                   include={['priceRange', 'brands', 'categories']}
                 />

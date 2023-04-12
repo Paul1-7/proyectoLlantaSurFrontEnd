@@ -48,10 +48,12 @@ const ToolbarShadowStyle = styled('div')(({ theme }) => ({
 }));
 
 const mergeCategoriesIntoMenu = (categories, menu) => {
-  const categoriesMenu = categories?.map(({ nombre, url }) => ({
-    title: nombre,
-    path: `${PATH_MODULES.shop.categories}/${url}`,
-  }));
+  const categoriesMenu = categories
+    ?.filter(({ estado }) => estado === 1)
+    ?.map(({ nombre, url }) => ({
+      title: nombre,
+      path: `${PATH_MODULES.shop.categories}/${url}`,
+    }));
   return menu.map((item) =>
     item.title === 'Categorias'
       ? {

@@ -30,18 +30,20 @@ function ShopSidebarMain({ title }) {
         }
       >
         {categories.isSuccess &&
-          categories.data?.map(({ nombre, url }, index) => (
-            <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }} key={index}>
-              <Link
-                to={`${PATH_MODULES.shop.categories}/${url}`}
-                style={{ width: '100%', textDecoration: 'none', color: 'inherit' }}
-              >
-                <ListItemButton>
-                  <ListItemText primary={nombre} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
+          categories.data
+            ?.filter(({ estado }) => estado === 1)
+            ?.map(({ nombre, url }, index) => (
+              <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }} key={index}>
+                <Link
+                  to={`${PATH_MODULES.shop.categories}/${url}`}
+                  style={{ width: '100%', textDecoration: 'none', color: 'inherit' }}
+                >
+                  <ListItemButton>
+                    <ListItemText primary={nombre} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
       </List>
     </nav>
   );
