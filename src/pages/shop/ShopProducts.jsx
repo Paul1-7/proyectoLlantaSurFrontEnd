@@ -61,8 +61,8 @@ function ShopProducts() {
               <Scrollbar sx={{ height: 1 }}>
                 <ShopFilter
                   loading={brands.isLoading || categories.isLoading || products.isLoading}
-                  brands={brands.data}
-                  categories={categories.data}
+                  brands={brands.data?.filter(({ estado }) => estado === 1)}
+                  categories={categories.data?.filter(({ estado }) => estado === 1)}
                   products={products.data}
                   include={['priceRange', 'brands', 'categories', 'orderBy']}
                   handleCloseFilterMobile={handleCloseFilter}
@@ -93,8 +93,8 @@ function ShopProducts() {
               >
                 <ShopFilter
                   loading={brands.isLoading || categories.isLoading || products.isLoading}
-                  brands={brands.data}
-                  categories={categories.data}
+                  brands={brands.data?.filter(({ estado }) => estado === 1)}
+                  categories={categories.data?.filter(({ estado }) => estado === 1)}
                   products={products.data}
                   include={['priceRange', 'brands', 'categories', 'orderBy']}
                 />
