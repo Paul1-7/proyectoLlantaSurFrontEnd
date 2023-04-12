@@ -24,7 +24,6 @@ const initialForm = {
   numDoc: '',
   actividadEco: '',
   leyenda: '',
-  cantMinProd: '',
   email: '',
   tel: '',
   direccion: '',
@@ -146,13 +145,6 @@ export default function BusinessDataForm() {
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="leyenda" label="leyenda" multiline />
                 </Grid>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Controls.Input
-                  name="cantMinProd"
-                  label="Cantidad mínima de productos"
-                  helperText="el stock será de un color difente si la cantidad del producto es menor o igual a la ingresada en este campo"
-                />
               </Grid>
             </Fieldset>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>

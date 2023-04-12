@@ -3,7 +3,6 @@ import * as yup from 'yup';
 
 const businessData = yup.object().shape({
   numDoc: yup.string().matches(regex.number, msg.number).required(),
-  cantMinProd: yup.string().matches(regex.number, msg.number).required(),
   nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
   actividadEco: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
   leyenda: yup.string().required().matches(regex.alphaNumeric, msg.alphaNumeric),
