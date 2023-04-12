@@ -39,7 +39,9 @@ import {
   PURCHASES_REPORT_FREQUENCY_OPTIONS,
   PURCHASES_REPORT_SORT_OPTIONS,
 } from '~/constants/purchasesReport';
-import { getBOBCurrency } from '~/utils/dataHandler';
+import { getBOBCurrency, getDateTimeFormat } from '~/utils/dataHandler';
+import HeaderBussinessInfo from '~/components/HeaderBussinessInfo';
+import useAuth from '~/hooks/useAuth';
 
 const initialForm = {
   criterio: DEFAULT_VALUE_ITEM,
@@ -63,13 +65,25 @@ const styleTableCell = {
 };
 
 export default function PurchasesReport() {
+  const { auth } = useAuth();
+  const { nombre, apellido } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [showAllRows, setShowAllRows] = useState(true);
   const [resGetPurchase, errorGetPurchase, loadingGetPurchase, axiosFetchGetPurchase] = useAxios();
+  const [resGetBussinessInfo, errorGetBussinessInfo, loadingGetBussinessInfo, axiosFetchGetBussinessInfo] = useAxios();
+
   useSnackBarMessage({
-    errors: [errorGetPurchase],
+    errors: [errorGetPurchase, errorGetBussinessInfo],
   });
+
+  useEffect(() => {
+    axiosFetchGetBussinessInfo({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/datos-negocio`,
+    });
+  }, []);
 
   const methods = useForm({
     resolver: yupResolver(schema.purchasesReport),
@@ -125,7 +139,7 @@ export default function PurchasesReport() {
     <Page title="Reporte de compras">
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
-        open={loadingGetPurchase || loadingPrint}
+        open={loadingGetPurchase || loadingPrint || loadingGetBussinessInfo}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -212,16 +226,35 @@ export default function PurchasesReport() {
                 label="Mostrar solo las 10 primeras filas"
               />
             </FormGroup>
+            <HeaderBussinessInfo sx={{ display: 'none', displayPrint: 'block' }} data={resGetBussinessInfo} />
             <Typography gutterBottom variant="h3" align="center" sx={{ display: 'none', displayPrint: 'inherit' }}>
               Reporte de compras
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{ lineHeight: 1.5 }}
-            >{`Fecha del reporte: ${new Date().toLocaleDateString()}`}</Typography>
-            <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Criterio: ${
-              PURCHASES_REPORT_FREQUENCY_OPTIONS.find(({ id }) => id === watchValues.criterio)?.name
-            }`}</Typography>
+            <Grid container wrap="wrap">
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Criterio: ${
+                  PURCHASES_REPORT_FREQUENCY_OPTIONS.find(({ id }) => id === watchValues.criterio)?.name ?? ''
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Ordenado por: ${
+                  PURCHASES_REPORT_SORT_OPTIONS.find(({ id }) => id === watchValues.orderBy)?.name ?? ''
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, display: 'none', displayPrint: 'inherit' }}
+                >{`Fecha del reporte: ${getDateTimeFormat(new Date())}`}</Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ display: 'none', displayPrint: 'inherit' }}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5 }}
+                >{`Realizado por: ${nombre} ${apellido}`}</Typography>
+              </Grid>
+            </Grid>
+
             <TableContainer sx={{ paddingTop: '1rem' }}>
               <Table>
                 <TableHead>

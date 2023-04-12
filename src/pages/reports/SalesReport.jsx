@@ -40,6 +40,9 @@ import {
 } from '~/constants/salesReport';
 import { add } from 'date-fns';
 import { TABLE_STATES } from '~/constants/dataTable';
+import { getDateTimeFormat } from '~/utils/dataHandler';
+import HeaderBussinessInfo from '~/components/HeaderBussinessInfo';
+import useAuth from '~/hooks/useAuth';
 
 const customDataSubsidiary = ({ data }) => {
   const newData = data.map(({ id, nombre }) => ({ id, name: nombre }));
@@ -68,6 +71,8 @@ const styleTableCell = {
 };
 
 export default function SalesReport() {
+  const { auth } = useAuth();
+  const { nombre, apellido } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
   const [showAllRows, setShowAllRows] = useState(true);
@@ -75,8 +80,11 @@ export default function SalesReport() {
   const [resGetSubsidiary, errorGetSubsidiary, loadingGetSubsidiary, axiosFetchGetSubsidiary] = useAxios({
     responseCb: customDataSubsidiary,
   });
+  const [resGetBussinessInfo, errorGetBussinessInfo, loadingGetBussinessInfo, axiosFetchGetBussinessInfo] = useAxios();
+  const subsidiaries = [...resGetSubsidiary, ...ITEM_TO_ALL_REPORT_SUBSIDIARIES];
+
   useSnackBarMessage({
-    errors: [errorGetSale, errorGetSubsidiary],
+    errors: [errorGetSale, errorGetSubsidiary, errorGetBussinessInfo],
   });
 
   const methods = useForm({
@@ -98,6 +106,11 @@ export default function SalesReport() {
       axiosInstance: axiosPrivate,
       method: 'GET',
       url: `/api/v1/sucursales`,
+    });
+    axiosFetchGetBussinessInfo({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/datos-negocio`,
     });
   }, []);
 
@@ -136,7 +149,7 @@ export default function SalesReport() {
     return resGetSale.map(({ codVenta, fecha, tipoVenta, cliente, vendedor, sucursal, total }) => ({
       codVenta,
       fecha,
-      tipoVenta: TABLE_STATES.salesTypes[tipoVenta].name,
+      tipoVenta: TABLE_STATES.salesTypes[tipoVenta]?.name,
       cliente: cliente.ciNit,
       vendedor: vendedor.apellido,
       sucursal: sucursal.nombre,
@@ -148,7 +161,7 @@ export default function SalesReport() {
     <Page title="Reporte de ventas">
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
-        open={loadingGetSale || loadingGetSubsidiary || loadingPrint}
+        open={loadingGetSale || loadingGetSubsidiary || loadingPrint || loadingGetBussinessInfo}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -167,11 +180,7 @@ export default function SalesReport() {
                 <Controls.Select name="criterio" label="Criterios" items={SALES_REPORT_FREQUENCY_OPTIONS} />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controls.Select
-                  name="sucursal"
-                  label="Sucursal"
-                  items={[...resGetSubsidiary, ...ITEM_TO_ALL_REPORT_SUBSIDIARIES]}
-                />
+                <Controls.Select name="sucursal" label="Sucursal" items={subsidiaries} />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controls.Select name="orderBy" label="Ordenar por" items={SALES_REPORT_SORT_OPTIONS} />
@@ -242,16 +251,39 @@ export default function SalesReport() {
                 label="Mostrar solo las 10 primeras filas"
               />
             </FormGroup>
+            <HeaderBussinessInfo sx={{ display: 'none', displayPrint: 'block' }} data={resGetBussinessInfo} />
             <Typography gutterBottom variant="h3" align="center" sx={{ display: 'none', displayPrint: 'inherit' }}>
               Reporte de ventas
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{ lineHeight: 1.5 }}
-            >{`Fecha del reporte: ${new Date().toLocaleDateString()}`}</Typography>
-            <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Criterio: ${
-              SALES_REPORT_FREQUENCY_OPTIONS.find(({ id }) => id === watchValues.criterio)?.name
-            }`}</Typography>
+            <Grid container wrap="wrap">
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Ordenado por: ${
+                  SALES_REPORT_SORT_OPTIONS.find(({ id }) => id === watchValues.orderBy)?.name ?? ''
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Criterio: ${
+                  SALES_REPORT_FREQUENCY_OPTIONS.find(({ id }) => id === watchValues.criterio)?.name ?? ''
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Sucursal: ${
+                  subsidiaries.find(({ id }) => id === watchValues.sucursal.toString())?.name ?? ''
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, display: 'none', displayPrint: 'inherit' }}
+                >{`Fecha del reporte: ${getDateTimeFormat(new Date())}`}</Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ display: 'none', displayPrint: 'inherit' }}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5 }}
+                >{`Realizado por: ${nombre} ${apellido}`}</Typography>
+              </Grid>
+            </Grid>
             <TableContainer sx={{ paddingTop: '1rem' }}>
               <Table>
                 <TableHead>
@@ -278,9 +310,7 @@ export default function SalesReport() {
                       <TableCell align="center" sx={styleTableCell}>
                         {new Date(sale.fecha).toLocaleDateString()}
                       </TableCell>
-                      <TableCell align="center" sx={styleTableCell}>
-                        {TABLE_STATES.salesTypes[sale.tipoVenta].name}
-                      </TableCell>
+
                       <TableCell align="center" sx={styleTableCell}>
                         {sale.cliente.ciNit}
                       </TableCell>

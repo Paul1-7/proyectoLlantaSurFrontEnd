@@ -24,8 +24,6 @@ import useSettings from '~/hooks/useSettings';
 import BreadcrumbsCustom from '~/components/BreadcrumbsCustom';
 import { PictureAsPdf, TableView } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack';
-import SnackBar from '~/components/SnackBar';
 import { FormProvider, useForm } from 'react-hook-form';
 import Controls from '~/components/forms/Control';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -38,6 +36,10 @@ import {
   ITEM_INVENTORY_REPORT_CRITERIA,
   ITEM_INVENTORY_REPORT_SUBSIDIARIES,
 } from '~/constants/inventaryReport';
+import useAuth from '~/hooks/useAuth';
+import useSnackBarMessage from '~/hooks/useSnackBarMessage';
+import HeaderBussinessInfo from '~/components/HeaderBussinessInfo';
+import { getDateTimeFormat } from '~/utils/dataHandler';
 
 const customDataSubsidiary = ({ data }) => {
   const newData = data.map(({ id, nombre }) => ({ id, name: nombre }));
@@ -63,14 +65,17 @@ const styleTableCell = {
 };
 
 export default function InventoryReport() {
+  const { auth } = useAuth();
+  const { nombre, apellido } = auth?.user ?? {};
   const axiosPrivate = useAxiosPrivate();
   const { themeStretch } = useSettings();
-  const { enqueueSnackbar } = useSnackbar();
   const [showAllRows, setShowAllRows] = useState(true);
   const [resGet, errorGet, loadingGet, axiosFetchGet] = useAxios();
   const [resGetSubsidiary, errorGetSubsidiary, loadingGetSubsidiary, axiosFetchGetSubsidiary] = useAxios({
     responseCb: customDataSubsidiary,
   });
+  const [resGetBussinessInfo, errorGetBussinessInfo, loadingGetBussinessInfo, axiosFetchGetBussinessInfo] = useAxios();
+  useSnackBarMessage({ errors: [errorGetSubsidiary, errorGetBussinessInfo, errorGet] });
 
   const methods = useForm({
     resolver: yupResolver(schema.inventaryReport),
@@ -78,7 +83,7 @@ export default function InventoryReport() {
     mode: 'all',
     criteriaMode: 'all',
   });
-
+  const subsidiaries = [...resGetSubsidiary, ...ITEM_INVENTORY_REPORT_SUBSIDIARIES];
   const criterio = methods.watch('criterio');
   const sucursal = methods.watch('sucursal');
 
@@ -94,6 +99,12 @@ export default function InventoryReport() {
       method: 'GET',
       url: `/api/v1/sucursales`,
     });
+
+    axiosFetchGetBussinessInfo({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/datos-negocio`,
+    });
   }, []);
 
   useEffect(() => {
@@ -107,27 +118,6 @@ export default function InventoryReport() {
       url,
     });
   }, [criterio, sucursal]);
-
-  useEffect(() => {
-    const severity = 'error';
-    let message = null;
-
-    if (Array.isArray(resGet) && errorGet) {
-      message = errorGet?.message;
-    }
-
-    if (Array.isArray(resGetSubsidiary) && errorGetSubsidiary) {
-      message = errorGetSubsidiary?.message;
-    }
-
-    if (message) {
-      enqueueSnackbar(message, {
-        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-        autoHideDuration: 5000,
-        content: (key, message) => <SnackBar id={key} message={message} severity={severity} />,
-      });
-    }
-  }, [errorGet]);
 
   const getStockSubsidiariesToCSV = (subsidiaries, columnsName) => {
     const productEntries = subsidiaries.map(({ stock }, index) => [columnsName[index].displayname, stock]);
@@ -158,7 +148,7 @@ export default function InventoryReport() {
     <Page title="Reporte del inventario">
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
-        open={loadingGet || loadingGetSubsidiary || loadingPrint}
+        open={loadingGet || loadingGetSubsidiary || loadingPrint || loadingGetBussinessInfo}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -177,11 +167,7 @@ export default function InventoryReport() {
                 <Controls.Select name="criterio" label="Criterios" items={ITEM_INVENTORY_REPORT_CRITERIA} />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controls.Select
-                  name="sucursal"
-                  label="Sucursal"
-                  items={[...resGetSubsidiary, ...ITEM_INVENTORY_REPORT_SUBSIDIARIES]}
-                />
+                <Controls.Select name="sucursal" label="Sucursal" items={subsidiaries} />
               </Grid>
             </Grid>
             {!!resGet.length && (
@@ -227,16 +213,35 @@ export default function InventoryReport() {
                 label="Mostrar solo las 10 primeras filas"
               />
             </FormGroup>
+            <HeaderBussinessInfo sx={{ display: 'none', displayPrint: 'block' }} data={resGetBussinessInfo} />
             <Typography gutterBottom variant="h3" align="center" sx={{ display: 'none', displayPrint: 'inherit' }}>
               Reporte de Inventario
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{ lineHeight: 1.5 }}
-            >{`Fecha del reporte: ${new Date().toLocaleDateString()}`}</Typography>
-            <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Criterio: ${
-              ITEM_INVENTORY_REPORT_CRITERIA.find(({ id }) => id === criterio)?.name
-            }`}</Typography>
+            <Grid container wrap="wrap">
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Criterio: ${
+                  ITEM_INVENTORY_REPORT_CRITERIA.find(({ id }) => id === criterio)?.name
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2" sx={{ lineHeight: 1.5 }}>{`Sucursal: ${
+                  subsidiaries.find(({ id }) => id === sucursal.toString())?.name ?? ''
+                }`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, display: 'none', displayPrint: 'inherit' }}
+                >{`Fecha del reporte: ${getDateTimeFormat(new Date())}`}</Typography>
+              </Grid>
+              <Grid item xs={6} sx={{ display: 'none', displayPrint: 'inherit' }}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5 }}
+                >{`Realizado por: ${nombre} ${apellido}`}</Typography>
+              </Grid>
+            </Grid>
+
             <TableContainer sx={{ paddingTop: '1rem' }}>
               <Table>
                 <TableHead>

@@ -50,7 +50,6 @@ export const COLUMN_SALES_REPORT_PDF = [
   'N°',
   'Código de venta',
   'Fecha',
-  'Tipo de venta',
   'CI/NIT cliente',
   'Vendedor',
   'Sucursal',
@@ -60,9 +59,8 @@ export const COLUMN_SALES_REPORT_PDF = [
 export const COLUMNS_CSV_SALES_REPORT = [
   { displayName: 'Código de venta', id: 'codVenta' },
   { displayName: 'Fecha', id: 'fecha' },
-  { displayName: 'Tipo de venta', id: 'tipoVenta' },
   { displayName: 'CI/NIT cliente', id: 'cliente' },
   { displayName: 'Vendedor', id: 'vendedor' },
   { displayName: 'Sucursal', id: 'sucursal' },
-  { displayName: 'Total', id: 'total' },
+  { displayName: 'Total (Bs.)', id: 'total' },
 ];
