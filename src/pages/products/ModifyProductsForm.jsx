@@ -19,7 +19,7 @@ import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
-import ProductsSubsidiaries from './ProductsSubsidiaries';
+import { formDataAxios } from '~/apis/apis';
 
 const initialForm = {
   nombre: '',
@@ -84,7 +84,9 @@ export default function ModifyProductForm() {
     const formData = new FormData();
 
     Object.entries(data)
+
       .map(([key, value]) => {
+        if (key === 'imagen' && value !== null) return [key, value];
         if (typeof value === 'object' && value !== null) {
           return [key, value.id];
         }
@@ -99,10 +101,9 @@ export default function ModifyProductForm() {
         } else formData.append(key, value);
       });
     axiosFetchPut({
-      axiosInstance: axiosPrivate,
+      axiosInstance: formDataAxios,
       method: 'PUT',
       url: `/api/v1/productos/${id}`,
-      headers: { 'Content-Type': 'multipart/form-data' },
       requestConfig: formData,
     });
   };
@@ -200,7 +201,6 @@ export default function ModifyProductForm() {
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="nombre" label="Nombre" />
                 </Grid>
-
                 <Grid item xs={12} md={6}>
                   <Controls.Input name="precioCompra" label="Precio de compra" />
                 </Grid>
@@ -247,6 +247,7 @@ export default function ModifyProductForm() {
                   />
                 </Grid>
                 {/* <ProductsSubsidiaries /> */}
+                <Grid item>* se recomienda imagenes cuadradas</Grid>
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>
             </Fieldset>

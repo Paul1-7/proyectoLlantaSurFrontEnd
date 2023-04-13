@@ -46,6 +46,7 @@ export default function UploadSingleFile({ error, file, onChange, onDrop, sx, ..
         message: `El tamaño de la imagen tiene que ser menor a 1MB`,
       };
     }
+
     return null;
   }
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({

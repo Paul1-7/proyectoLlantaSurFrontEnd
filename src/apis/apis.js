@@ -7,3 +7,8 @@ export default axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
 });
+
+export const formDataAxios = axios.create({
+  baseURL: BASE_URL,
+  headers: { 'Content-Type': 'multipart/form-data' },
+});

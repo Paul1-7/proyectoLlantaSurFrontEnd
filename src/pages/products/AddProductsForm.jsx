@@ -19,6 +19,7 @@ import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
+import { formDataAxios } from '~/apis/apis';
 import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
@@ -77,28 +78,29 @@ export default function AddProductsForm() {
   const onSubmit = (data) => {
     const formData = new FormData();
 
-    Object.entries(data)
-      .map(([key, value]) => {
-        if (typeof value === 'object' && value !== null) {
-          return [key, value.id];
-        }
-        return [key, value];
-      })
-      .forEach(([key, value]) => {
-        if (key === 'imagen' && value !== null) {
-          formData.append('imagen', value?.file, value?.file?.name);
-        }
+    const newData = Object.entries(data).map(([key, value]) => {
+      if (key === 'imagen' && value !== null) return [key, value];
+      if (typeof value === 'object' && value !== null) {
+        return [key, value.id];
+      }
+      return [key, value];
+    });
 
-        if (key === 'sucursales') {
-          formData.append(key, JSON.stringify(value));
-        } else formData.append(key, value);
-      });
+    newData.forEach(([key, value]) => {
+      if (key === 'imagen' && value !== null) {
+        formData.append('imagen', value?.file, value?.file?.name);
+        return;
+      }
+
+      if (key === 'sucursales') {
+        formData.append(key, JSON.stringify(value));
+      } else formData.append(key, value);
+    });
 
     axiosFetchPost({
-      axiosInstance: axiosPrivate,
+      axiosInstance: formDataAxios,
       method: 'POST',
       url: `/api/v1/productos`,
-      headers: { 'Content-Type': 'multipart/form-data' },
       requestConfig: formData,
     });
   };
@@ -173,6 +175,7 @@ export default function AddProductsForm() {
                   />
                 </Grid>
                 {/* <ProductsSubsidiaries /> */}
+                <Grid item>* se recomienda imagenes cuadradas</Grid>
                 <Controls.Dropzone name="imagen" sx={{ paddingLeft: '1rem' }} />
               </Grid>
             </Fieldset>
