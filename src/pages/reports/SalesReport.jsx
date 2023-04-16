@@ -38,7 +38,7 @@ import {
   SALES_REPORT_FREQUENCY_OPTIONS,
   SALES_REPORT_SORT_OPTIONS,
 } from '~/constants/salesReport';
-import { add } from 'date-fns';
+import { add, addHours } from 'date-fns';
 import { TABLE_STATES } from '~/constants/dataTable';
 import { getDateTimeFormat } from '~/utils/dataHandler';
 import HeaderBussinessInfo from '~/components/HeaderBussinessInfo';
@@ -116,7 +116,7 @@ export default function SalesReport() {
 
   useEffect(() => {
     let dateStart;
-    let dateEnd;
+    let dateEnd = new Date();
 
     if (
       watchValues.criterio === DEFAULT_VALUE_ITEM ||
@@ -136,7 +136,8 @@ export default function SalesReport() {
 
     if (!dateStart || !dateEnd) return;
 
-    const url = `/api/v1/ventas/report/?dateStart=${dateStart}&dateEnd=${dateEnd}&orderBy=${watchValues.orderBy}&subsidiary=${watchValues.sucursal}`;
+    const dateEndMoreHr = addHours(new Date(dateEnd), 1);
+    const url = `/api/v1/ventas/report/?dateStart=${dateStart}&dateEnd=${dateEndMoreHr}&orderBy=${watchValues.orderBy}&subsidiary=${watchValues.sucursal}`;
 
     axiosFetchGetSale({
       axiosInstance: axiosPrivate,
@@ -321,7 +322,7 @@ export default function SalesReport() {
                         {sale.sucursal.nombre}
                       </TableCell>
                       <TableCell align="center" sx={styleTableCell}>
-                        {sale.total}
+                        {Number(sale.total).toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))}

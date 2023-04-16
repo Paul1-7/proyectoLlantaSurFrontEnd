@@ -25,6 +25,7 @@ import { getBOBCurrency } from '~/utils/dataHandler';
 import { usePrint } from '~/hooks/usePrint';
 import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
+import HeaderBussinessInfo from '~/components/HeaderBussinessInfo';
 
 const getTotal = (items) => items.reduce((prev, current) => prev + current.precioUni * current.cantidad, 0);
 
@@ -119,6 +120,7 @@ export default function DetailSeel() {
               minWidth: '720px',
             }}
           >
+            <HeaderBussinessInfo data={resGetBusinessData} sx={{ display: 'none', displayPrint: 'block', mb: 2 }} />
             <Grid container wrap="wrap" justifyContent="space-between">
               <Grid item>
                 <Typography variant="subtitle1" align="center">

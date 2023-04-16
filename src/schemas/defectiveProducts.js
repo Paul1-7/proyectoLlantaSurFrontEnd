@@ -13,6 +13,7 @@ const data = yup.object().shape({
   cantidad: yup
     .number()
     .required()
+    .typeError('solo se permiten números')
     .test('stockCheck', 'La cantidad no puede ser mayor al stock', (val, e) => {
       const stock = e.parent.stock ? Number(e.parent.stock) : null;
       const cantidad = val ? Number(val) : null;

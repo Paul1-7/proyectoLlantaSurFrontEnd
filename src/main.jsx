@@ -13,25 +13,25 @@ import Scrollbar from './components/Scrollbar';
 import { AuthProvider } from './contexts/AuthProvider';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <HelmetProvider>
-        <SettingsProvider>
-          <CollapseDrawerProvider>
-            <BrowserRouter>
-              <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                  <SnackbarProvider maxSnack={3}>
-                    <Scrollbar sx={{ height: 1 }}>
-                      <App />
-                    </Scrollbar>
-                  </SnackbarProvider>
-                </PersistGate>
-              </Provider>
-            </BrowserRouter>
-          </CollapseDrawerProvider>
-        </SettingsProvider>
-      </HelmetProvider>
-    </AuthProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <AuthProvider>
+    <HelmetProvider>
+      <SettingsProvider>
+        <CollapseDrawerProvider>
+          <BrowserRouter>
+            <Provider store={store}>
+              <PersistGate loading={null} persistor={persistor}>
+                <SnackbarProvider maxSnack={3}>
+                  <Scrollbar sx={{ height: 1 }}>
+                    <App />
+                  </Scrollbar>
+                </SnackbarProvider>
+              </PersistGate>
+            </Provider>
+          </BrowserRouter>
+        </CollapseDrawerProvider>
+      </SettingsProvider>
+    </HelmetProvider>
+  </AuthProvider>,
+  /* </React.StrictMode>, */
 );

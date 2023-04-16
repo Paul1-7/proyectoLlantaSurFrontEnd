@@ -32,7 +32,7 @@ import { DEFAULT_VALUE_ITEM } from '~/constants/items';
 import { usePrint } from '~/hooks/usePrint';
 import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
-import { add } from 'date-fns';
+import { add, addHours } from 'date-fns';
 import {
   COLUMNS_CSV_PURCHASES_REPORT,
   COLUMN_PURCHASES_REPORT_PDF,
@@ -115,8 +115,9 @@ export default function PurchasesReport() {
     }
 
     if (!dateStart || !dateEnd) return;
+    const dateEndMoreHr = addHours(new Date(dateEnd), 1);
 
-    const url = `/api/v1/compras/report/?dateStart=${dateStart}&dateEnd=${dateEnd}&orderBy=${watchValues.orderBy}`;
+    const url = `/api/v1/compras/report/?dateStart=${dateStart}&dateEnd=${dateEndMoreHr}&orderBy=${watchValues.orderBy}`;
 
     axiosFetchGetPurchase({
       axiosInstance: axiosPrivate,

@@ -117,7 +117,8 @@ export default function Sales() {
           loading={loadingGet}
           numeration
           btnActions={buttonsActions}
-          orderByDefault="codVenta"
+          orderByDefault="fecha"
+          orderDesc
         />
       </Container>
     </Page>

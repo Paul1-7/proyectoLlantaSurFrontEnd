@@ -3,10 +3,9 @@ import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 import { objectByString } from '~/utils/dataHandler';
-import compare from 'just-compare';
 
 const InputMemo = memo(
-  ({ name, label, isArray, helperText, methods, variant = null, ...others }) => {
+  ({ name, label, isArray, helperText, methods, HelperTextProps, variant = null, ...others }) => {
     const error = methods.formState.errors;
 
     const errorValue = isArray ? objectByString(error, name) : error[name];
@@ -23,6 +22,7 @@ const InputMemo = memo(
             error={!!errorValue}
             helperText={errorValue?.message ?? helperText ?? ' '}
             fullWidth
+            FormHelperTextProps={HelperTextProps}
             size="small"
             {...others}
             {...field}
@@ -49,5 +49,6 @@ InputMemo.propTypes = {
   label: PropTypes.string.isRequired,
   others: PropTypes.node,
   methods: PropTypes.object,
+  HelperTextProps: PropTypes.object,
   isArray: PropTypes.bool,
 };

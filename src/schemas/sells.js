@@ -8,10 +8,14 @@ const products = yup.object().shape({
 
 const sells = yup.object().shape({
   fecha: yup.string().required(),
-  idCliente: yup.object().shape({
-    id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
-    nombre: yup.string().required(),
-  }),
+  idCliente: yup
+    .object()
+    .shape({
+      id: yup.string().notOneOf(['0'], 'El id no puede ser cero'),
+      nombre: yup.string(),
+    })
+    .required()
+    .test('idProv-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
   idVendedor: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   idSucursal: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric),
   productos: yup.array().of(products).required().min(1),

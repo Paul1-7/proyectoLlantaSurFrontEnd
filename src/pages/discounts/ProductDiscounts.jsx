@@ -75,7 +75,7 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
       {fields.length ? (
         <Box sx={{ marginTop: '16px' }}>
           {fields.map((item, index) => (
-            <Grid container wrap="wrap" spacing={1} key={item.id}>
+            <Grid container wrap="wrap" spacing={1} key={item.id} sx={{ position: 'relative' }}>
               <Grid item xs={12} md={1} sx={{ textAlign: 'center' }}>
                 <MIconButton
                   aria-label="eliminar"
@@ -92,8 +92,21 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
               <Grid item xs={12} md={6}>
                 <Controls.Input label="Producto" disabled name={`productos.${index}.nombre`} isArray />
               </Grid>
-              <Grid item xs={12} md={2}>
-                <Controls.Input label="Cantidad maxima" name={`productos.${index}.cantMax`} isArray type="number" />
+              <Grid item xs={12} md={2} sx={{ position: 'static' }}>
+                <Controls.Input
+                  label="Cantidad maxima"
+                  name={`productos.${index}.cantMax`}
+                  isArray
+                  type="number"
+                  HelperTextProps={{
+                    sx: {
+                      position: { md: 'absolute' },
+                      left: { md: '-15rem', lg: '-17rem' },
+                      bottom: '-1.2rem',
+                      width: '20rem',
+                    },
+                  }}
+                />
               </Grid>
               <Grid item xs={12} md={3}>
                 <Controls.Input label="Precio" name={`productos.${index}.precio`} isArray />
@@ -102,9 +115,7 @@ function ProductsDiscounts({ data = null, products = [], existDataToLoad = false
           ))}
         </Box>
       ) : (
-        <Box
-          sx={{ marginTop: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
-        >
+        <Box sx={{ marginTop: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Typography variant="subtitle2">No hay productos seleccionados</Typography>
         </Box>
       )}

@@ -64,10 +64,11 @@ export default function AddSellsForm() {
   const customDataProducts = ({ data }) => {
     const newData = data
       .filter(({ estado }) => estado === 1)
-      .map(({ id, nombre, precioVenta, sucursales }) => ({
+      .map(({ id, nombre, precioVenta, sucursales, stockMin }) => ({
         id,
         nombre,
         precio: precioVenta,
+        stockMin,
         cantidad: currentSubsidiaryStock(idSuc, sucursales),
       }));
 
@@ -157,13 +158,17 @@ export default function AddSellsForm() {
                   <Grid item xs={12} md={6}>
                     <TextField fullWidth size="small" disabled value={nombreSucursal} label="sucursal" />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={6} sx={{ display: 'flex', gap: 1, position: 'relative' }}>
                     <Controls.Autocomplete
                       name="idCliente"
                       label="Cliente"
                       items={resGetCustomers}
                       loading={loadingGetCustomers}
+                      HelperTextProps={{ sx: { position: 'absolute', bottom: '-.5rem', left: '1rem' } }}
                     />
+                    <Button LinkComponent={Link} to={PATH_MODULES.customers.new} variant="outlined" size="small">
+                      Nuevo cliente
+                    </Button>
                   </Grid>
                 </Grid>
                 <Grid container spacing={2} direction={{ md: 'row-reverse' }}>

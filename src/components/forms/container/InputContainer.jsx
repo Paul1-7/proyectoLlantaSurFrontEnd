@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import InputMemo from '../Input';
 
-function Input({ name, label, isArray, helperText, variant, ...others }) {
+function Input({ name, label, isArray, helperText, HelperTextProps, variant, ...others }) {
   const methods = useFormContext();
   return (
     <InputMemo
@@ -13,6 +13,7 @@ function Input({ name, label, isArray, helperText, variant, ...others }) {
       {...others}
       variant={variant}
       helperText={helperText}
+      HelperTextProps={HelperTextProps}
     />
   );
 }
@@ -26,4 +27,5 @@ Input.propTypes = {
   variant: PropTypes.string,
   others: PropTypes.node,
   isArray: PropTypes.bool,
+  HelperTextProps: PropTypes.object,
 };

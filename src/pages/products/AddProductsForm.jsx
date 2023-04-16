@@ -20,7 +20,6 @@ import SnackBar from '~/components/SnackBar';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
 import { Link } from 'react-router-dom';
 import { formDataAxios } from '~/apis/apis';
-import ProductsSubsidiaries from './ProductsSubsidiaries';
 
 const initialForm = {
   nombre: '',

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Divider } from '@mui/material';
-import { formatDateToLocal } from '~/utils/dataHandler';
+import { getDateTimeFormat } from '~/utils/dataHandler';
 import Fieldset from '../forms/Fieldset';
 
 function DefectivesProductsHistory({ data }) {
@@ -21,7 +21,7 @@ function DefectivesProductsHistory({ data }) {
               </Grid>
               <Grid item container gap={1} xs={6} sm={4}>
                 <Typography sx={{ fontWeight: 'bold' }}>Fecha:</Typography>
-                <Typography>{formatDateToLocal(fecha)}</Typography>
+                <Typography>{getDateTimeFormat(fecha)}</Typography>
               </Grid>
               <Grid item container gap={1} xs={6} sm={4}>
                 <Typography sx={{ fontWeight: 'bold' }}>Producto:</Typography>

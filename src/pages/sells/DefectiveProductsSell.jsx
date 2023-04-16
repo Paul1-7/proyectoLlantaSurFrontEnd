@@ -74,8 +74,21 @@ function DefectiveProductsSell({ data = [] }) {
             <Grid item xs={12} sm={1}>
               <Controls.Input label="Stock disponible" disabled name={`data.${index}.stock`} isArray />
             </Grid>
-            <Grid item xs={12} sm={1}>
-              <Controls.Input label="Cantidad a cambiar" name={`data.${index}.cantidad`} isArray type="number" />
+            <Grid item xs={12} sm={1} sx={{ position: 'relative' }}>
+              <Controls.Input
+                label="Cantidad a cambiar"
+                name={`data.${index}.cantidad`}
+                isArray
+                type="number"
+                HelperTextProps={{
+                  sx: {
+                    position: { md: 'absolute' },
+                    right: '-10rem',
+                    bottom: '-1.2rem',
+                    width: '20rem',
+                  },
+                }}
+              />
             </Grid>
             <Grid item xs={12} sm={5} sx={{ mb: { xs: 3, sm: 0 } }}>
               <Controls.Input label="Descripcion" name={`data.${index}.descripcion`} isArray />

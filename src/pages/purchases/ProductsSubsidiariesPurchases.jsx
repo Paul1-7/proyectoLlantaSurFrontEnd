@@ -8,7 +8,7 @@ import Controls from '~/components/forms/Control';
 import useSnackBarMessage from '~/hooks/useSnackBarMessage';
 
 const customDataSubsidiaries = ({ data }) => {
-  const newData = data.map(({ id, nombre }) => ({ idSuc: id, nombre, stock: 1 }));
+  const newData = data.filter(({ estado }) => estado === 1).map(({ id, nombre }) => ({ idSuc: id, nombre, stock: 1 }));
   return { data: newData };
 };
 

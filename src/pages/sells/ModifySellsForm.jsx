@@ -106,6 +106,13 @@ export default function ModifySell() {
   const onSubmit = ({ data }) => {
     const filteredData = data.map((value) => ({ ...value, idSuc: idSucursal })).filter(({ cantidad }) => cantidad > 0);
 
+    if (!filteredData.length)
+      return enqueueSnackbar('No agrego alguna cantidad', {
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        autoHideDuration: 5000,
+        content: (key, message) => <SnackBar id={key} message={message} severity="error" />,
+      });
+
     axiosFetchPost({
       axiosInstance: axiosPrivate,
       method: 'POST',

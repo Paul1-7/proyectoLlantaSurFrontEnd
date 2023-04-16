@@ -20,7 +20,6 @@ export default function Shop() {
   const productsData = useGetProductsQuery();
   const productsDiscounts = useGetDiscountsQuery();
   const someBestSellingProducts = bestSellingProducts.data?.slice(0, 5) ?? [];
-
   useEffect(() => {
     if (!productsData.isError || !bestSellingProducts.isError) return;
 
@@ -59,6 +58,7 @@ export default function Shop() {
           !productsDiscounts.isError &&
           productsDiscounts.data
             .filter((product) => isValidDiscount(product))
+            .filter(({ estado }) => estado === 1)
             .map(({ nombre, id, productos }) => {
               return (
                 <Fragment key={id}>
