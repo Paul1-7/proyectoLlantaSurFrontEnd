@@ -162,6 +162,9 @@ export default function MenuDesktop({ isOffset, isHome, navConfig }) {
   if (isClientRol(auth?.user.roles)) {
     navItems = navItems.filter(({ title }) => title !== 'Administración');
   }
+  if (!auth?.user.roles) {
+    navItems = navItems.filter(({ title }) => title !== 'Administración');
+  }
 
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);

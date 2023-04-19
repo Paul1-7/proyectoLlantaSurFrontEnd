@@ -37,6 +37,10 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
     navItems = navItems.filter(({ title }) => title !== 'Administración');
   }
 
+  if (!auth?.user.roles) {
+    navItems = navItems.filter(({ title }) => title !== 'Administración');
+  }
+
   const handleDrawerOpen = () => {
     setMobileOpen(true);
   };

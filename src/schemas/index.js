@@ -24,6 +24,7 @@ import sliderImages from './sliderImages';
 import recoveryPasswordForm from './recoveryPasswordForm';
 import recoveryPasswordEmail from './recoveryPasswordEmail';
 import interBranchMovements from './interBranchMovements';
+import profile from './profile';
 
 const schema = {
   customer,
@@ -52,6 +53,7 @@ const schema = {
   recoveryPasswordForm,
   recoveryPasswordEmail,
   interBranchMovements,
+  profile,
 };
 
 export default schema;

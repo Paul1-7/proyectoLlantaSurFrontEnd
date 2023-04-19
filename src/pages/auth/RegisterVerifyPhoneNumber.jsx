@@ -56,18 +56,27 @@ export default function Register() {
   const [resPostPhoneNumber, errorPostPhoneNumber, loadingPostPhoneNumber, axiosFetchPostPhoneNumber] = useAxios({
     intervalClearError: 10 * 1000,
   });
+
   const [existPhoneNumer, setExistPhoneNumer] = useState(STATES_RESGISTER.INITIAL);
   useSnackBarMessage({
     errors: [errorPostPhoneNumber],
   });
 
   useEffect(() => {
+    let stateToPhone = STATES_RESGISTER.INITIAL;
     if (Array.isArray(resPostPhoneNumber)) return;
-    setExistPhoneNumer(() => {
-      if (resPostPhoneNumber?.message) return STATES_RESGISTER.REGISTER;
-      if (resPostPhoneNumber?.celular) return STATES_RESGISTER.EXIST_PHONE_NUMBER;
-      return STATES_RESGISTER.INITIAL;
-    });
+
+    if (resPostPhoneNumber?.message) {
+      stateToPhone = STATES_RESGISTER.REGISTER;
+    }
+    if (resPostPhoneNumber?.celular) {
+      stateToPhone = STATES_RESGISTER.EXIST_PHONE_NUMBER;
+    }
+    setExistPhoneNumer(stateToPhone);
+
+    const interval = setInterval(() => {}, 300);
+
+    return () => clearInterval(interval);
   }, [resPostPhoneNumber]);
 
   const methods = useForm({

@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import SnackBar from '~/components/SnackBar';
 import { MIconButton } from '~/components/@material-extend';
+import { Link } from 'react-router-dom';
 
 const initialForm = {
   data: [],
@@ -188,7 +189,16 @@ export default function AddDefectiveProductsForm() {
                 </Grid>
               ))}
             </Fieldset>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+              <Button
+                startIcon={<Clear />}
+                variant="outlined"
+                color="error"
+                LinkComponent={Link}
+                to={PATH_MODULES.defectiveProducts.root}
+              >
+                Cancelar
+              </Button>
               <LoadingButton
                 loading={loadingPost}
                 type="submit"

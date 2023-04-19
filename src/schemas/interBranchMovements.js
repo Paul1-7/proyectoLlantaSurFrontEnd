@@ -19,7 +19,11 @@ const interBranchMovements = (maxQuantity) =>
         sucursales: yup.array(),
       })
       .test('idProd-test', 'Debe seleccionar otra opción', (value) => value.id !== '0'),
-    idSucOrigen: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+    idSucOrigen: yup
+      .string()
+      .matches(regex.alphaNumeric, msg.alphaNumeric)
+      .required()
+      .test('idSucOrigen-test', 'Debe seleccionar otra opción', (value) => value !== '0'),
     idSucDestino: yup
       .string()
       .matches(regex.alphaNumeric, msg.alphaNumeric)
@@ -32,7 +36,8 @@ const interBranchMovements = (maxQuantity) =>
           const idSucDestino = value;
           return idSucOrigen !== idSucDestino;
         },
-      ),
+      )
+      .test('idSucDes-test', 'Debe seleccionar otra opción', (value) => value !== '0'),
     idUsuario: yup.string(),
   });
 

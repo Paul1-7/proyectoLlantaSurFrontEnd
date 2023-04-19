@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // material
 import { Alert, Backdrop, Box, Button, CircularProgress, Grid, Typography, styled } from '@mui/material';
 import { Avatar, Page } from '~/components';
@@ -60,7 +60,7 @@ export default function Login() {
   });
 
   const methods = useForm({
-    resolver: yupResolver(schema.register),
+    resolver: yupResolver(schema.profile),
     defaultValues: initialForm,
     mode: 'all',
     criteriaMode: 'all',

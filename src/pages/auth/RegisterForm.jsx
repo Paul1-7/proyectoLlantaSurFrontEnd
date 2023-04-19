@@ -1,15 +1,13 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 // material
 import { Box, Typography, styled, Grid } from '@mui/material';
 import { Page } from '~/components';
-import { PATH_MODULES } from '~/routes/paths';
 import useAxios from '~/hooks/useAxios';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from '~/schemas';
 import axios from '~/apis/apis';
 import useSnackBarMessage from '~/hooks/useSnackBarMessage';
-import { useEffect } from 'react';
 import Controls from '~/components/forms/Control';
 import { LoadingButton } from '@mui/lab';
 import { ITEMS_RADIO_GROUP } from '~/constants/items';
@@ -22,16 +20,11 @@ const RootStyle = styled(Page)(() => ({
 
 export default function Register() {
   const location = useLocation();
-  const navigate = useNavigate();
   const [resPostUser, errorPostUser, loadingPostUser, axiosFetchPostUser] = useAxios();
   useSnackBarMessage({
     errors: [errorPostUser],
     successes: [resPostUser],
   });
-
-  useEffect(() => {
-    if (!location.state?.celular) return navigate(PATH_MODULES.auth.verifyPhoneNumber, { replace: true });
-  }, []);
 
   const initialFormUser = {
     usuario: '',
@@ -84,39 +77,26 @@ export default function Register() {
                 <Controls.Input name="direccion" label="Direccion" />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controls.Input type="number" name="celular" label="Celular" disabled />
+                <Controls.Input type="number" name="celular" label="Celular" />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controls.Input name="ciNit" label="CI / NIT" />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Controls.RadioGroup name="estado" label="Estado" items={ITEMS_RADIO_GROUP} />
               </Grid>
             </Grid>
           </Fieldset>
           <Fieldset title="Datos del usuario">
             <Grid container wrap="wrap" spacing={1}>
               <Grid item xs={12} md={6}>
-                <Controls.Input name="usuario" label="Usuario" placeholder="Por defecto es el CI / NIT" />
+                <Controls.Input name="usuario" label="Usuario" />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controls.Input name="email" type="email" label="Email" />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controls.Input
-                  type="password"
-                  name="password"
-                  label="Contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
+                <Controls.Input type="password" name="password" label="Contraseña" />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Controls.Input
-                  name="passwordConfirmation"
-                  type="password"
-                  label="Repetir contraseña"
-                  placeholder="Por defecto es el numero de celular"
-                />
+                <Controls.Input name="passwordConfirmation" type="password" label="Repetir contraseña" />
               </Grid>
             </Grid>
           </Fieldset>

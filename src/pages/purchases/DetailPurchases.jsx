@@ -22,6 +22,7 @@ import { useParams } from 'react-router';
 import { getBOBCurrency } from '~/utils/dataHandler';
 import { usePrint } from '~/hooks/usePrint';
 import useSnackBarMessage from '~/hooks/useSnackBarMessage';
+import HeaderBussinessInfo from '~/components/HeaderBussinessInfo';
 
 const sxNoPrint = {
   '@media print': {
@@ -34,8 +35,9 @@ export default function DetailSeel() {
   const { themeStretch } = useSettings();
   const [resGetPurchase, errorGetPurchase, loadingGetPurchase, axiosFetchGetPurchase, , setErrorGetPurchase] =
     useAxios();
+  const [resGetBusinessData, errorGetBusinessData, loadingGetBusinessData, axiosFetchGetBusinessData] = useAxios();
 
-  useSnackBarMessage({ errors: [errorGetPurchase], setErrors: [setErrorGetPurchase] });
+  useSnackBarMessage({ errors: [errorGetPurchase], setErrors: [setErrorGetPurchase, errorGetBusinessData] });
 
   const { loadingPrint, componentToPrintRef, handlePrint } = usePrint({
     fileName: `Factura-${resGetPurchase?.cliente?.nombre ?? ''}`,
@@ -48,13 +50,18 @@ export default function DetailSeel() {
       method: 'GET',
       url: `/api/v1/compras/${id}`,
     });
+    axiosFetchGetBusinessData({
+      axiosInstance: axiosPrivate,
+      method: 'GET',
+      url: `/api/v1/datos-negocio`,
+    });
   }, []);
 
   return (
     <Page title="Detalle compra" sx={{ position: 'relative' }}>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer }}
-        open={loadingGetPurchase || loadingPrint}
+        open={loadingGetPurchase || loadingPrint || loadingGetBusinessData}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -78,6 +85,7 @@ export default function DetailSeel() {
               minWidth: '720px',
             }}
           >
+            <HeaderBussinessInfo data={resGetBusinessData} sx={{ display: 'none', displayPrint: 'block', mb: 2 }} />
             <Grid>
               <Typography variant="h3" align="center" paragraph>
                 Detalle de compra
