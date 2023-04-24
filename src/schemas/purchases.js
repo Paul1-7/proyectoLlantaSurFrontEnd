@@ -3,7 +3,7 @@ import * as yup from 'yup';
 
 const products = yup.object().shape({
   idProd: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  nombre: yup.string().required(),
   cantidad: yup.number().min(1, 'el valor mínimo es 1').typeError('tiene que ser un número').required(),
   precioCompra: yup.number().required().typeError('El precio de venta debe ser un número'),
   precioVenta: yup
@@ -20,12 +20,12 @@ const products = yup.object().shape({
 
 const subsidiaries = yup.object().shape({
   idSuc: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
-  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  nombre: yup.string().required(),
   stock: yup.string().matches(regex.number, msg.number).required(),
 });
 
 const subsidiariesProducts = yup.object().shape({
-  nombre: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
+  nombre: yup.string().required(),
   precioVenta: yup.number().required(),
   idProd: yup.string().matches(regex.alphaNumeric, msg.alphaNumeric).required(),
   cantMax: yup.number(),
