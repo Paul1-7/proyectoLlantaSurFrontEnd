@@ -10,7 +10,7 @@ export default function App() {
     <ThemeConfig>
       <ThemePrimaryColor>
         <RtlLayout>
-          <Settings />
+          {/* <Settings /> */}
           <ScrollToTop />
           <Router />
         </RtlLayout>

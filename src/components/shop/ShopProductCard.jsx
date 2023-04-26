@@ -47,11 +47,11 @@ export default function ShopProductCard({ product }) {
           <Stack direction="row" justifyContent="space-evenly" alignItems="center">
             {descuento && (
               <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through', pr: 2 }}>
-                {getBOBCurrency(descuento)}
+                {getBOBCurrency(precioVenta)}
               </Typography>
             )}
 
-            <Typography variant="subtitle1">{getBOBCurrency(precioVenta)}</Typography>
+            <Typography variant="subtitle1">{getBOBCurrency(descuento ?? precioVenta)}</Typography>
           </Stack>
           {/* <Stack direction="row">
             <MIconButton color="success" onClick={() => dispatch(addCart(product))}>
