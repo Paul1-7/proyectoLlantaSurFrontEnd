@@ -120,6 +120,9 @@ export default function Login() {
           si realizaste una compra en la tienda física, tu usuario es tu CI/NIT con el cual realizaste la compra, y la
           contraseña es el número de télefono
         </Alert>
+        <Alert severity="info" sx={{ mb: 3 }}>
+          User: admin <br /> Password: admin
+        </Alert>
         <FormProvider {...methods}>
           <form autoComplete="off" noValidate onSubmit={methods.handleSubmit(onSubmit)}>
             <LoginForm methods={methods} loading={loadingPost} />
