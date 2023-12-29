@@ -1,33 +1,51 @@
-# Llanta Sur - Frontend
+<h1 align="center" id="title">LLANTASUR - FRONTEND</h1>
 
-Hello and welcome to "Llanta Sur"! This project is an online store selling car tires and also includes an administrative management system.
-This project has been developed with a template to make the development process faster. It is made with React and has been optimized to be responsive and work well on different devices, from cell phones to desktops.
+<p align="center"><img src="https://socialify.git.ci/Paul1-7/proyectoLlantaSurFrontEnd/image?font=Raleway&amp;language=1&amp;logo=https%3A%2F%2Fres.cloudinary.com%2Fpaul1-7%2Fimage%2Fupload%2Fv1703887333%2Fportfolio%2Fh6hdciyl1pwxg6ay2w8o.svg&amp;name=1&amp;owner=1&amp;pattern=Circuit%20Board&amp;theme=Light" alt="project-image"></p>
 
-## Installation
+<p id="description">With Llanta Sur I built a comprehensive system to manage inventories and sales of automotive products. It stands out for its customized reports PWA implementation and a landing page with filtering options to display our products effectively</p>
 
-To see the data, it is necessary that the backend be initialized. [Llanta sur - backend](https://github.com/Paul1-7/proyectoLLantaSurBackend)  
-Install the project with npm
+<h2>🚀 Demo</h2>
 
-```bash
-  npm install
+[Click here](http://proyecto-llanta-sur-front-end.vercel.app/)
+
+<h2>Project Screenshots:</h2>
+
+<img src="https://res.cloudinary.com/paul1-7/image/upload/v1703887741/portfolio/ifxc6redqvu2yjw15zzq.webp" alt="project-screenshot" width="1526" height="790/">
+
+  
+  
+<h2>🧐 Features</h2>
+
+Here're some of the project's best features:
+
+*   Product Catalog
+*   Inventory sales and customer management.
+*   sales inventory and financial insights.
+*   Organized product classification
+*   Customizable engagement pages
+
+<h2>🛠️ Installation Steps:</h2>
+To see the data, it is necessary that the backend be initialized. 
+
+[Llanta sur - backend](https://github.com/Paul1-7/proyectoLLantaSurBackend) 
+<p>1. Install the project with npm</p>
+
+```
+npm i
 ```
 
-to make it run
+<p>2. to make it run</p>
 
-```bash
-  npm run dev
+```
+npm run dev
 ```
 
-## Demo
+  
+  
+<h2>💻 Built with</h2>
 
-[project demo](https://llanta-sur.vercel.app/)
+Technologies used in the project:
 
-## Screenshots
+*   React
+*   Material UI
 
-![App Screenshot](https://res.cloudinary.com/paul1-7/image/upload/v1672410955/llanta-sur/screenshoot/1_sbs06q.jpg)
-
-![App Screenshot](https://res.cloudinary.com/paul1-7/image/upload/v1672410955/llanta-sur/screenshoot/2_tnrmee.jpg)
-
-![App Screenshot](https://res.cloudinary.com/paul1-7/image/upload/v1672410955/llanta-sur/screenshoot/3_kaqlh1.jpg)
-
-![App Screenshot](https://res.cloudinary.com/paul1-7/image/upload/v1672410954/llanta-sur/screenshoot/4_ocioqp.jpg)
